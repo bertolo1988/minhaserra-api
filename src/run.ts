@@ -7,7 +7,7 @@ let server: ApiServer;
 let serverOptions = defaultServerOptions;
 
 async function run() {
-  console.log(`Server options:`, serverOptions);
+  console.log(`Server options:`, JSON.stringify(serverOptions, null, 2));
   server = new ApiServer(serverOptions);
   await server.start();
   console.log(`server listening on port ${serverOptions.port}`);
