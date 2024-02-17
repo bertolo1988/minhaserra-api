@@ -5,7 +5,7 @@ let config: Knex.Config | null;
 
 async function connectDatabase(inputConfig: Knex.Config): Promise<Knex> {
   try {
-    let database = knex(inputConfig);
+    const database = knex(inputConfig);
     return database;
   } catch (err) {
     console.error('Failed to connect to the database', err);

@@ -1,7 +1,7 @@
 import { ApiServer, defaultServerOptions } from '../../src/server';
 import { getTestServerUrl } from './integration-test-utils';
 
-describe('/health', () => {
+describe('/api/health', () => {
   let server: ApiServer;
 
   beforeAll(async () => {

@@ -4,7 +4,7 @@ import { ApiServer, defaultServerOptions } from './server';
 dotenv.config();
 
 let server: ApiServer;
-let serverOptions = defaultServerOptions;
+const serverOptions = defaultServerOptions;
 
 async function run() {
   console.log(`Server options:`, JSON.stringify(serverOptions, null, 2));
