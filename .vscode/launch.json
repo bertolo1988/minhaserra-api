@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "debug test file",
+      // "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": ["${file}"],
+      "env": {
+        "NODE_ENV": "test"
+      }
+    }
+  ]
+}
