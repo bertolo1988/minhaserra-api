@@ -10,6 +10,7 @@ export async function up(knex: Knex): Promise<void> {
     "type" "contact_verifications_type" NOT NULL DEFAULT 'email'::contact_verifications_type,
     contact varchar(100) NOT NULL COLLATE "case_insensitive",
     token varchar(100) NOT NULL,
+    expires_at timestamptz NOT NULL,
     created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT contact_verifications_pkey PRIMARY KEY (id),
@@ -18,6 +19,6 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTable('contact_verification');
+  await knex.schema.dropTable('contact_verifications');
   await knex.raw(`DROP TYPE IF EXISTS contact_verifications_type;`);
 }
