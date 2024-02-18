@@ -1,18 +1,18 @@
 version: '3.9'
 
 volumes:
-  minhaterra-api-volume-1:
-    name: minhaterra-api-volume-1
+  minhaserra-api-volume-1:
+    name: minhaserra-api-volume-1
 
 services:
   postgres:
-    container_name: postgres-minhaterra-api
+    container_name: postgres-minhaserra-api
     image: postgres:16
     ports:
       - 5432:5432
     volumes:
-      - minhaterra-api-volume-1:/var/lib/postgresql/data
+      - minhaserra-api-volume-1:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=vfOyiyNEDLTkLnoomUujiEKznNGYdEfO
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=minhaterra-api-database
+      - POSTGRES_DB=minhaserra-api-database
