@@ -1,3 +1,4 @@
+import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
 import { getTestServerUrl } from '../integration-test-utils';
 
@@ -28,8 +29,11 @@ describe('POST /api/users', () => {
       expect(body.message).toBe(`must have required property 'email'`);
     });
 
-    test('when role is missing', async () => {
-      const userDto = { email: 'some-email@mail.com' };
+    test('when role is invalid (cant register admin)', async () => {
+      const userDto: UserDto = {
+        email: 'when-role-is-invalid@mail.com',
+        role: UserRole.ADMIN,
+      };
       const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
@@ -39,7 +43,26 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`must have required property 'role'`);
+      expect(body.message).toBe(`must have required property 'email'`);
+    });
+  });
+
+  describe('returns status 201', () => {
+    test('when user is created successfully', async () => {
+      const userDto = {
+        email: 'some-user1@gmail.com',
+        role: UserRole.BUYER,
+      };
+      const response = await fetch(getTestServerUrl('/api/users').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userDto),
+      });
+      expect(response.status).toBe(201);
+      const body = await response.json();
+      expect(body.message).toBe(`must have required property 'email'`);
     });
   });
 });
