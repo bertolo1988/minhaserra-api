@@ -1,5 +1,6 @@
 import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
+import { truncateAllTables } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 
 describe('POST /api/users', () => {
@@ -8,6 +9,7 @@ describe('POST /api/users', () => {
   beforeAll(async () => {
     server = new ApiServer(defaultServerOptions);
     await server.start();
+    await truncateAllTables();
   });
 
   afterAll(async () => {
@@ -80,7 +82,7 @@ describe('POST /api/users', () => {
   });
 
   describe('returns status 201', () => {
-    test.only('when user is created successfully', async () => {
+    test('when user is created successfully', async () => {
       const userDto = {
         email: 'when-role-is-invalid@mail.com',
         organizationName: 'My Organization',

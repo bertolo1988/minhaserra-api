@@ -20,7 +20,7 @@ export type UserDto = {
 export const UserDtoSchema: JSONSchemaType<UserDto> = {
   type: 'object',
   properties: {
-    email: { type: 'string', nullable: false },
+    email: { type: 'string', nullable: false, format: 'email' },
     role: {
       type: 'string',
       enum: [UserRole.BUYER, UserRole.SELLER],
@@ -51,6 +51,7 @@ export type UserModel = {
   organizationName?: string;
   firstName: string;
   lastName?: string;
+  isEmailConfirmed: boolean;
   isActive: boolean;
   isDeleted: boolean;
   passwordHash: string;
@@ -64,5 +65,10 @@ export type UserModel = {
 
 export type CreateUserModel = Omit<
   UserModel,
-  'id' | 'isActive' | 'isDeleted' | 'createdAt' | 'updatedAt'
+  | 'id'
+  | 'isEmailConfirmed'
+  | 'isActive'
+  | 'isDeleted'
+  | 'createdAt'
+  | 'updatedAt'
 >;

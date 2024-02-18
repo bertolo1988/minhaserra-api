@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     organization_name varchar(100),
     first_name varchar(100) NOT NULL,
     last_name varchar(100),
+    is_email_confirmed bool NOT NULL DEFAULT false,
     is_active bool NOT NULL DEFAULT true,
     is_deleted bool NOT NULL DEFAULT false,
     password_hash varchar(255) NOT NULL,
