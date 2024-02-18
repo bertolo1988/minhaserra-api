@@ -17,7 +17,7 @@ export type UserDto = {
   termsVersion: number;
 };
 
-export const UserDtoSchema: JSONSchemaType<UserDto> = {
+export const UserDtoSchema = {
   type: 'object',
   properties: {
     email: { type: 'string', nullable: false, format: 'email' },
@@ -25,12 +25,19 @@ export const UserDtoSchema: JSONSchemaType<UserDto> = {
       type: 'string',
       enum: [UserRole.BUYER, UserRole.SELLER],
       nullable: false,
-      errorMessage: 'role must be either "buyer" or "seller"',
+      errorMessage: `'role' must be either "buyer" or "seller"`,
     },
     organizationName: { type: 'string', nullable: true },
     firstName: { type: 'string', nullable: false },
     lastName: { type: 'string', nullable: false },
-    password: { type: 'string', nullable: false },
+    password: {
+      type: 'string',
+      nullable: false,
+      minLength: 8,
+      maxLength: 64,
+      format: 'password',
+      errorMessage: `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
+    },
     termsVersion: { type: 'number', nullable: false },
   },
   required: [
