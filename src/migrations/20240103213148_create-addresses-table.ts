@@ -2,8 +2,12 @@ import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('addresses', function (table) {
-    table.increments('id');
-    table.integer('user_id').unsigned().notNullable();
+    table
+      .uuid('id')
+      .unique()
+      .defaultTo(knex.raw('gen_random_uuid()'))
+      .primary();
+    table.uuid('user_id').notNullable();
     table.string('label', 100).notNullable();
     table.string('country_code', 2).notNullable();
     table.string('name', 100).notNullable();

@@ -10,6 +10,13 @@ function encryptPassword(
   return scryptSync(password, salt, iterations).toString('hex');
 }
 
+export function generateRandomToken(
+  length: number,
+  encoding: BufferEncoding = 'hex',
+): string {
+  return randomBytes(length).toString(encoding).slice(0, length);
+}
+
 export function hashPassword(
   password: string,
   iterations = DEFAULT_ITERATIONS,
@@ -18,7 +25,7 @@ export function hashPassword(
   hash: string;
   iterations: number;
 } {
-  const salt = randomBytes(64).toString('base64');
+  const salt = generateRandomToken(64);
   const hash = encryptPassword(password, salt, iterations);
   return { salt, hash, iterations };
 }

@@ -52,7 +52,7 @@ export const UserDtoSchema = {
 };
 
 export type UserModel = {
-  id: number;
+  id: string;
   email: string;
   role: UserRole;
   organizationName?: string;

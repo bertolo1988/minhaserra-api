@@ -3,9 +3,17 @@ export enum ContactVerifiationType {
   PHONE = 'phone',
 }
 
+export type ContactVerificationDto = {
+  userId: string;
+  type: ContactVerifiationType;
+  contact: string;
+  token: string;
+  expiresAt: Date;
+};
+
 export type ContactVerificationModel = {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   type: ContactVerifiationType;
   contact: string;
   token: string;

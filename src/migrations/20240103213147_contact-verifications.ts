@@ -5,11 +5,11 @@ export async function up(knex: Knex): Promise<void> {
     `CREATE TYPE contact_verifications_type AS ENUM ('email', 'phone');`,
   );
   await knex.schema.raw(`CREATE TABLE contact_verifications (
-    id serial4 NOT NULL,
-    user_id serial4 NOT NULL,
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
+    user_id uuid NOT NULL,
     "type" "contact_verifications_type" NOT NULL DEFAULT 'email'::contact_verifications_type,
     contact varchar(100) NOT NULL COLLATE "case_insensitive",
-    token varchar(100) NOT NULL,
+    token varchar(64) NOT NULL,
     expires_at timestamptz NOT NULL,
     created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,

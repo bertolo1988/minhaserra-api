@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.raw(`CREATE TABLE users (
-    id serial4 NOT NULL,
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
     email varchar(100) NOT NULL COLLATE "case_insensitive",
     "role" "user_role" NOT NULL DEFAULT 'buyer'::user_role,
     organization_name varchar(100),

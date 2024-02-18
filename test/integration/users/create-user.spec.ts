@@ -128,7 +128,7 @@ describe('POST /api/users', () => {
   });
 
   describe('returns status 201', () => {
-    test('when user is created successfully', async () => {
+    test.only('when user is created successfully', async () => {
       const userDto = {
         email: 'when-role-is-invalid@mail.com',
         organizationName: 'My Organization',

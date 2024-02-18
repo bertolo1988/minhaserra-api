@@ -19,14 +19,14 @@ function mapUserDtoToCreateUserModel(dto: UserDto): CreateUserModel {
 }
 
 export class UsersRepository {
-  static async createOne(dto: UserDto): Promise<{ id: number }> {
+  static async createOne(dto: UserDto): Promise<{ id: string }> {
     const knex = await getDatabaseInstance();
     const data = mapUserDtoToCreateUserModel(dto);
     const result = (await knex('users').insert(
       CaseConverter.objectKeysCamelToSnake(data),
       ['id'],
     )) as {
-      id: number;
+      id: string;
     }[];
     return result[0];
   }
