@@ -1,6 +1,6 @@
 import { scryptSync, randomBytes } from 'node:crypto';
 
-const DEFAULT_ITERATIONS = 64;
+const DEFAULT_ITERATIONS = 128;
 
 function encryptPassword(
   password: string,

@@ -135,7 +135,8 @@ describe('POST /api/users', () => {
         role: UserRole.BUYER,
         firstName: 'John',
         lastName: 'Doe',
-        password: 'password#A1',
+        password:
+          'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
         termsVersion: 1,
       };
       const response = await fetch(getTestServerUrl('/api/users').href, {
