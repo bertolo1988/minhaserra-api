@@ -1,3 +1,5 @@
+import { JSONSchemaType } from 'ajv';
+
 export enum UserRole {
   ADMIN = 'admin',
   MODERATOR = 'moderator',
@@ -15,16 +17,20 @@ export type UserDto = {
   termsVersion: number;
 };
 
-export const createUserDtoSchema = {
+export const UserDtoSchema: JSONSchemaType<UserDto> = {
   type: 'object',
   properties: {
-    email: { type: 'string' },
-    role: { enum: [UserRole.BUYER, UserRole.SELLER] },
-    organizationName: { type: 'string' },
-    firstName: { type: 'string' },
-    lastName: { type: 'string' },
-    password: { type: 'string' },
-    termsVersion: { type: 'number' },
+    email: { type: 'string', nullable: false },
+    role: {
+      type: 'string',
+      enum: [UserRole.BUYER, UserRole.SELLER],
+      nullable: false,
+    },
+    organizationName: { type: 'string', nullable: true },
+    firstName: { type: 'string', nullable: false },
+    lastName: { type: 'string', nullable: false },
+    password: { type: 'string', nullable: false },
+    termsVersion: { type: 'number', nullable: false },
   },
   required: [
     'email',
