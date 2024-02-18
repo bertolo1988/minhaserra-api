@@ -1,10 +1,10 @@
-import Ajv, { ErrorObject, ValidateFunction } from 'ajv';
+import { ErrorObject, ValidateFunction } from 'ajv';
 import Koa from 'koa';
 
 import { ValidationError } from '../../types/errors';
+import { ajv } from '../../utils/ajv';
 import { UserDto, UserDtoSchema } from './users.types';
 
-const ajv = new Ajv();
 const createUserValidator: ValidateFunction =
   ajv.compile<UserDto>(UserDtoSchema);
 

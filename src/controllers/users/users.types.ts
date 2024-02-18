@@ -25,6 +25,7 @@ export const UserDtoSchema: JSONSchemaType<UserDto> = {
       type: 'string',
       enum: [UserRole.BUYER, UserRole.SELLER],
       nullable: false,
+      errorMessage: 'role must be either "buyer" or "seller"',
     },
     organizationName: { type: 'string', nullable: true },
     firstName: { type: 'string', nullable: false },

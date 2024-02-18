@@ -53,15 +53,42 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`must be equal to one of the allowed values`);
+      expect(body.message).toBe(`role must be either \"buyer\" or \"seller\"`);
+    });
+
+    test('when a non allowed extra property exists', async () => {
+      const userDto = {
+        email: 'when-role-is-invalid@mail.com',
+        role: UserRole.BUYER,
+        firstName: 'John',
+        lastName: 'Doe',
+        password: 'password',
+        termsVersion: 1,
+        aaa: 'mansdlansdla',
+      };
+      const response = await fetch(getTestServerUrl('/api/users').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userDto),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(`must NOT have additional properties`);
     });
   });
 
-  describe.skip('returns status 201', () => {
-    test('when user is created successfully', async () => {
+  describe('returns status 201', () => {
+    test.only('when user is created successfully', async () => {
       const userDto = {
-        email: 'some-user1@gmail.com',
+        email: 'when-role-is-invalid@mail.com',
+        organizationName: 'My Organization',
         role: UserRole.BUYER,
+        firstName: 'John',
+        lastName: 'Doe',
+        password: 'password',
+        termsVersion: 1,
       };
       const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
@@ -72,7 +99,7 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(201);
       const body = await response.json();
-      expect(body.message).toBe(`must have required property 'email'`);
+      expect(body.id).toBe(1);
     });
   });
 });
