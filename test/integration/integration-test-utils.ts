@@ -1,9 +1,9 @@
 import { defaultServerOptions } from '../../src/server';
 
-export function getTestServerUrl(pathname: string): URL {
-  const url = new URL(
-    pathname,
-    `http://localhost:${defaultServerOptions.port}`,
-  );
+export function getTestServerUrl(
+  pathname: string,
+  port = defaultServerOptions.port,
+): URL {
+  const url = new URL(pathname, `http://localhost:${port}`);
   return url;
 }

@@ -49,8 +49,7 @@ export class ApiServer {
     this.server = await this.app.listen(this.options.port);
   }
 
-  async stop(): Promise<void> {
-    await disconnectFromDatabase();
+  async stopHttpServer(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (this.server) {
         this.server.close((err) => {
@@ -61,5 +60,10 @@ export class ApiServer {
         reject(`server is not running`);
       }
     });
+  }
+
+  async stop(): Promise<void> {
+    await disconnectFromDatabase();
+    await this.stopHttpServer();
   }
 }

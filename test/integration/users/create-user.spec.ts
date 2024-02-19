@@ -1,13 +1,17 @@
+import { validate as isValidUUID } from 'uuid';
+
 import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
 import { truncateAllTables } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 
+const PORT = 8085;
+
 describe('POST /api/users', () => {
   let server: ApiServer;
 
   beforeAll(async () => {
-    server = new ApiServer(defaultServerOptions);
+    server = new ApiServer({ ...defaultServerOptions, port: PORT });
     await server.start();
     await truncateAllTables();
   });
@@ -25,7 +29,7 @@ describe('POST /api/users', () => {
         password: 'password',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users').href, {
+      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +50,7 @@ describe('POST /api/users', () => {
         password: 'password',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users').href, {
+      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +71,7 @@ describe('POST /api/users', () => {
         password: 'password',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users').href, {
+      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +95,7 @@ describe('POST /api/users', () => {
         termsVersion: 1,
         aaa: 'mansdlansdla',
       };
-      const response = await fetch(getTestServerUrl('/api/users').href, {
+      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +116,7 @@ describe('POST /api/users', () => {
         password: 'pbaskdjbakjsdbakjdsB1',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users').href, {
+      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +132,7 @@ describe('POST /api/users', () => {
   });
 
   describe('returns status 201', () => {
-    test.only('when user is created successfully', async () => {
+    test('when user is created successfully', async () => {
       const userDto = {
         email: 'when-role-is-invalid@mail.com',
         organizationName: 'My Organization',
@@ -139,7 +143,7 @@ describe('POST /api/users', () => {
           'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users').href, {
+      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +152,7 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(201);
       const body = await response.json();
-      expect(body.id).toBe(1);
+      expect(isValidUUID(body.id)).toBe(true);
     });
   });
 });

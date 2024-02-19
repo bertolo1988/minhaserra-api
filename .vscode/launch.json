@@ -4,6 +4,30 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "debug all unit tests",
+      // "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": ["test/unit"],
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "debug all integration tests",
+      // "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": ["test/integration"],
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "debug test file",
       // "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal",
