@@ -1,5 +1,3 @@
-import { JSONSchemaType } from 'ajv';
-
 export enum UserRole {
   ADMIN = 'admin',
   MODERATOR = 'moderator',

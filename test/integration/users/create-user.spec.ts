@@ -4,6 +4,7 @@ import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
 import { truncateAllTables } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
+import EmailService from '../../../src/controllers/emails/email-service';
 
 const PORT = 8085;
 
@@ -132,9 +133,21 @@ describe('POST /api/users', () => {
   });
 
   describe('returns status 201', () => {
+    let sendEmailSpy: jest.SpyInstance;
+
+    beforeAll(async () => {
+      sendEmailSpy = jest
+        .spyOn(EmailService.prototype, 'sendEmail')
+        .mockResolvedValue({} as any);
+    });
+
+    afterAll(() => {
+      sendEmailSpy.mockReset();
+    });
+
     test('when user is created successfully', async () => {
       const userDto = {
-        email: 'when-role-is-invalid@mail.com',
+        email: 'tiagobertolo@gmail.com',
         organizationName: 'My Organization',
         role: UserRole.BUYER,
         firstName: 'John',
@@ -150,6 +163,7 @@ describe('POST /api/users', () => {
         },
         body: JSON.stringify(userDto),
       });
+      expect(sendEmailSpy).toHaveBeenCalledTimes(1);
       expect(response.status).toBe(201);
       const body = await response.json();
       expect(isValidUUID(body.id)).toBe(true);

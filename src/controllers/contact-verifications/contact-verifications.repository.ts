@@ -31,15 +31,13 @@ export class ContactVerificationsRepository {
     return result[0];
   }
 
-  static async getById(
-    id: string,
-  ): Promise<ContactVerificationModel | undefined> {
+  static async getById(id: string): Promise<ContactVerificationModel> {
     const knex = await getDatabaseInstance();
     const result = await knex<ContactVerificationModel>('contact_verifications')
       .where({
         id,
       })
       .first();
-    return result;
+    return result as ContactVerificationModel;
   }
 }

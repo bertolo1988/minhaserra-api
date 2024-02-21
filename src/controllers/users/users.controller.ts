@@ -1,13 +1,15 @@
 import Koa from 'koa';
 import moment from 'moment';
+import { generateRandomToken } from '../../utils/password-utils';
 import { ContactVerificationsRepository } from '../contact-verifications/contact-verifications.repository';
 import {
   ContactVerifiationType,
   ContactVerificationDto,
 } from '../contact-verifications/contact-verifications.types';
+import emailServiceInstance from '../emails';
+import { EmailTemplateType } from '../emails/email.types';
 import { UsersRepository } from './users.repository';
 import { UserDto } from './users.types';
-import { generateRandomToken } from '../../utils/password-utils';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -27,8 +29,20 @@ export class UsersController {
       contactVerificationId,
     );
 
-    // TODO:send with contactVerification
-    // console.log(1111, contactVerification);
+    if (!contactVerification) {
+      throw new Error(
+        `Contact verification not found with id:${contactVerificationId}`,
+      );
+    }
+
+    await emailServiceInstance.sendEmail(
+      dto.email,
+      EmailTemplateType.USER_EMAIL_VERIFICATION,
+      {
+        verificationUrl: `${process.env.SERVER_BASE_URL}/contact-verifications/${contactVerification?.token}`,
+      },
+    );
+
     ctx.status = 201;
     ctx.body = { id: userId };
   }
