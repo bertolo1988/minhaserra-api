@@ -16,6 +16,22 @@ describe('CaseConverter', () => {
   });
 
   describe('objectKeysCamelToSnake', () => {
+    test('should return null if object is null', () => {
+      const obj = null;
+      const result = CaseConverter.objectKeysCamelToSnake(
+        obj as unknown as Record<string, any>,
+      );
+      expect(result).toEqual(null);
+    });
+
+    test('should return undefined if object is undefined', () => {
+      const obj = undefined;
+      const result = CaseConverter.objectKeysCamelToSnake(
+        obj as unknown as Record<string, any>,
+      );
+      expect(result).toEqual(undefined);
+    });
+
     test('should convert object keys from camel to snake case', () => {
       const obj = {
         firstName: 'John',
@@ -36,6 +52,22 @@ describe('CaseConverter', () => {
   });
 
   describe('objectKeysSnakeToCamel', () => {
+    test('should return null if object is null', () => {
+      const obj = null;
+      const result = CaseConverter.objectKeysSnakeToCamel(
+        obj as unknown as Record<string, any>,
+      );
+      expect(result).toEqual(null);
+    });
+
+    test('should return undefined if object is undefined', () => {
+      const obj = undefined;
+      const result = CaseConverter.objectKeysSnakeToCamel(
+        obj as unknown as Record<string, any>,
+      );
+      expect(result).toEqual(undefined);
+    });
+
     test('should convert object keys from snake to camel case', () => {
       const obj = {
         first_name: 'John',

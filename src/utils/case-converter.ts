@@ -10,6 +10,7 @@ export class CaseConverter {
   }
 
   static objectKeysCamelToSnake(obj: Record<string, any>): Record<string, any> {
+    if (!obj) return obj;
     const newObj: Record<string, any> = {};
     Object.keys(obj).forEach((key) => {
       newObj[CaseConverter.camelToSnake(key)] = obj[key];
@@ -18,6 +19,7 @@ export class CaseConverter {
   }
 
   static objectKeysSnakeToCamel(obj: Record<string, any>): Record<string, any> {
+    if (!obj) return obj;
     const newObj: Record<string, any> = {};
     Object.keys(obj).forEach((key) => {
       newObj[CaseConverter.snakeToCamel(key)] = obj[key];
