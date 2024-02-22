@@ -7,7 +7,6 @@ import {
   ContactVerificationModel,
   CreateContactVerificationModel,
 } from './contact-verifications.types';
-import { first } from 'lodash';
 
 function mapUserDtoToCreateUserModel(
   dto: ContactVerificationDto,
@@ -36,7 +35,7 @@ export class ContactVerificationsRepository {
   static async getByIdAndExpiration(
     id: string,
     expiresAt = new Date(),
-  ): Promise<ContactVerificationModel> {
+  ): Promise<ContactVerificationModel | null> {
     const knex = await getDatabaseInstance();
     const result = await knex<ContactVerificationModel>('contact_verifications')
       .where('id', id)

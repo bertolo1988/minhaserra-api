@@ -1,10 +1,12 @@
 import { ErrorObject } from 'ajv';
+import { isString } from 'lodash';
+
 import { HttpError } from './http-error.error';
 
 export class ValidationError extends HttpError {
-  validationErrors: ErrorObject[];
+  validationErrors: ErrorObject[] | string | string[];
 
-  constructor(errors: ErrorObject[]) {
+  constructor(errors: ErrorObject[] | string | string[]) {
     super(400, `Validation error`);
     this.name = this.constructor.name;
     this.validationErrors = errors;
@@ -13,7 +15,13 @@ export class ValidationError extends HttpError {
   }
 
   getFirstErrorMessage(): string | undefined {
-    return this.validationErrors[0].message;
+    if (isString(this.validationErrors)) {
+      return this.validationErrors;
+    } else if (isString(this.validationErrors[0])) {
+      return this.validationErrors[0];
+    } else {
+      return (this.validationErrors[0] as ErrorObject).message;
+    }
   }
 
   static isValidationError(err: unknown): boolean {

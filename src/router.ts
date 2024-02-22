@@ -1,8 +1,11 @@
 import Router from 'koa-router';
 
+import {
+  ContactVerificationsController,
+  ContactVerificationsValidator,
+} from './controllers/contact-verifications';
 import { HealthController } from './controllers/health';
 import { UsersController, UsersValidator } from './controllers/users';
-import { ContactVerificationsController } from './controllers/contact-verifications';
 
 export function configureKoaRouter(): Router {
   const router = new Router({
@@ -16,7 +19,8 @@ export function configureKoaRouter(): Router {
   );
   router.get(
     '/contact-verifications/:id/verify',
-    ContactVerificationsController.verifyUser,
+    ContactVerificationsValidator.validateVerifyUserContact,
+    ContactVerificationsController.verifyUserContact,
   );
   return router;
 }
