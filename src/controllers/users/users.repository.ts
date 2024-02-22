@@ -1,3 +1,4 @@
+import { Knex, QueryBuilder } from 'knex';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { hashPassword } from '../../utils/password-utils';
@@ -29,5 +30,24 @@ export class UsersRepository {
       id: string;
     }[];
     return result[0];
+  }
+
+  static async setEmailVerified(
+    userId: string,
+    email: string,
+    transaction: Knex.Transaction,
+  ): Promise<QueryBuilder> {
+    const knex = await getDatabaseInstance();
+    const updateResult = await knex('users')
+      .where({
+        id: userId,
+        email,
+      })
+      .update(CaseConverter.objectKeysCamelToSnake({ isEmailVerified: true }), [
+        'id',
+        'is_email_verified',
+      ])
+      .transacting(transaction);
+    return updateResult;
   }
 }

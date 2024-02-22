@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import moment from 'moment';
 import { generateRandomToken } from '../../utils/password-utils';
-import { ContactVerificationsRepository } from '../contact-verifications/contact-verifications.repository';
+import { ContactVerificationsRepository } from '../contact-verifications';
 import {
   ContactVerifiationType,
   ContactVerificationDto,
@@ -20,18 +20,14 @@ export class UsersController {
       userId,
       type: ContactVerifiationType.EMAIL,
       contact: dto.email,
-      token: generateRandomToken(64),
-      expiresAt: moment().add(3, 'hours').toDate(),
+      expiresAt: moment().add(12, 'hours').toDate(),
     };
     const { id: contactVerificationId } =
       await ContactVerificationsRepository.createOne(contactVerificationDto);
-    const contactVerification = await ContactVerificationsRepository.getById(
-      contactVerificationId,
-    );
 
-    if (!contactVerification) {
+    if (!contactVerificationId) {
       throw new Error(
-        `Contact verification not found with id:${contactVerificationId}`,
+        `Failed to create contact verification for user ${userId} with email ${dto.email}`,
       );
     }
 
@@ -39,7 +35,7 @@ export class UsersController {
       dto.email,
       EmailTemplateType.USER_EMAIL_VERIFICATION,
       {
-        verificationUrl: `${process.env.SERVER_BASE_URL}/contact-verifications/${contactVerification?.token}`,
+        verificationUrl: `${process.env.SERVER_BASE_URL}/contact-verifications/${contactVerificationId}`,
       },
     );
 

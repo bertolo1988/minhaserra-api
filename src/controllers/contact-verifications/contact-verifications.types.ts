@@ -7,7 +7,6 @@ export type ContactVerificationDto = {
   userId: string;
   type: ContactVerifiationType;
   contact: string;
-  token: string;
   expiresAt: Date;
 };
 
@@ -16,7 +15,7 @@ export type ContactVerificationModel = {
   userId: string;
   type: ContactVerifiationType;
   contact: string;
-  token: string;
+  verifiedAt: Date;
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -24,5 +23,5 @@ export type ContactVerificationModel = {
 
 export type CreateContactVerificationModel = Omit<
   ContactVerificationModel,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'verifiedAt' | 'createdAt' | 'updatedAt'
 >;

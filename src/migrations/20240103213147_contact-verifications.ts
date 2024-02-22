@@ -9,12 +9,12 @@ export async function up(knex: Knex): Promise<void> {
     user_id uuid NOT NULL,
     "type" "contact_verifications_type" NOT NULL DEFAULT 'email'::contact_verifications_type,
     contact varchar(100) NOT NULL COLLATE "case_insensitive",
-    token varchar(64) NOT NULL,
+    verified_at timestamptz,
     expires_at timestamptz NOT NULL,
     created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT contact_verifications_pkey PRIMARY KEY (id),
-    CONSTRAINT contact_verifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT contact_verifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   );`);
 }
 
