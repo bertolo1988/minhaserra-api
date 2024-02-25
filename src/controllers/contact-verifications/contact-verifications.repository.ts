@@ -51,6 +51,7 @@ export class ContactVerificationsRepository {
     const result = await knex<ContactVerificationModel>('contact_verifications')
       .where('id', id)
       .andWhere('expires_at', '>', expiresAt)
+      .andWhere('verified_at', null)
       .first();
     return CaseConverter.objectKeysSnakeToCamel(
       result as Record<string, unknown>,
