@@ -1,8 +1,9 @@
+import { runSeedByName } from '../../../src/knex-database';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
 import {
   expiredJohnContactVerification,
   johnContactVerificationInvalidEmail,
-} from '../../seeds/seed1';
+} from '../../seeds/verify-user-email';
 import { getTestServerUrl } from '../integration-test-utils';
 
 const PORT = 8086;
@@ -13,6 +14,7 @@ describe('GET /api/contact-verifications/:id/verify', () => {
   beforeAll(async () => {
     server = new ApiServer({ ...defaultServerOptions, port: PORT });
     await server.start();
+    await runSeedByName('verify-user-email.ts');
   });
 
   afterAll(async () => {
@@ -91,7 +93,7 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     );
   });
 
-  test.skip('should successfully verify the user email', async () => {
+  test('should successfully verify the user email', async () => {
     // TODO
   });
 });

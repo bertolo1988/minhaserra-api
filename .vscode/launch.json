@@ -35,8 +35,8 @@
       "args": ["${file}"],
       "env": {
         "NODE_ENV": "test"
-      },
-      "preLaunchTask": "npm: seed:run"
+      }
+      // "preLaunchTask": "npm: seed:run"
     }
   ]
 }
