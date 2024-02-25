@@ -1,5 +1,6 @@
-import { Knex, QueryBuilder } from 'knex';
-import { getDatabaseInstance } from '../../knex-database';
+import { Knex } from 'knex';
+import { getDatabaseInstance, isUpdateSuccessfull } from '../../knex-database';
+import { NotFoundError } from '../../types/errors';
 import { CaseConverter } from '../../utils/case-converter';
 import { UsersRepository } from '../users/users.repository';
 import {
@@ -50,17 +51,16 @@ export class ContactVerificationsRepository {
     id: string,
     verifiedAt: Date,
     transaction: Knex.Transaction,
-  ): Promise<QueryBuilder> {
+  ): Promise<{ id: string; verified_at: string }[]> {
     const knex = await getDatabaseInstance();
-    const updateResult: QueryBuilder = await knex<ContactVerificationModel>(
-      'contact_verifications',
-    )
-      .where('id', id)
-      .update(CaseConverter.objectKeysCamelToSnake({ verifiedAt }), [
-        'id',
-        'verified_at',
-      ])
-      .transacting(transaction);
+    const updateResult: { id: string; verified_at: string }[] =
+      await knex<ContactVerificationModel>('contact_verifications')
+        .where('id', id)
+        .update(CaseConverter.objectKeysCamelToSnake({ verifiedAt }), [
+          'id',
+          'verified_at',
+        ])
+        .transacting(transaction);
     return updateResult;
   }
 
@@ -76,12 +76,21 @@ export class ContactVerificationsRepository {
           now,
           transaction,
         );
+        if (isUpdateSuccessfull(firstUpdate) === false) {
+          throw new NotFoundError(
+            `Failed to set contact verification with id ${contactVerification.id} as verified`,
+          );
+        }
         const secondUpdate = await UsersRepository.setEmailVerified(
           contactVerification.userId,
           contactVerification.contact,
           transaction,
         );
-        console.log(111, firstUpdate, secondUpdate);
+        if (isUpdateSuccessfull(secondUpdate) === false) {
+          throw new NotFoundError(
+            `Failed to set email verified in user with id ${contactVerification.id} and email ${contactVerification.contact}`,
+          );
+        }
       });
     } catch (err) {
       console.error(err);

@@ -44,3 +44,10 @@ export async function disconnectFromDatabase(): Promise<void> {
   database = null;
   config = null;
 }
+
+export function isUpdateSuccessfull(
+  updateResult: any[],
+  expectedRowUpdtes = 1,
+): boolean {
+  return updateResult.length === expectedRowUpdtes;
+}

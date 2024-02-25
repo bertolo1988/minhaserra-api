@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-import { ValidationError } from '../../types/errors';
+import { NotFoundError, ValidationError } from '../../types/errors';
 
 function safeSerialize(input: unknown | Error | any): string {
   try {
@@ -20,12 +20,22 @@ export class ErrorsController {
       ctx.status = 500;
       ctx.body = { message: 'Server error' };
 
+      if (NotFoundError.isNotFoundError(err)) {
+        const notFoundError: NotFoundError = err as NotFoundError;
+        ctx.status = notFoundError.statusCode;
+        ctx.body = {
+          message: notFoundError.message,
+        };
+        return;
+      }
+
       if (ValidationError.isValidationError(err)) {
         const validationError: ValidationError = err as ValidationError;
         ctx.status = validationError.statusCode;
         ctx.body = {
           message: validationError.getFirstErrorMessage(),
         };
+        return;
       }
     }
   }

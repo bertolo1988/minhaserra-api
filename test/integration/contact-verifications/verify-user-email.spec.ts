@@ -1,5 +1,8 @@
 import { ApiServer, defaultServerOptions } from '../../../src/server';
-import { truncateAllTables } from '../../test-utils';
+import {
+  expiredJohnContactVerification,
+  johnContactVerificationInvalidEmail,
+} from '../../seeds/seed1';
 import { getTestServerUrl } from '../integration-test-utils';
 
 const PORT = 8086;
@@ -10,7 +13,6 @@ describe('GET /api/contact-verifications/:id/verify', () => {
   beforeAll(async () => {
     server = new ApiServer({ ...defaultServerOptions, port: PORT });
     await server.start();
-    await truncateAllTables();
   });
 
   afterAll(async () => {
@@ -53,8 +55,40 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     expect(response.status).toBe(404);
   });
 
-  test.skip('should fail to verify the user email because the verification is expired', async () => {
-    // TODO
+  test('should fail to verify the user email because the verification is expired', async () => {
+    const response = await fetch(
+      getTestServerUrl(
+        `/api/contact-verifications/${expiredJohnContactVerification.id}/verify`,
+        PORT,
+      ).href,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    expect(response.status).toBe(404);
+  });
+
+  test('should fail to verify the user email because the verification is expired', async () => {
+    const response = await fetch(
+      getTestServerUrl(
+        `/api/contact-verifications/${johnContactVerificationInvalidEmail.id}/verify`,
+        PORT,
+      ).href,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    expect(response.status).toBe(404);
+    const body = await response.json();
+    expect(body.message).toBe(
+      `Failed to set email verified in user with id ${johnContactVerificationInvalidEmail.id} and email ${johnContactVerificationInvalidEmail.contact}`,
+    );
   });
 
   test.skip('should successfully verify the user email', async () => {

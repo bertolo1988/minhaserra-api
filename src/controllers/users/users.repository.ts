@@ -36,7 +36,7 @@ export class UsersRepository {
     userId: string,
     email: string,
     transaction: Knex.Transaction,
-  ): Promise<QueryBuilder> {
+  ): Promise<{ id: string; is_email_verified: boolean }[]> {
     const knex = await getDatabaseInstance();
     const updateResult = await knex('users')
       .where({

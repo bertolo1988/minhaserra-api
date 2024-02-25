@@ -1,4 +1,5 @@
 import { HttpError } from './http-error.error';
+import { NotFoundError } from './not-found.error';
 import { ValidationError } from './validation.error';
 
-export { HttpError, ValidationError };
+export { HttpError, NotFoundError, ValidationError };

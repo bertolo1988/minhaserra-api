@@ -1,10 +1,9 @@
 import { validate as isValidUUID } from 'uuid';
 
+import EmailService from '../../../src/controllers/emails/email-service';
 import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
-import { truncateAllTables } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
-import EmailService from '../../../src/controllers/emails/email-service';
 
 const PORT = 8085;
 
@@ -14,7 +13,6 @@ describe('POST /api/users', () => {
   beforeAll(async () => {
     server = new ApiServer({ ...defaultServerOptions, port: PORT });
     await server.start();
-    await truncateAllTables();
   });
 
   afterAll(async () => {
