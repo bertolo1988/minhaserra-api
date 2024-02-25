@@ -26,7 +26,8 @@ async function runMigrations(): Promise<void> {
 export async function runSeedByName(seedName: string): Promise<void> {
   if (!database) throw new Error('No database connection found');
   try {
-    await database.seed.run({ specific: seedName });
+    const seedConfig: Knex.SeederConfig = { specific: seedName };
+    await database.seed.run(seedConfig);
   } catch (err) {
     console.error('Migrations failed!', err);
     throw err;
