@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import moment from 'moment';
-import { generateRandomToken } from '../../utils/password-utils';
+import CONSTANTS from '../../constants';
 import { ContactVerificationsRepository } from '../contact-verifications';
 import {
   ContactVerifiationType,
@@ -20,7 +20,9 @@ export class UsersController {
       userId,
       type: ContactVerifiationType.EMAIL,
       contact: dto.email,
-      expiresAt: moment().add(12, 'hours').toDate(),
+      expiresAt: moment()
+        .add(CONSTANTS.CONTACT_VERIFICATION_EXPIRY_HOURS, 'hours')
+        .toDate(),
     };
     const { id: contactVerificationId } =
       await ContactVerificationsRepository.createOne(contactVerificationDto);

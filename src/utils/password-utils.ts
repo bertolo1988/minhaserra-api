@@ -1,11 +1,10 @@
 import { scryptSync, randomBytes } from 'node:crypto';
-
-const DEFAULT_ITERATIONS = 128;
+import CONSTANTS from '../constants';
 
 function encryptPassword(
   password: string,
   salt: string,
-  iterations = DEFAULT_ITERATIONS,
+  iterations = CONSTANTS.DEFAULT_AMOUNT_OF_SALT_ITERATIONS,
 ) {
   return scryptSync(password, salt, iterations).toString('hex');
 }
@@ -19,7 +18,7 @@ export function generateRandomToken(
 
 export function hashPassword(
   password: string,
-  iterations = DEFAULT_ITERATIONS,
+  iterations = CONSTANTS.DEFAULT_AMOUNT_OF_SALT_ITERATIONS,
 ): {
   salt: string;
   hash: string;

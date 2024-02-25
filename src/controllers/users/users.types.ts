@@ -71,7 +71,7 @@ export type UserModel = {
 export type CreateUserModel = Omit<
   UserModel,
   | 'id'
-  | 'isEmailConfirmed'
+  | 'isEmailVerified'
   | 'isActive'
   | 'isDeleted'
   | 'createdAt'
