@@ -15,7 +15,7 @@ export type ContactVerificationModel = {
   userId: string;
   type: ContactVerifiationType;
   contact: string;
-  verifiedAt: Date;
+  verifiedAt?: Date;
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;

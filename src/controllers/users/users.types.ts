@@ -56,7 +56,7 @@ export type UserModel = {
   organizationName?: string;
   firstName: string;
   lastName?: string;
-  isEmailConfirmed: boolean;
+  isEmailVerified: boolean;
   isActive: boolean;
   isDeleted: boolean;
   passwordHash: string;
