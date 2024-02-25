@@ -10,7 +10,7 @@
     "test:format": "npx prettier '*.{js,ts,json}' --check",
     "start": "npx ts-node src/run.ts",
     "test:unit": "cross-env NODE_ENV=test jest test/unit",
-    "test:integration": "cross-env NODE_ENV=test jest test/integration",
+    "test:integration": "npm run seed:run && cross-env NODE_ENV=test jest test/integration",
     "seed:create": "npx knex seed:make empty_seed --knexfile knexfile.ts",
     "seed:run": "npx knex seed:run --knexfile knexfile.ts",
     "migrate:latest": "npx knex migrate:latest --knexfile knexfile.ts",
