@@ -1,8 +1,12 @@
+import { ContactVerificationsRepository } from '../../../src/controllers/contact-verifications';
+import { UsersRepository } from '../../../src/controllers/users';
 import { runSeedByName } from '../../../src/knex-database';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
 import {
   expiredJohnContactVerification,
+  johnContactVerification,
   johnContactVerificationInvalidEmail,
+  johnData,
 } from '../../seeds/verify-user-email';
 import { getTestServerUrl } from '../integration-test-utils';
 
@@ -94,6 +98,30 @@ describe('GET /api/contact-verifications/:id/verify', () => {
   });
 
   test('should successfully verify the user email', async () => {
-    // TODO
+    const response = await fetch(
+      getTestServerUrl(
+        `/api/contact-verifications/${johnContactVerification.id}/verify`,
+        PORT,
+      ).href,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.message).toBe(
+      `Successfully verified email in user with id ${johnContactVerification.id} and email ${johnContactVerification.contact}`,
+    );
+
+    const contactVerification = await ContactVerificationsRepository.getById(
+      johnContactVerification.id,
+    );
+    expect(contactVerification?.verifiedAt).not.toBeNull();
+
+    const user = await UsersRepository.getById(johnData.id);
+    expect(user?.isEmailVerified).toBe(true);
   });
 });

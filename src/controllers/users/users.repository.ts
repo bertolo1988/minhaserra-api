@@ -2,7 +2,7 @@ import { Knex, QueryBuilder } from 'knex';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { hashPassword } from '../../utils/password-utils';
-import { CreateUserModel, UserDto } from './users.types';
+import { CreateUserModel, UserDto, UserModel } from './users.types';
 
 function mapUserDtoToCreateUserModel(dto: UserDto): CreateUserModel {
   const { hash, salt, iterations } = hashPassword(dto.password);
@@ -30,6 +30,14 @@ export class UsersRepository {
       id: string;
     }[];
     return result[0];
+  }
+
+  static async getById(id: string): Promise<UserModel | null> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<UserModel>('users').where('id', id).first();
+    return CaseConverter.objectKeysSnakeToCamel(
+      result as Record<string, unknown>,
+    ) as UserModel;
   }
 
   static async setEmailVerified(

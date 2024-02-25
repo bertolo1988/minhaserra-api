@@ -13,6 +13,9 @@ export class ContactVerificationsController {
         contactVerification,
       );
       ctx.status = 200;
+      ctx.body = {
+        message: `Successfully verified email in user with id ${contactVerification.id} and email ${contactVerification.contact}`,
+      };
     } else {
       ctx.status = 404;
     }

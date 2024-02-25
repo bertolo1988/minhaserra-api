@@ -33,6 +33,16 @@ export class ContactVerificationsRepository {
     return result[0];
   }
 
+  static async getById(id: string): Promise<ContactVerificationModel | null> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<ContactVerificationModel>('contact_verifications')
+      .where('id', id)
+      .first();
+    return CaseConverter.objectKeysSnakeToCamel(
+      result as Record<string, unknown>,
+    ) as ContactVerificationModel;
+  }
+
   static async getByIdAndExpiration(
     id: string,
     expiresAt = new Date(),
