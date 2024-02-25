@@ -37,7 +37,7 @@ export class UsersController {
       dto.email,
       EmailTemplateType.USER_EMAIL_VERIFICATION,
       {
-        verificationUrl: `${process.env.SERVER_BASE_URL}/contact-verifications/${contactVerificationId}`,
+        verificationUrl: `${process.env.SERVER_BASE_URL}/api/contact-verifications/${contactVerificationId}/verify`,
       },
     );
 

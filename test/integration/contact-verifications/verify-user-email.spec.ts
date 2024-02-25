@@ -113,7 +113,7 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.message).toBe(
-      `Successfully verified email in user with id ${johnContactVerification.id} and email ${johnContactVerification.contact}`,
+      `Successfully verified email ${johnContactVerification.contact}`,
     );
 
     const contactVerification = await ContactVerificationsRepository.getById(
