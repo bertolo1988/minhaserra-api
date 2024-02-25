@@ -31,6 +31,9 @@ const config: Knex.Config = {
     tableName: 'migrations',
     directory: 'src/migrations',
   },
+  seeds: {
+    directory: 'test/seeds',
+  },
 };
 
 module.exports = config;
