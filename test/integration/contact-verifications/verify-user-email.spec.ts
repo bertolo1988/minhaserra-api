@@ -1,6 +1,5 @@
 import { ContactVerificationsRepository } from '../../../src/controllers/contact-verifications';
 import { UsersRepository } from '../../../src/controllers/users';
-import { runSeedByName } from '../../../src/knex-database';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
 import {
   expiredJohnContactVerification,
@@ -8,6 +7,7 @@ import {
   johnContactVerificationInvalidEmail,
   johnData,
 } from '../../seeds/verify-user-email';
+import { runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 
 const PORT = 8086;
