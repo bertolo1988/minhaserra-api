@@ -58,4 +58,12 @@ export class UsersRepository {
       .transacting(transaction);
     return updateResult;
   }
+
+  static async getByEmail(email: string): Promise<UserModel | null> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<UserModel>('users').where('email', email).first();
+    return CaseConverter.objectKeysSnakeToCamel(
+      result as Record<string, unknown>,
+    ) as UserModel;
+  }
 }
