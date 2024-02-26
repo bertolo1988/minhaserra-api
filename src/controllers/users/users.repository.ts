@@ -1,11 +1,11 @@
-import { Knex, QueryBuilder } from 'knex';
+import { Knex } from 'knex';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
-import { hashPassword } from '../../utils/password-utils';
+import { PasswordUtils } from '../../utils/password-utils';
 import { CreateUserModel, UserDto, UserModel } from './users.types';
 
 function mapUserDtoToCreateUserModel(dto: UserDto): CreateUserModel {
-  const { hash, salt, iterations } = hashPassword(dto.password);
+  const { hash, salt, iterations } = PasswordUtils.hashPassword(dto.password);
   return {
     email: dto.email,
     role: dto.role,
