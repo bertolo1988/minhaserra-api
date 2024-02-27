@@ -10,6 +10,7 @@ import CONFIG from './config';
 import { ErrorsController } from './controllers/errors';
 import { disconnectFromDatabase, getDatabaseInstance } from './knex-database';
 import { configureKoaRouter } from './router';
+import { sleep } from './utils/other-utils';
 
 export type ApiServerOptions = {
   port: number;
@@ -66,5 +67,6 @@ export class ApiServer {
   async stop(): Promise<void> {
     await disconnectFromDatabase();
     await this.stopHttpServer();
+    await sleep();
   }
 }
