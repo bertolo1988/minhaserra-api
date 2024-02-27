@@ -21,6 +21,5 @@ JWT_SECRET=
 
 TODOS:
 
-- write test for JWT utils
-- finish login endpoint
+- write test where attempt to create user with already existing email
 - narrow AWS account perms

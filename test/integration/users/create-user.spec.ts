@@ -3,6 +3,7 @@ import { validate as isValidUUID } from 'uuid';
 import EmailService from '../../../src/controllers/emails/email-service';
 import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
 import { ApiServer, defaultServerOptions } from '../../../src/server';
+import { runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 
 const PORT = 8085;
@@ -79,7 +80,7 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`'role' must be either buyer or seller`);
+      expect(body.message).toBe(`'role' must be either "buyer" or "seller"`);
     });
 
     test('when a not allowed extra property exists', async () => {
@@ -135,6 +136,7 @@ describe('POST /api/users', () => {
       sendEmailSpy = jest
         .spyOn(EmailService.prototype, 'sendEmail')
         .mockResolvedValue({} as any);
+      await runSeedByName('create-user.seed.ts');
     });
 
     afterAll(() => {
