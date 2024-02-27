@@ -20,4 +20,6 @@ AWS_SECRET_ACCESS_KEY=
 
 TODOS:
 
+- write test for JWT utils
+- finish login endpoint
 - narrow AWS account perms
