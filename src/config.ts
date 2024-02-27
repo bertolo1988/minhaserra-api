@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { Algorithm } from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -22,6 +23,11 @@ const CONFIG = {
     port: parseInt(process.env.POSTGRES_PORT as string),
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
+  },
+  authentication: {
+    jwtSecret: process.env.JWT_SECRET as string,
+    jwtExpirationHours: 6,
+    algorithm: 'HS512' as Algorithm,
   },
 };
 
