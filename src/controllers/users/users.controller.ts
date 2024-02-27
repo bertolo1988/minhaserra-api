@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import moment from 'moment';
 import CONSTANTS from '../../constants';
+import { PasswordUtils } from '../../utils/password-utils';
 import { ContactVerificationsRepository } from '../contact-verifications';
 import {
   ContactVerifiationType,
@@ -43,5 +44,32 @@ export class UsersController {
 
     ctx.status = 201;
     ctx.body = { id: userId };
+  }
+
+  static async loginUser(ctx: Koa.Context, _next: Koa.Next) {
+    const { email, password } = ctx.request.body;
+    const user = await UsersRepository.getByEmail(email);
+
+    if (!user) {
+      ctx.status = 401;
+      ctx.body = { message: 'Invalid email or password' };
+      return;
+    }
+
+    const isPasswordMatch = PasswordUtils.matchPassword(password, {
+      hash: user.passwordHash,
+      salt: user.passwordSalt,
+      iterations: user.passwordIterations,
+    });
+
+    if (!isPasswordMatch) {
+      ctx.status = 401;
+      ctx.body = { message: 'Invalid email or password' };
+      return;
+    }
+
+    return {
+      token: 'aaa',
+    };
   }
 }

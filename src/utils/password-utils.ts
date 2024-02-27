@@ -1,6 +1,12 @@
 import { scryptSync, randomBytes } from 'node:crypto';
 import CONSTANTS from '../constants';
 
+export type CyphredPassword = {
+  salt: string;
+  hash: string;
+  iterations: number;
+};
+
 export class PasswordUtils {
   private static encryptPassword(
     password: string,
@@ -20,27 +26,21 @@ export class PasswordUtils {
   public static hashPassword(
     password: string,
     iterations = CONSTANTS.DEFAULT_AMOUNT_OF_SALT_ITERATIONS,
-  ): {
-    salt: string;
-    hash: string;
-    iterations: number;
-  } {
+  ): CyphredPassword {
     const salt = PasswordUtils.generateRandomToken(64);
     const hash = PasswordUtils.encryptPassword(password, salt, iterations);
     return { salt, hash, iterations };
   }
 
   public static matchPassword(
-    originalPassHash: string,
     password: string,
-    salt: string,
-    iterations: number,
+    cyphredPassword: CyphredPassword,
   ): boolean {
     const currentPassHash = PasswordUtils.encryptPassword(
       password,
-      salt,
-      iterations,
+      cyphredPassword.salt,
+      cyphredPassword.iterations,
     );
-    return originalPassHash === currentPassHash;
+    return cyphredPassword.hash === currentPassHash;
   }
 }

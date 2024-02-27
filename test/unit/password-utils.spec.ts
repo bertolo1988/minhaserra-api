@@ -4,24 +4,22 @@ describe('PasswordUtils', () => {
   it('matchPassword should return true if password is correct', () => {
     const password = 'password';
     const { hash, salt, iterations } = PasswordUtils.hashPassword(password);
-    const isPasswordCorrect = PasswordUtils.matchPassword(
+    const isPasswordCorrect = PasswordUtils.matchPassword(password, {
       hash,
-      password,
       salt,
       iterations,
-    );
+    });
     expect(isPasswordCorrect).toBe(true);
   });
 
   it('matchPassword should return false if password is incorrect', () => {
     const password = 'password';
     const { hash, salt, iterations } = PasswordUtils.hashPassword(password);
-    const isPasswordCorrect = PasswordUtils.matchPassword(
+    const isPasswordCorrect = PasswordUtils.matchPassword(`wrong-pass`, {
       hash,
-      `wrong-pass`,
       salt,
       iterations,
-    );
+    });
     expect(isPasswordCorrect).toBe(false);
   });
 
