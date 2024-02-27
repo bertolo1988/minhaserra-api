@@ -65,11 +65,9 @@ export const johnContactVerificationInvalidEmail: ContactVerificationModel = {
 };
 
 export async function seed(knex: Knex): Promise<void> {
-  // Deletes ALL existing entries
   await knex('users').del();
   await knex('contact_verifications').del();
 
-  // Inserts seed entries
   await knex('users').insert([CaseConverter.objectKeysCamelToSnake(johnData)]);
   await knex('contact_verifications').insert([
     CaseConverter.objectKeysCamelToSnake(johnContactVerification),

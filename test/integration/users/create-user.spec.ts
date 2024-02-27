@@ -79,9 +79,7 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(
-        `'role' must be either \"buyer\" or \"seller\"`,
-      );
+      expect(body.message).toBe(`'role' must be either buyer or seller`);
     });
 
     test('when a not allowed extra property exists', async () => {

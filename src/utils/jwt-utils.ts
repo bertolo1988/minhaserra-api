@@ -1,4 +1,4 @@
-import jwt, { Jwt, JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import CONFIG from '../config';
 import { UserRole } from '../controllers/users/users.types';

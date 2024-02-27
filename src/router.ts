@@ -13,6 +13,11 @@ export function configureKoaRouter(): Router {
   });
   router.get('/health', HealthController.hello);
   router.post(
+    '/login',
+    UsersValidator.validateLoginUser,
+    UsersController.loginUser,
+  );
+  router.post(
     '/users',
     UsersValidator.validateCreateUser,
     UsersController.createUser,

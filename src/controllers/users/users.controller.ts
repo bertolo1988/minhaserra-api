@@ -12,6 +12,7 @@ import { EmailTemplateType } from '../emails/email.types';
 import { UsersRepository } from './users.repository';
 import { UserDto } from './users.types';
 import CONFIG from '../../config';
+import { JwtUtils } from '../../utils/jwt-utils';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -49,11 +50,11 @@ export class UsersController {
 
   static async loginUser(ctx: Koa.Context, _next: Koa.Next) {
     const { email, password } = ctx.request.body;
-    const user = await UsersRepository.getByEmail(email);
+    const user = await UsersRepository.getVerifiedUserByEmail(email);
 
     if (!user) {
       ctx.status = 401;
-      ctx.body = { message: 'Invalid email or password' };
+      ctx.body = { message: 'Unauthorized' };
       return;
     }
 
@@ -65,12 +66,17 @@ export class UsersController {
 
     if (!isPasswordMatch) {
       ctx.status = 401;
-      ctx.body = { message: 'Invalid email or password' };
+      ctx.body = { message: 'Unauthorized' };
       return;
     }
 
-    return {
-      token: 'aaa',
+    ctx.status = 200;
+    ctx.body = {
+      token: JwtUtils.sign({
+        id: user.id,
+        role: user.role,
+        email: user.email,
+      }),
     };
   }
 }

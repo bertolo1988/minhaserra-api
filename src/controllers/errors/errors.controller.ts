@@ -6,7 +6,7 @@ function safeSerialize(input: unknown | Error | any): string {
   try {
     return JSON.stringify(input, null, 2);
   } catch (err: any) {
-    return `Failed error serialization! message:\"${err.message}\" stack:\"${err.stack}\"`;
+    return `Failed error serialization! message:"${err.message}" stack:"${err.stack}"`;
   }
 }
 

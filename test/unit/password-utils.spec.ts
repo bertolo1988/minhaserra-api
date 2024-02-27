@@ -2,7 +2,7 @@ import { PasswordUtils } from '../../src/utils/password-utils';
 
 describe('PasswordUtils', () => {
   it('matchPassword should return true if password is correct', () => {
-    const password = 'password';
+    const password = '9awj26AyDB%';
     const { hash, salt, iterations } = PasswordUtils.hashPassword(password);
     const isPasswordCorrect = PasswordUtils.matchPassword(password, {
       hash,

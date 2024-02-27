@@ -6,7 +6,7 @@ import {
   johnContactVerification,
   johnContactVerificationInvalidEmail,
   johnData,
-} from '../../seeds/verify-user-email';
+} from '../../seeds/verify-user-email.seed';
 import { runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 
@@ -18,7 +18,7 @@ describe('GET /api/contact-verifications/:id/verify', () => {
   beforeAll(async () => {
     server = new ApiServer({ ...defaultServerOptions, port: PORT });
     await server.start();
-    await runSeedByName('verify-user-email.ts');
+    await runSeedByName('verify-user-email.seed.ts');
   });
 
   afterAll(async () => {

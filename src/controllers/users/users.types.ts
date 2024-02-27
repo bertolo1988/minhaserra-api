@@ -77,3 +77,18 @@ export type CreateUserModel = Omit<
   | 'createdAt'
   | 'updatedAt'
 >;
+
+export type LoginDto = {
+  email: string;
+  password: string;
+};
+
+export const LoginDtoSchema = {
+  type: 'object',
+  properties: {
+    email: { type: 'string', nullable: false },
+    password: { type: 'string', nullable: false },
+  },
+  required: ['email', 'password'],
+  additionalProperties: false,
+};

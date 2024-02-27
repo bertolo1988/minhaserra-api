@@ -66,4 +66,17 @@ export class UsersRepository {
       result as Record<string, unknown>,
     ) as UserModel;
   }
+
+  static async getVerifiedUserByEmail(
+    email: string,
+  ): Promise<UserModel | null> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<UserModel>('users')
+      .where('email', email)
+      .andWhere('is_email_verified', true)
+      .first();
+    return CaseConverter.objectKeysSnakeToCamel(
+      result as Record<string, unknown>,
+    ) as UserModel;
+  }
 }
