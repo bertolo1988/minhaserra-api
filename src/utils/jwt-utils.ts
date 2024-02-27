@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { Jwt, JwtPayload } from 'jsonwebtoken';
 
 import CONFIG from '../config';
 import { UserRole } from '../controllers/users/users.types';
@@ -9,10 +9,7 @@ export type RawJwtPayload = {
   email: string;
 };
 
-export type CustomJwtPayload = RawJwtPayload & {
-  iat: number;
-  exp: number;
-};
+export type CustomJwtPayload = RawJwtPayload & JwtPayload;
 
 export class JwtUtils {
   static sign(payload: RawJwtPayload): string {
