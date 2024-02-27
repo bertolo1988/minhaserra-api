@@ -1,8 +1,9 @@
 import { Knex } from 'knex';
+import CONFIG from '../src/config';
 import { getDatabaseInstance } from '../src/knex-database';
 
 function isTestEnvironment() {
-  return process.env.NODE_ENV === 'test';
+  return CONFIG.env === 'test';
 }
 
 export async function truncateAllTables() {

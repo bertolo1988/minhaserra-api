@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 
+import CONFIG from '../../config';
 import { EmailTemplates } from './email-templates';
 import { EmailTemplateType } from './email.types';
 
@@ -8,13 +9,13 @@ export default class EmailService {
   ses: AWS.SES;
 
   constructor() {
-    this.noReplyEmailFrom = `${process.env.NO_REPLY_EMAIL_FROM}`;
+    this.noReplyEmailFrom = `${CONFIG.emails.noReplyMail}`;
     this.ses = new AWS.SES({
       apiVersion: '2010-12-01',
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECREDT_ACCESS_KEY,
+      accessKeyId: CONFIG.aws.accessKeyId,
+      secretAccessKey: CONFIG.aws.secretAccessKey,
       sslEnabled: true,
-      region: process.env.AWS_REGION,
+      region: CONFIG.aws.region,
     });
   }
 

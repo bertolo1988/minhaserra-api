@@ -11,6 +11,7 @@ import emailServiceInstance from '../emails';
 import { EmailTemplateType } from '../emails/email.types';
 import { UsersRepository } from './users.repository';
 import { UserDto } from './users.types';
+import CONFIG from '../../config';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -38,7 +39,7 @@ export class UsersController {
       dto.email,
       EmailTemplateType.USER_EMAIL_VERIFICATION,
       {
-        verificationUrl: `${process.env.SERVER_BASE_URL}/api/contact-verifications/${contactVerificationId}/verify`,
+        verificationUrl: `${CONFIG.server.url}/api/contact-verifications/${contactVerificationId}/verify`,
       },
     );
 

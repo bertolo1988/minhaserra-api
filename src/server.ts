@@ -6,6 +6,7 @@ import json from 'koa-json';
 import KoaLogger from 'koa-logger';
 
 import * as databaseConfig from '../knexfile';
+import CONFIG from './config';
 import { ErrorsController } from './controllers/errors';
 import { disconnectFromDatabase, getDatabaseInstance } from './knex-database';
 import { configureKoaRouter } from './router';
@@ -16,7 +17,7 @@ export type ApiServerOptions = {
 };
 
 export const defaultServerOptions: ApiServerOptions = {
-  port: 8085,
+  port: CONFIG.server.port,
   database: databaseConfig,
 };
 
