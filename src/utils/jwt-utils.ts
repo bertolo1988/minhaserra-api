@@ -3,25 +3,30 @@ import jwt from 'jsonwebtoken';
 import CONFIG from '../config';
 import { UserRole } from '../controllers/users/users.types';
 
-export type JwtPayload = {
+export type RawJwtPayload = {
   id: string;
   role: UserRole;
   email: string;
 };
 
+export type CustomJwtPayload = RawJwtPayload & {
+  iat: number;
+  exp: number;
+};
+
 export class JwtUtils {
-  static sign(payload: JwtPayload): string {
+  static sign(payload: RawJwtPayload): string {
     return jwt.sign(payload, CONFIG.authentication.jwtSecret, {
       expiresIn: `${CONFIG.authentication.jwtExpirationHours}h`,
       algorithm: CONFIG.authentication.algorithm,
     });
   }
 
-  static verify(token: string): JwtPayload {
+  static verify(token: string): CustomJwtPayload {
     try {
       return jwt.verify(token, CONFIG.authentication.jwtSecret, {
         algorithms: [CONFIG.authentication.algorithm],
-      }) as JwtPayload;
+      }) as CustomJwtPayload;
     } catch (error) {
       throw new Error('Invalid token');
     }
