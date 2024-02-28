@@ -7,9 +7,19 @@ import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 
 describe('POST /api/users', () => {
+  let sendEmailSpy: jest.SpyInstance;
+
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
     await runSeedByName(DatabaseSeedNames.CLEAN_DATABASE);
+
+    sendEmailSpy = jest
+      .spyOn(EmailService.prototype, 'sendEmail')
+      .mockResolvedValue({} as any);
+  });
+
+  afterAll(() => {
+    sendEmailSpy.mockReset();
   });
 
   describe('returns status 400', () => {
@@ -122,19 +132,6 @@ describe('POST /api/users', () => {
   });
 
   describe('returns status 201', () => {
-    let sendEmailSpy: jest.SpyInstance;
-
-    beforeAll(async () => {
-      sendEmailSpy = jest
-        .spyOn(EmailService.prototype, 'sendEmail')
-        .mockResolvedValue({} as any);
-      await runSeedByName(DatabaseSeedNames.CLEAN_DATABASE);
-    });
-
-    afterAll(() => {
-      sendEmailSpy.mockReset();
-    });
-
     test('when user is created successfully', async () => {
       const userDto = {
         email: 'tiagobertolo@gmail.com',
