@@ -19,7 +19,7 @@ describe('JwtUtils', () => {
     tk.reset();
   });
 
-  it('should decrypto a token', () => {
+  test('should decrypto a token', () => {
     const expectedExp = moment(TARGET_DATE).add(6, 'hours').unix();
     const expectedIat = TARGET_DATE.unix();
 

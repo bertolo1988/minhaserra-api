@@ -16,7 +16,7 @@ describe('POST /api/login', () => {
   });
 
   describe('should return 400', () => {
-    it('if email is missing', async () => {
+    test('if email is missing', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
@@ -29,7 +29,7 @@ describe('POST /api/login', () => {
       expect(body.message).toBe(`must have required property 'email'`);
     });
 
-    it('password is missing', async () => {
+    test('password is missing', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
@@ -46,7 +46,7 @@ describe('POST /api/login', () => {
   });
 
   describe('should return 401', () => {
-    it('if user does not exist', async () => {
+    test('if user does not exist', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
@@ -62,7 +62,7 @@ describe('POST /api/login', () => {
       expect(body.message).toBe(`Unauthorized`);
     });
 
-    it('if user is unverified', async () => {
+    test('if user is unverified', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
@@ -78,7 +78,7 @@ describe('POST /api/login', () => {
       expect(body.message).toBe(`Unauthorized`);
     });
 
-    it('if password is wrong', async () => {
+    test('if password is wrong', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
@@ -96,7 +96,7 @@ describe('POST /api/login', () => {
   });
 
   describe('should return 200', () => {
-    it('if the credentials are correct for a verified user', async () => {
+    test('if the credentials are correct for a verified user', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
