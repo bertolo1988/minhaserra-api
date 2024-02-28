@@ -2,22 +2,14 @@ import { validate as isValidUUID } from 'uuid';
 
 import EmailService from '../../../src/controllers/emails/email-service';
 import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
-import { ApiServer, defaultServerOptions } from '../../../src/server';
-import { runSeedByName } from '../../test-utils';
+import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
-
-const PORT = 8085;
+import TestServerSingleton from '../test-server-instance';
 
 describe('POST /api/users', () => {
-  let server: ApiServer;
-
   beforeAll(async () => {
-    server = new ApiServer({ ...defaultServerOptions, port: PORT });
-    await server.start();
-  });
-
-  afterAll(async () => {
-    await server.stop();
+    await TestServerSingleton.getInstance();
+    await runSeedByName(DatabaseSeedNames.CLEAN_DATABASE);
   });
 
   describe('returns status 400', () => {
@@ -29,7 +21,7 @@ describe('POST /api/users', () => {
         password: 'password',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +42,7 @@ describe('POST /api/users', () => {
         password: 'password',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +63,7 @@ describe('POST /api/users', () => {
         password: 'password',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +85,7 @@ describe('POST /api/users', () => {
         termsVersion: 1,
         aaa: 'mansdlansdla',
       };
-      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +106,7 @@ describe('POST /api/users', () => {
         password: 'pbaskdjbakjsdbakjdsB1',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -136,7 +128,7 @@ describe('POST /api/users', () => {
       sendEmailSpy = jest
         .spyOn(EmailService.prototype, 'sendEmail')
         .mockResolvedValue({} as any);
-      await runSeedByName('create-user.seed.ts');
+      await runSeedByName(DatabaseSeedNames.CLEAN_DATABASE);
     });
 
     afterAll(() => {
@@ -154,7 +146,7 @@ describe('POST /api/users', () => {
           'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
         termsVersion: 1,
       };
-      const response = await fetch(getTestServerUrl('/api/users', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/users').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

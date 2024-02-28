@@ -1,8 +1,8 @@
-import { defaultServerOptions } from '../../src/server';
+import TestServerSingleton from './test-server-instance';
 
 export function getTestServerUrl(
   pathname: string,
-  port = defaultServerOptions.port,
+  port = TestServerSingleton.PORT,
 ): URL {
   const url = new URL(pathname, `http://localhost:${port}`);
   return url;

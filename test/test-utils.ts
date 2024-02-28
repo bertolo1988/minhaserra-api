@@ -17,7 +17,15 @@ export async function truncateAllTables() {
   }
 }
 
-export async function runSeedByName(seedName: string): Promise<void> {
+export enum DatabaseSeedNames {
+  CLEAN_DATABASE = 'clean-database.seed.ts',
+  LOGIN = 'login.seed.ts',
+  VERIFY_USER_EMAIL = 'verify-user-email.seed.ts',
+}
+
+export async function runSeedByName(
+  seedName: DatabaseSeedNames,
+): Promise<void> {
   if (isTestEnvironment()) {
     const knex = await getDatabaseInstance();
     try {

@@ -1,4 +1,3 @@
-import { ApiServer, defaultServerOptions } from '../../../src/server';
 import { CustomJwtPayload, JwtUtils } from '../../../src/utils/jwt-utils';
 import {
   unverifiedUser,
@@ -6,27 +5,19 @@ import {
   verifiedUser,
   verifiedUserPassword,
 } from '../../seeds/login.seed';
-import { runSeedByName } from '../../test-utils';
+import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
-
-const PORT = 8083;
+import TestServerSingleton from '../test-server-instance';
 
 describe('POST /api/login', () => {
-  let server: ApiServer;
-
   beforeAll(async () => {
-    server = new ApiServer({ ...defaultServerOptions, port: PORT });
-    await server.start();
-    await runSeedByName('login.seed.ts');
-  });
-
-  afterAll(async () => {
-    await server.stop();
+    await TestServerSingleton.getInstance();
+    await runSeedByName(DatabaseSeedNames.LOGIN);
   });
 
   describe('should return 400', () => {
     it('if email is missing', async () => {
-      const response = await fetch(getTestServerUrl('/api/login', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +30,7 @@ describe('POST /api/login', () => {
     });
 
     it('password is missing', async () => {
-      const response = await fetch(getTestServerUrl('/api/login', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +47,7 @@ describe('POST /api/login', () => {
 
   describe('should return 401', () => {
     it('if user does not exist', async () => {
-      const response = await fetch(getTestServerUrl('/api/login', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +63,7 @@ describe('POST /api/login', () => {
     });
 
     it('if user is unverified', async () => {
-      const response = await fetch(getTestServerUrl('/api/login', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +79,7 @@ describe('POST /api/login', () => {
     });
 
     it('if password is wrong', async () => {
-      const response = await fetch(getTestServerUrl('/api/login', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +97,7 @@ describe('POST /api/login', () => {
 
   describe('should return 200', () => {
     it('if the credentials are correct for a verified user', async () => {
-      const response = await fetch(getTestServerUrl('/api/login', PORT).href, {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

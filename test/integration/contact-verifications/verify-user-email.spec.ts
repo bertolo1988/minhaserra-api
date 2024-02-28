@@ -1,28 +1,19 @@
 import { ContactVerificationsRepository } from '../../../src/controllers/contact-verifications';
 import { UsersRepository } from '../../../src/controllers/users';
-import { ApiServer, defaultServerOptions } from '../../../src/server';
 import {
   expiredJohnContactVerification,
   johnContactVerification,
   johnContactVerificationInvalidEmail,
   johnData,
 } from '../../seeds/verify-user-email.seed';
-import { runSeedByName } from '../../test-utils';
+import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
-
-const PORT = 8086;
+import TestServerSingleton from '../test-server-instance';
 
 describe('GET /api/contact-verifications/:id/verify', () => {
-  let server: ApiServer;
-
   beforeAll(async () => {
-    server = new ApiServer({ ...defaultServerOptions, port: PORT });
-    await server.start();
-    await runSeedByName('verify-user-email.seed.ts');
-  });
-
-  afterAll(async () => {
-    await server.stop();
+    await TestServerSingleton.getInstance();
+    await runSeedByName(DatabaseSeedNames.VERIFY_USER_EMAIL);
   });
 
   test('should return 400 because the passed id is not a valid uuid', async () => {
@@ -30,7 +21,6 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     const response = await fetch(
       getTestServerUrl(
         `/api/contact-verifications/${contactVerificationId}/verify`,
-        PORT,
       ).href,
       {
         method: 'GET',
@@ -49,7 +39,6 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     const response = await fetch(
       getTestServerUrl(
         `/api/contact-verifications/${contactVerificationId}/verify`,
-        PORT,
       ).href,
       {
         method: 'GET',
@@ -65,7 +54,6 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     const response = await fetch(
       getTestServerUrl(
         `/api/contact-verifications/${expiredJohnContactVerification.id}/verify`,
-        PORT,
       ).href,
       {
         method: 'GET',
@@ -81,7 +69,6 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     const response = await fetch(
       getTestServerUrl(
         `/api/contact-verifications/${johnContactVerificationInvalidEmail.id}/verify`,
-        PORT,
       ).href,
       {
         method: 'GET',
@@ -101,7 +88,6 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     const response = await fetch(
       getTestServerUrl(
         `/api/contact-verifications/${johnContactVerification.id}/verify`,
-        PORT,
       ).href,
       {
         method: 'GET',

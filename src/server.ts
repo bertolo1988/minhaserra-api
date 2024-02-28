@@ -1,10 +1,11 @@
 import { bodyParser } from '@koa/bodyparser';
 import http from 'http';
+import gracefulShutdown from 'http-graceful-shutdown';
 import { Knex } from 'knex';
 import Koa from 'koa';
 import json from 'koa-json';
-import KoaLogger from 'koa-logger';
 
+import KoaLogger from 'koa-logger';
 import * as databaseConfig from '../knexfile';
 import CONFIG from './config';
 import { ErrorsController } from './controllers/errors';
@@ -66,7 +67,14 @@ export class ApiServer {
 
   async stop(): Promise<void> {
     await disconnectFromDatabase();
-    await this.stopHttpServer();
+    await gracefulShutdown(this.server, {
+      preShutdown: async (_signal?: string) => {
+        await this.stopHttpServer();
+      },
+      finally: () => {
+        console.log('Server is gracefully terminated!');
+      },
+    });
     await sleep();
   }
 }

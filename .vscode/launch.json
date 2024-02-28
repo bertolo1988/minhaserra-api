@@ -32,11 +32,10 @@
       // "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-      "args": ["${file}"],
+      "args": ["${file}", "--forceExit"],
       "env": {
         "NODE_ENV": "test"
       }
-      // "preLaunchTask": "npm: seed:run"
     }
   ]
 }
