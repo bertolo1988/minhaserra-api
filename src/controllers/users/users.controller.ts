@@ -17,6 +17,14 @@ import { JwtUtils } from '../../utils/jwt-utils';
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
     const dto = ctx.request.body as UserDto;
+
+    const userExists = await UsersRepository.getByEmail(dto.email);
+    if (userExists) {
+      ctx.status = 409;
+      ctx.body = { message: 'User with this email already exists' };
+      return;
+    }
+
     const { id: userId } = await UsersRepository.createOne(dto);
 
     const contactVerificationDto: ContactVerificationDto = {

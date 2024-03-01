@@ -21,5 +21,6 @@ JWT_SECRET=
 
 TODOS:
 
-- write test where attempt to create user with already existing email
 - narrow AWS account perms
+- PASSWORD RESET ⌛
+- prevent SQL injection

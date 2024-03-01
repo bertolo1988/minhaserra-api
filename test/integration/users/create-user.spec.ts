@@ -2,6 +2,7 @@ import { validate as isValidUUID } from 'uuid';
 
 import EmailService from '../../../src/controllers/emails/email-service';
 import { UserDto, UserRole } from '../../../src/controllers/users/users.types';
+import { userData } from '../../seeds/create-user.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
@@ -11,7 +12,7 @@ describe('POST /api/users', () => {
 
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
-    await runSeedByName(DatabaseSeedNames.CLEAN_DATABASE);
+    await runSeedByName(DatabaseSeedNames.CREATE_USER);
 
     sendEmailSpy = jest
       .spyOn(EmailService.prototype, 'sendEmail')
@@ -128,6 +129,33 @@ describe('POST /api/users', () => {
       expect(body.message).toBe(
         `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
       );
+    });
+  });
+
+  describe('returns status 409', () => {
+    test('when user already exists', async () => {
+      const userDto = {
+        email: userData.email,
+        organizationName: 'My Organization',
+        role: UserRole.BUYER,
+        firstName: 'John',
+
+        lastName: 'Doe',
+        password:
+          'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
+        termsVersion: 1,
+      };
+      const response = await fetch(getTestServerUrl('/api/users').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userDto),
+      });
+
+      expect(response.status).toBe(409);
+      const body = await response.json();
+      expect(body.message).toBe('User with this email already exists');
     });
   });
 

@@ -21,6 +21,7 @@ export enum DatabaseSeedNames {
   CLEAN_DATABASE = 'clean-database.seed.ts',
   LOGIN = 'login.seed.ts',
   VERIFY_USER_EMAIL = 'verify-user-email.seed.ts',
+  CREATE_USER = 'create-user.seed.ts',
 }
 
 export async function runSeedByName(
