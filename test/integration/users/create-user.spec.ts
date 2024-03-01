@@ -157,6 +157,31 @@ describe('POST /api/users', () => {
       const body = await response.json();
       expect(body.message).toBe('User with this email already exists');
     });
+
+    test('when user already exists, but same email is provided with different casing', async () => {
+      const userDto = {
+        email: userData.email.toUpperCase(),
+        organizationName: 'My Organization',
+        role: UserRole.BUYER,
+        firstName: 'John',
+
+        lastName: 'Doe',
+        password:
+          'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
+        termsVersion: 1,
+      };
+      const response = await fetch(getTestServerUrl('/api/users').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userDto),
+      });
+
+      expect(response.status).toBe(409);
+      const body = await response.json();
+      expect(body.message).toBe('User with this email already exists');
+    });
   });
 
   describe('returns status 201', () => {

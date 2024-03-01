@@ -19,7 +19,7 @@ export class UsersController {
     const dto = ctx.request.body as UserDto;
 
     const userExists = await UsersRepository.getByEmail(dto.email);
-    if (userExists) {
+    if (userExists != null) {
       ctx.status = 409;
       ctx.body = { message: 'User with this email already exists' };
       return;
