@@ -14,7 +14,7 @@ export class PasswordResetsController {
   public static async createPasswordReset(ctx: Koa.Context) {
     try {
       const { email } = ctx.request.body;
-      const user = await UsersRepository.getByEmail(email);
+      const user = await UsersRepository.getByEmail(email, false);
 
       if (!user) {
         throw new Error('User does not exist, failed to create password reset');

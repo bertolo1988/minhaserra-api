@@ -31,7 +31,7 @@ export function configureKoaRouter(): Router {
     ContactVerificationsValidator.validateVerifyUserContact,
     ContactVerificationsController.verifyUserContact,
   );
-  router.get(
+  router.post(
     '/password-resets',
     PasswordResetsValidator.validateCreatePasswordReset,
     PasswordResetsController.createPasswordReset,

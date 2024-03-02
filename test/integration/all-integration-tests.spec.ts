@@ -15,4 +15,5 @@ describe('Integration tests', () => {
   require('./health/health.spec');
   require('./users/create-user.spec');
   require('./users/login.spec');
+  require('./password-resets/create-password-reset.spec');
 });

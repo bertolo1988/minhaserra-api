@@ -22,6 +22,8 @@ JWT_SECRET=
 
 TODOS:
 
+- add sleep middleware to login, password reset, and email recovery
+- allow user that soft deleted account to re-enable it using createUser
 - narrow AWS account perms
 - PASSWORD RESET ⌛
 - prevent SQL injection

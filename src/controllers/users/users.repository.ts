@@ -1,4 +1,5 @@
 import { Knex } from 'knex';
+import _ from 'lodash';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { PasswordUtils } from '../../utils/password-utils';
@@ -59,9 +60,19 @@ export class UsersRepository {
     return updateResult;
   }
 
-  static async getByEmail(email: string): Promise<UserModel | null> {
+  static async getByEmail(
+    email: string,
+    isDeleted?: boolean,
+  ): Promise<UserModel | null> {
     const knex = await getDatabaseInstance();
-    const result = await knex<UserModel>('users').where('email', email).first();
+    const where = _.omitBy(
+      {
+        email,
+        is_deleted: isDeleted,
+      },
+      _.isNil,
+    );
+    const result = await knex<UserModel>('users').where(where).first();
     return CaseConverter.objectKeysSnakeToCamel(
       result as Record<string, unknown>,
     ) as UserModel;

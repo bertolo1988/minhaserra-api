@@ -34,7 +34,8 @@
       "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
       "args": ["${file}", "--forceExit"],
       "env": {
-        "NODE_ENV": "test"
+        "NODE_ENV": "test",
+        "DEBUG": "knex:*"
       }
     }
   ]
