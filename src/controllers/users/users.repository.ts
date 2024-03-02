@@ -90,4 +90,39 @@ export class UsersRepository {
       result as Record<string, unknown>,
     ) as UserModel;
   }
+
+  static async updatePassword(
+    password: string,
+    userId: string,
+    transaction: Knex.Transaction,
+  ): Promise<
+    {
+      id: string;
+      password_hash: string;
+      password_salt: string;
+      password_iterations: number;
+    }[]
+  > {
+    const knex = await getDatabaseInstance();
+    const { hash, salt, iterations } = PasswordUtils.hashPassword(password);
+    const updateResult = await knex('users')
+      .where('id', userId)
+      .update(
+        CaseConverter.objectKeysCamelToSnake({
+          passwordHash: hash,
+          passwordSalt: salt,
+          passwordIterations: iterations,
+          updatedAt: new Date(),
+        }),
+        [
+          'id',
+          'password_hash',
+          'password_salt',
+          'password_iterations',
+          'updated_at',
+        ],
+      )
+      .transacting(transaction);
+    return updateResult;
+  }
 }

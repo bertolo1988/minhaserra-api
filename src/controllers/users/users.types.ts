@@ -15,6 +15,15 @@ export type UserDto = {
   termsVersion: number;
 };
 
+export const PasswordSchema = {
+  type: 'string',
+  nullable: false,
+  minLength: 8,
+  maxLength: 64,
+  format: 'password',
+  errorMessage: `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
+};
+
 export const UserDtoSchema = {
   type: 'object',
   properties: {
@@ -28,14 +37,7 @@ export const UserDtoSchema = {
     organizationName: { type: 'string', nullable: true },
     firstName: { type: 'string', nullable: false },
     lastName: { type: 'string', nullable: false },
-    password: {
-      type: 'string',
-      nullable: false,
-      minLength: 8,
-      maxLength: 64,
-      format: 'password',
-      errorMessage: `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
-    },
+    password: PasswordSchema,
     termsVersion: { type: 'number', nullable: false },
   },
   required: [

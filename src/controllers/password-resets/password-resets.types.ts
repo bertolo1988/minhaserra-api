@@ -1,3 +1,5 @@
+import { PasswordSchema } from '../users/users.types';
+
 export type PasswordResetDto = {
   email: string;
 };
@@ -15,7 +17,7 @@ export type PasswordResetModel = {
   id: string;
   userId: string;
   token: string;
-  verifiedAt?: Date;
+  usedAt?: Date;
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -23,5 +25,23 @@ export type PasswordResetModel = {
 
 export type CreatePasswordResetModel = Omit<
   PasswordResetModel,
-  'id' | 'verifiedAt' | 'createdAt' | 'updatedAt'
+  'id' | 'usedAt' | 'createdAt' | 'updatedAt'
 >;
+
+export type UpdatePasswordUnauthenticatedDto = {
+  token: string;
+  password: string;
+};
+
+export const UpdatePasswordUnauthenticatedDtoSchema = {
+  type: 'object',
+  properties: {
+    token: {
+      type: 'string',
+      nullable: false,
+    },
+    password: PasswordSchema,
+  },
+  required: ['token', 'password'],
+  additionalProperties: false,
+};

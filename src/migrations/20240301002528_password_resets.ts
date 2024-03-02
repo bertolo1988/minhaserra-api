@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     id uuid NOT NULL DEFAULT gen_random_uuid(),
     user_id uuid NOT NULL,
     token varchar(64) NOT NULL,
-    verified_at timestamptz,
+    used_at timestamptz,
     expires_at timestamptz NOT NULL,
     created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -25,5 +25,6 @@ TODOS:
 - add sleep middleware to login, password reset, and email recovery
 - allow user that soft deleted account to re-enable it using createUser
 - narrow AWS account perms
-- PASSWORD RESET ⌛
+- PASSWORD RESET - use token sent by email and set new password⌛
 - prevent SQL injection
+- udpate updatedAt everytime updatePassword, setEmailVerified etc

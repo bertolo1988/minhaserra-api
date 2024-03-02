@@ -9,6 +9,7 @@ import { PasswordResetTemplateData } from '../emails/email-templates';
 import { EmailTemplateType } from '../emails/email.types';
 import { UsersRepository } from '../users';
 import { PasswordResetsRepository } from './password-resets.repository';
+import { PasswordResetModel } from './password-resets.types';
 
 export class PasswordResetsController {
   public static async createPasswordReset(ctx: Koa.Context) {
@@ -20,7 +21,9 @@ export class PasswordResetsController {
         throw new Error('User does not exist, failed to create password reset');
       }
 
-      const token = PasswordUtils.generateRandomToken(32);
+      const token = PasswordUtils.generateRandomToken(
+        CONSTANTS.PASSWORD_RESET_TOKEN_LENGTH,
+      );
       const expiresAt = moment()
         .add(CONSTANTS.PASSWORD_RESET_EXPIRY_HOURS, 'hours')
         .toDate();
@@ -48,5 +51,26 @@ export class PasswordResetsController {
     }
     ctx.status = 200;
     ctx.body = { message: 'Password reset link sent' };
+  }
+
+  static async updatePasswordUnauthenticated(ctx: Koa.Context) {
+    const { token, password } = ctx.request.body;
+    const now = new Date();
+    const passwordReset =
+      await PasswordResetsRepository.getByTokenAndExpiration(token, now);
+
+    if (!passwordReset) {
+      ctx.status = 404;
+      ctx.body = { message: 'Password reset not found' };
+      return;
+    }
+
+    await PasswordResetsRepository.updateUserPassword(
+      password,
+      passwordReset as PasswordResetModel,
+    );
+
+    ctx.status = 200;
+    ctx.body = { message: 'Password updated' };
   }
 }
