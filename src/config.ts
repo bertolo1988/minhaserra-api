@@ -5,6 +5,9 @@ dotenv.config();
 
 const CONFIG = {
   env: process.env.NODE_ENV,
+  ui: {
+    url: process.env.UI_URL,
+  },
   server: {
     port: 8085,
     url: process.env.SERVER_URL,

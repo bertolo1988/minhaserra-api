@@ -7,6 +7,7 @@ country codes ISO 3166-1 alpha-2
 ## Basic configuration
 
 ```
+UI_URL=
 SERVER_URL=
 POSTGRES_HOST=
 POSTGRES_DATABASE=minhaserra-api-database

@@ -16,7 +16,7 @@ export class PasswordUtils {
     return scryptSync(password, salt, iterations).toString('hex');
   }
 
-  private static generateRandomToken(
+  public static generateRandomToken(
     length: number,
     encoding: BufferEncoding = 'hex',
   ): string {

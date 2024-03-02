@@ -1,6 +1,8 @@
 import Koa from 'koa';
 import moment from 'moment';
+import CONFIG from '../../config';
 import CONSTANTS from '../../constants';
+import { JwtUtils } from '../../utils/jwt-utils';
 import { PasswordUtils } from '../../utils/password-utils';
 import { ContactVerificationsRepository } from '../contact-verifications';
 import {
@@ -8,11 +10,10 @@ import {
   ContactVerificationDto,
 } from '../contact-verifications/contact-verifications.types';
 import emailServiceInstance from '../emails';
+import { EmailVerficationTemplateData } from '../emails/email-templates';
 import { EmailTemplateType } from '../emails/email.types';
 import { UsersRepository } from './users.repository';
 import { UserDto } from './users.types';
-import CONFIG from '../../config';
-import { JwtUtils } from '../../utils/jwt-utils';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -49,7 +50,7 @@ export class UsersController {
       EmailTemplateType.USER_EMAIL_VERIFICATION,
       {
         verificationUrl: `${CONFIG.server.url}/api/contact-verifications/${contactVerificationId}/verify`,
-      },
+      } as EmailVerficationTemplateData,
     );
 
     ctx.status = 201;

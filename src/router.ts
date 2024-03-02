@@ -5,6 +5,10 @@ import {
   ContactVerificationsValidator,
 } from './controllers/contact-verifications';
 import { HealthController } from './controllers/health';
+import {
+  PasswordResetsController,
+  PasswordResetsValidator,
+} from './controllers/password-resets';
 import { UsersController, UsersValidator } from './controllers/users';
 
 export function configureKoaRouter(): Router {
@@ -26,6 +30,11 @@ export function configureKoaRouter(): Router {
     '/contact-verifications/:id/verify',
     ContactVerificationsValidator.validateVerifyUserContact,
     ContactVerificationsController.verifyUserContact,
+  );
+  router.get(
+    '/password-resets',
+    PasswordResetsValidator.validateCreatePasswordReset,
+    PasswordResetsController.createPasswordReset,
   );
   return router;
 }
