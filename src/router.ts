@@ -37,7 +37,7 @@ export function configureKoaRouter(): Router {
     PasswordResetsController.createPasswordReset,
   );
   router.put(
-    '/password-resets',
+    '/password-resets/:id',
     PasswordResetsValidator.validateUpdatePasswordUnauthenticated,
     PasswordResetsController.updatePasswordUnauthenticated,
   );

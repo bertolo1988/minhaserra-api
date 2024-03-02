@@ -43,7 +43,7 @@ export class PasswordResetsController {
         EmailTemplateType.PASSWORD_RESET,
         {
           expiresAt: expiresAt.toISOString(),
-          passwordResetUrl: `${CONFIG.ui.url}/password-reset-form?token=${token}`,
+          passwordResetUrl: `${CONFIG.ui.url}/password-reset-form?token=${token}&id=${passwordResetId}`,
         } as PasswordResetTemplateData,
       );
     } catch (error) {
