@@ -5,6 +5,8 @@ import {
   johnContactVerification,
   johnContactVerificationInvalidEmail,
   johnData,
+  manuelData,
+  manuelUsedContactVerification,
 } from '../../seeds/verify-user-email.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
@@ -50,6 +52,21 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     expect(response.status).toBe(404);
   });
 
+  test('should fail to verify the user email because the verification is already used', async () => {
+    const response = await fetch(
+      getTestServerUrl(
+        `/api/contact-verifications/${manuelUsedContactVerification.id}/verify`,
+      ).href,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    expect(response.status).toBe(404);
+  });
+
   test('should fail to verify the user email because the verification is expired', async () => {
     const response = await fetch(
       getTestServerUrl(
@@ -65,7 +82,7 @@ describe('GET /api/contact-verifications/:id/verify', () => {
     expect(response.status).toBe(404);
   });
 
-  test('should fail to verify the user email because the verification is expired', async () => {
+  test('should fail to verify the user email because the contact verification has the wrong email address', async () => {
     const response = await fetch(
       getTestServerUrl(
         `/api/contact-verifications/${johnContactVerificationInvalidEmail.id}/verify`,

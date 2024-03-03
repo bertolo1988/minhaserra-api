@@ -41,13 +41,16 @@ export class PasswordResetsRepository {
     return result[0];
   }
 
-  static async getByTokenAndExpiration(
+  static async getUnusedByTokenAndExpiration(
+    id: string,
     token: string,
     expiresAt: Date,
   ): Promise<PasswordResetModel | null> {
     const knex = await getDatabaseInstance();
     const result = await knex<PasswordResetModel>('password_resets')
-      .where('token', token)
+      .where('id', id)
+      .whereNull('used_at')
+      .andWhere('token', token)
       .andWhere('expires_at', '>', expiresAt)
       .first();
     return CaseConverter.objectKeysSnakeToCamel(

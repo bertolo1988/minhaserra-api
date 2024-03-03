@@ -28,3 +28,4 @@ TODOS:
 - PASSWORD RESET - use token sent by email and set new password⌛
 - prevent SQL injection
 - udpate updatedAt everytime updatePassword, setEmailVerified etc
+- only allow one password reset active at a time per user

@@ -8,16 +8,17 @@ export class ContactVerificationsController {
     const contactVerification =
       await ContactVerificationsRepository.getByIdAndExpiration(id, now);
 
-    if (contactVerification) {
-      await ContactVerificationsRepository.setUserEmailVerified(
-        contactVerification,
-      );
-      ctx.status = 200;
-      ctx.body = {
-        message: `Successfully verified email ${contactVerification.contact}`,
-      };
-    } else {
+    if (!contactVerification) {
       ctx.status = 404;
+      return;
     }
+
+    await ContactVerificationsRepository.setUserEmailVerified(
+      contactVerification,
+    );
+    ctx.status = 200;
+    ctx.body = {
+      message: `Successfully verified email ${contactVerification.contact}`,
+    };
   }
 }

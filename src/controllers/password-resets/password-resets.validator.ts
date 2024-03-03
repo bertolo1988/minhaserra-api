@@ -9,6 +9,7 @@ import {
   UpdatePasswordUnauthenticatedDto,
   UpdatePasswordUnauthenticatedDtoSchema,
 } from './password-resets.types';
+import isValidUUID from '../../utils/is-valid-uuid';
 
 const passwordResetValidator: ValidateFunction = ajv.compile<PasswordResetDto>(
   PasswordResetDtoSchema,
@@ -21,8 +22,8 @@ const updatePasswordUnauthenticatedValidator: ValidateFunction =
 
 export class PasswordResetsValidator {
   static async validateCreatePasswordReset(ctx: Koa.Context, next: Koa.Next) {
-    const valid = passwordResetValidator(ctx.request.body);
-    if (!valid)
+    const validBody = passwordResetValidator(ctx.request.body);
+    if (!validBody)
       throw new ValidationError(passwordResetValidator.errors as ErrorObject[]);
     await next();
   }
@@ -31,8 +32,12 @@ export class PasswordResetsValidator {
     ctx: Koa.Context,
     next: Koa.Next,
   ) {
-    const valid = updatePasswordUnauthenticatedValidator(ctx.request.body);
-    if (!valid)
+    const { id } = ctx.params;
+    if (!isValidUUID(id)) {
+      throw new ValidationError(`Invalid id: ${id}`);
+    }
+    const validBody = updatePasswordUnauthenticatedValidator(ctx.request.body);
+    if (!validBody)
       throw new ValidationError(
         updatePasswordUnauthenticatedValidator.errors as ErrorObject[],
       );

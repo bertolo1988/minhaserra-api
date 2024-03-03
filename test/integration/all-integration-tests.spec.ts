@@ -16,4 +16,5 @@ describe('Integration tests', () => {
   require('./users/create-user.spec');
   require('./users/login.spec');
   require('./password-resets/create-password-reset.spec');
+  require('./password-resets/update-password-unauthenticated.spec');
 });

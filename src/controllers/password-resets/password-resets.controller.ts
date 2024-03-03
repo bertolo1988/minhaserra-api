@@ -54,10 +54,16 @@ export class PasswordResetsController {
   }
 
   static async updatePasswordUnauthenticated(ctx: Koa.Context) {
+    const { id } = ctx.params;
     const { token, password } = ctx.request.body;
     const now = new Date();
+
     const passwordReset =
-      await PasswordResetsRepository.getByTokenAndExpiration(token, now);
+      await PasswordResetsRepository.getUnusedByTokenAndExpiration(
+        id,
+        token,
+        now,
+      );
 
     if (!passwordReset) {
       ctx.status = 404;

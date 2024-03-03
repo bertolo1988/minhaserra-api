@@ -23,6 +23,7 @@ export enum DatabaseSeedNames {
   VERIFY_USER_EMAIL = 'verify-user-email.seed.ts',
   CREATE_USER = 'create-user.seed.ts',
   CREATE_PASSWORD_RESET = 'create-password-reset.seed.ts',
+  UPDATE_PASSWORD_UNAUTHENTICATED = 'update-password-unauthenticated.seed.ts',
 }
 
 export async function runSeedByName(
