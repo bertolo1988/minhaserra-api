@@ -1,5 +1,9 @@
 import { CustomJwtPayload, JwtUtils } from '../../../src/utils/jwt-utils';
 import {
+  inactiveUser,
+  inactiveUserPassword,
+  softDeletedUser,
+  softDeletedUserPassword,
   unverifiedUser,
   unverifiedUserPassword,
   verifiedUser,
@@ -46,6 +50,38 @@ describe('POST /api/login', () => {
   });
 
   describe('should return 401', () => {
+    test('if user is inactive', async () => {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: inactiveUser.email,
+          password: inactiveUserPassword,
+        }),
+      });
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body.message).toBe(`Unauthorized`);
+    });
+
+    test('if user is soft deleted', async () => {
+      const response = await fetch(getTestServerUrl('/api/login').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: softDeletedUser.email,
+          password: softDeletedUserPassword,
+        }),
+      });
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body.message).toBe(`Unauthorized`);
+    });
+
     test('if user does not exist', async () => {
       const response = await fetch(getTestServerUrl('/api/login').href, {
         method: 'POST',

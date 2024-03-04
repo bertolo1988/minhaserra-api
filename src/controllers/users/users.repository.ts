@@ -66,12 +66,14 @@ export class UsersRepository {
   static async getByEmail(
     email: string,
     isDeleted?: boolean,
+    isActive?: boolean,
   ): Promise<UserModel | null> {
     const knex = await getDatabaseInstance();
     const where = _.omitBy(
       {
         email,
         is_deleted: isDeleted,
+        is_active: isActive,
       },
       _.isNil,
     );
@@ -88,6 +90,7 @@ export class UsersRepository {
     const where = _.omitBy(
       {
         email,
+        is_active: true,
         is_deleted: false,
         is_email_verified: true,
       },
