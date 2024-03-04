@@ -67,10 +67,13 @@ export class ContactVerificationsRepository {
     const updateResult: { id: string; verified_at: string }[] =
       await knex<ContactVerificationModel>('contact_verifications')
         .where('id', id)
-        .update(CaseConverter.objectKeysCamelToSnake({ verifiedAt }), [
-          'id',
-          'verified_at',
-        ])
+        .update(
+          CaseConverter.objectKeysCamelToSnake({
+            verifiedAt,
+            updatedAt: new Date(),
+          }),
+          ['id', 'verified_at'],
+        )
         .transacting(transaction);
     return updateResult;
   }
