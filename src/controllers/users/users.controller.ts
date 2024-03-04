@@ -59,7 +59,7 @@ export class UsersController {
 
   static async loginUser(ctx: Koa.Context, _next: Koa.Next) {
     const { email, password } = ctx.request.body;
-    const user = await UsersRepository.getVerifiedUserByEmail(email);
+    const user = await UsersRepository.getVerifiedActiveUserByEmail(email);
 
     if (!user) {
       ctx.status = 401;

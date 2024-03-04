@@ -52,10 +52,13 @@ export class UsersRepository {
         id: userId,
         email,
       })
-      .update(CaseConverter.objectKeysCamelToSnake({ isEmailVerified: true }), [
-        'id',
-        'is_email_verified',
-      ])
+      .update(
+        CaseConverter.objectKeysCamelToSnake({
+          isEmailVerified: true,
+          updatedAt: new Date(),
+        }),
+        ['id', 'is_email_verified'],
+      )
       .transacting(transaction);
     return updateResult;
   }
@@ -78,14 +81,19 @@ export class UsersRepository {
     ) as UserModel;
   }
 
-  static async getVerifiedUserByEmail(
+  static async getVerifiedActiveUserByEmail(
     email: string,
   ): Promise<UserModel | null> {
     const knex = await getDatabaseInstance();
-    const result = await knex<UserModel>('users')
-      .where('email', email)
-      .andWhere('is_email_verified', true)
-      .first();
+    const where = _.omitBy(
+      {
+        email,
+        is_deleted: false,
+        is_email_verified: true,
+      },
+      _.isNil,
+    );
+    const result = await knex<UserModel>('users').where(where).first();
     return CaseConverter.objectKeysSnakeToCamel(
       result as Record<string, unknown>,
     ) as UserModel;

@@ -70,7 +70,7 @@ export class PasswordResetsRepository {
       .where('id', id)
       .update(
         CaseConverter.objectKeysCamelToSnake({ usedAt, updatedAt: usedAt }),
-        ['id', 'used_at', 'updated_at'],
+        ['id', 'used_at'],
       )
       .transacting(transaction);
     return updateResult;
