@@ -24,14 +24,15 @@ export class PasswordResetsController {
       const token = PasswordUtils.generateRandomToken(
         CONSTANTS.PASSWORD_RESET_TOKEN_LENGTH,
       );
-      const expiresAt = moment()
-        .add(CONSTANTS.PASSWORD_RESET_EXPIRY_HOURS, 'hours')
-        .toDate();
+      const expiresAt = moment().add(
+        CONSTANTS.PASSWORD_RESET_EXPIRY_HOURS,
+        'hours',
+      );
 
-      const passwordResetId = await PasswordResetsRepository.createOne(
+      const { id: passwordResetId } = await PasswordResetsRepository.createOne(
         user.id,
         token,
-        expiresAt,
+        expiresAt.toDate(),
       );
 
       if (!passwordResetId) {
@@ -42,7 +43,7 @@ export class PasswordResetsController {
         email,
         EmailTemplateType.PASSWORD_RESET,
         {
-          expiresAt: expiresAt.toISOString(),
+          expiresAt: expiresAt.format('Do MMMM YYYY, HH:mm'),
           passwordResetUrl: `${CONFIG.ui.url}/password-reset-form?token=${token}&id=${passwordResetId}`,
         } as PasswordResetTemplateData,
       );
