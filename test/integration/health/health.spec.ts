@@ -1,9 +1,11 @@
+import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 
 describe('/api/health', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
+    await runSeedByName(DatabaseSeedNames.CLEAN_DATABASE);
   });
 
   test('GET', async () => {
