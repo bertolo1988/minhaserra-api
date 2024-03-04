@@ -27,5 +27,3 @@ TODOS:
 - narrow AWS account perms
 - prevent SQL injection
 - only allow one password reset active at a time per user
-- updated_at do contact_verifications não está a mudar
-- updated_at dos users não está a mudar quando o email é verificado
