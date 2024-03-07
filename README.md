@@ -27,3 +27,6 @@ TODOS:
 - narrow AWS account perms
 - prevent SQL injection
 - only allow one password reset active at a time per user
+- unit test authorizeAllActiveVerifiedMiddleware
+- unit test authenticateUserMiddleware
+- unskip integration tests get-user-by-id.spec

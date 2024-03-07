@@ -1,6 +1,8 @@
 import { Knex } from 'knex';
 import CONFIG from '../src/config';
 import { getDatabaseInstance } from '../src/knex-database';
+import { JwtUtils } from '../src/utils/jwt-utils';
+import { UserModel } from '../src/controllers/users/users.types';
 
 function isTestEnvironment() {
   return CONFIG.env === 'test';
@@ -41,4 +43,12 @@ export async function runSeedByName(
   } else {
     throw new Error('Can only seed the database in test environment!');
   }
+}
+
+export function getAuthorizationHeader(user: UserModel): string {
+  return `Bearer ${JwtUtils.sign({
+    id: user.id,
+    role: user.role,
+    email: user.email,
+  })}`;
 }

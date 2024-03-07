@@ -1,3 +1,11 @@
+export enum UserState {
+  UNVERIFIED = 'unverified',
+  VERIFIED = 'verified',
+  INACTIVE = 'inactive',
+  ACTIVE = 'active',
+  DELETED = 'deleted',
+}
+
 export enum UserRole {
   ADMIN = 'admin',
   MODERATOR = 'moderator',
@@ -94,3 +102,12 @@ export const LoginDtoSchema = {
   required: ['email', 'password'],
   additionalProperties: false,
 };
+
+export type PresentedUserModel = Omit<
+  UserModel,
+  | 'passwordHash'
+  | 'passwordSalt'
+  | 'passwordIterations'
+  | 'isActive'
+  | 'isDeleted'
+>;

@@ -3,22 +3,8 @@ import _ from 'lodash';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { PasswordUtils } from '../../utils/password-utils';
-import { CreateUserModel, UserDto, UserModel } from './users.types';
-
-function mapUserDtoToCreateUserModel(dto: UserDto): CreateUserModel {
-  const { hash, salt, iterations } = PasswordUtils.hashPassword(dto.password);
-  return {
-    email: dto.email,
-    role: dto.role,
-    organizationName: dto.organizationName,
-    firstName: dto.firstName,
-    lastName: dto.lastName,
-    passwordHash: hash,
-    passwordSalt: salt,
-    passwordIterations: iterations,
-    termsVersion: dto.termsVersion,
-  };
-}
+import { mapUserDtoToCreateUserModel } from './users.mapper';
+import { UserDto, UserModel } from './users.types';
 
 export class UsersRepository {
   static async createOne(dto: UserDto): Promise<{ id: string }> {

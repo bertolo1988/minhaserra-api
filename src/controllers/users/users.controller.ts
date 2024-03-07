@@ -14,6 +14,7 @@ import { EmailVerficationTemplateData } from '../emails/email-templates';
 import { EmailTemplateType } from '../emails/email.types';
 import { UsersRepository } from './users.repository';
 import { UserDto } from './users.types';
+import { mapUserModelToPresentedUserModel } from './users.mapper';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -87,5 +88,17 @@ export class UsersController {
         email: user.email,
       }),
     };
+  }
+
+  static async getUserById(ctx: Koa.Context, _next: Koa.Next) {
+    const { id } = ctx.params;
+    const user = await UsersRepository.getById(id);
+    if (!user) {
+      ctx.status = 404;
+      ctx.body = { message: 'User not found' };
+      return;
+    }
+    ctx.status = 200;
+    ctx.body = mapUserModelToPresentedUserModel(user);
   }
 }

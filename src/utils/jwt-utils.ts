@@ -2,17 +2,20 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import CONFIG from '../config';
 import { UserRole } from '../controllers/users/users.types';
+import { UnauthorizedError } from '../types/errors/unauthorized.error';
 
 export type RawJwtPayload = {
   id: string;
   role: UserRole;
   email: string;
+  exp: number;
+  iat: number;
 };
 
 export type CustomJwtPayload = RawJwtPayload & JwtPayload;
 
 export class JwtUtils {
-  static sign(payload: RawJwtPayload): string {
+  static sign(payload: Omit<RawJwtPayload, 'iat' | 'exp'>): string {
     return jwt.sign(payload, CONFIG.authentication.jwtSecret, {
       expiresIn: `${CONFIG.authentication.jwtExpirationHours}h`,
       algorithm: CONFIG.authentication.algorithm,
@@ -25,7 +28,11 @@ export class JwtUtils {
         algorithms: [CONFIG.authentication.algorithm],
       }) as CustomJwtPayload;
     } catch (error) {
-      throw new Error('Invalid token');
+      if (error instanceof jwt.TokenExpiredError) {
+        throw new UnauthorizedError('Authorization expired');
+      } else {
+        throw new UnauthorizedError();
+      }
     }
   }
 }

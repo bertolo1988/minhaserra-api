@@ -23,7 +23,7 @@ describe('JwtUtils', () => {
     const expectedExp = moment(TARGET_DATE).add(6, 'hours').unix();
     const expectedIat = TARGET_DATE.unix();
 
-    const payload: RawJwtPayload = {
+    const payload: Omit<RawJwtPayload, 'iat' | 'exp'> = {
       id: '123',
       role: UserRole.ADMIN,
       email: 'tiago@mail.com',

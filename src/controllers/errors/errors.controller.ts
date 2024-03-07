@@ -1,6 +1,7 @@
 import Koa from 'koa';
 
 import { NotFoundError, ValidationError } from '../../types/errors';
+import { UnauthorizedError } from '../../types/errors/unauthorized.error';
 
 function safeSerialize(input: unknown | Error | any): string {
   try {
@@ -19,6 +20,15 @@ export class ErrorsController {
 
       ctx.status = 500;
       ctx.body = { message: 'Server error' };
+
+      if (UnauthorizedError.isUnauthorizedError(err)) {
+        const unauthorizedError: UnauthorizedError = err as UnauthorizedError;
+        ctx.status = unauthorizedError.statusCode;
+        ctx.body = {
+          message: unauthorizedError.message,
+        };
+        return;
+      }
 
       if (NotFoundError.isNotFoundError(err)) {
         const notFoundError: NotFoundError = err as NotFoundError;

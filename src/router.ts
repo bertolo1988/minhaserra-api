@@ -10,6 +10,7 @@ import {
   PasswordResetsValidator,
 } from './controllers/password-resets';
 import { UsersController, UsersValidator } from './controllers/users';
+import { AuthenticationUtils } from './middlewares/authenticate-user.middleware';
 
 export function configureKoaRouter(): Router {
   const router = new Router({
@@ -20,6 +21,13 @@ export function configureKoaRouter(): Router {
     '/login',
     UsersValidator.validateLoginUser,
     UsersController.loginUser,
+  );
+  router.get(
+    '/users/:id',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeAllActiveVerifiedMiddleware(),
+    UsersValidator.validateGetUserById,
+    UsersController.getUserById,
   );
   router.post(
     '/users',

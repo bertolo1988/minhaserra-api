@@ -9,6 +9,7 @@ import {
   UserDto,
   UserDtoSchema,
 } from './users.types';
+import isValidUUID from '../../utils/is-valid-uuid';
 
 const createUserValidator: ValidateFunction =
   ajv.compile<UserDto>(UserDtoSchema);
@@ -28,6 +29,14 @@ export class UsersValidator {
     const valid = loginUserValidator(ctx.request.body);
     if (!valid)
       throw new ValidationError(loginUserValidator.errors as ErrorObject[]);
+    await next();
+  }
+
+  static async validateGetUserById(ctx: Koa.Context, next: Koa.Next) {
+    const { id } = ctx.params;
+    if (!isValidUUID(id)) {
+      throw new ValidationError(`Invalid id: ${id}`);
+    }
     await next();
   }
 }
