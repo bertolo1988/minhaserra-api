@@ -25,7 +25,7 @@ export function configureKoaRouter(): Router {
   router.get(
     '/users/:id',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeAllActiveVerifiedMiddleware(),
+    AuthenticationUtils.authorizeActiveVerifiedUsers(),
     UsersValidator.validateGetUserById,
     UsersController.getUserById,
   );

@@ -42,12 +42,32 @@ export class AuthenticationUtils {
     await next();
   }
 
-  public static authorizeAllActiveVerifiedMiddleware(): (
+  public static authorizeActiveVerifiedUsers(): (
     ctx: Koa.Context,
     next: Koa.Next,
   ) => Promise<void> {
     return AuthenticationUtils.authorizeUserMiddleware(
       Object.values(UserRole),
+      [UserState.DELETED, UserState.INACTIVE, UserState.UNVERIFIED],
+    );
+  }
+
+  public static authorizeAdmins(): (
+    ctx: Koa.Context,
+    next: Koa.Next,
+  ) => Promise<void> {
+    return AuthenticationUtils.authorizeUserMiddleware(
+      [UserRole.ADMIN],
+      [UserState.DELETED, UserState.INACTIVE, UserState.UNVERIFIED],
+    );
+  }
+
+  public static authorizeAdminsAndModerators(): (
+    ctx: Koa.Context,
+    next: Koa.Next,
+  ) => Promise<void> {
+    return AuthenticationUtils.authorizeUserMiddleware(
+      [UserRole.ADMIN, UserRole.MODERATOR],
       [UserState.DELETED, UserState.INACTIVE, UserState.UNVERIFIED],
     );
   }

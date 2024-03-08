@@ -274,7 +274,7 @@ describe('AuthenticationUtils', () => {
     });
   });
 
-  describe('authorizeAllActiveVerifiedMiddleware', () => {
+  describe('authorizeActiveVerifiedUsers', () => {
     describe('should throw ForbiddenError', () => {
       test('when user is inactive', async () => {
         const ctx: Koa.Context = {
@@ -286,7 +286,7 @@ describe('AuthenticationUtils', () => {
         const next = jest.fn();
 
         await expect(
-          AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(ctx, next),
+          AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next),
         ).rejects.toThrow(ForbiddenError);
 
         expect(next).not.toHaveBeenCalled();
@@ -302,7 +302,7 @@ describe('AuthenticationUtils', () => {
         const next = jest.fn();
 
         await expect(
-          AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(ctx, next),
+          AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next),
         ).rejects.toThrow(ForbiddenError);
 
         expect(next).not.toHaveBeenCalled();
@@ -318,7 +318,7 @@ describe('AuthenticationUtils', () => {
         const next = jest.fn();
 
         await expect(
-          AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(ctx, next),
+          AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next),
         ).rejects.toThrow(ForbiddenError);
 
         expect(next).not.toHaveBeenCalled();
@@ -335,10 +335,7 @@ describe('AuthenticationUtils', () => {
         } as Koa.Context;
         const next = jest.fn();
 
-        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
-          ctx,
-          next,
-        );
+        await AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next);
 
         expect(next).toHaveBeenCalled();
       });
@@ -352,10 +349,7 @@ describe('AuthenticationUtils', () => {
         } as Koa.Context;
         const next = jest.fn();
 
-        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
-          ctx,
-          next,
-        );
+        await AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next);
 
         expect(next).toHaveBeenCalled();
       });
@@ -369,10 +363,7 @@ describe('AuthenticationUtils', () => {
         } as Koa.Context;
         const next = jest.fn();
 
-        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
-          ctx,
-          next,
-        );
+        await AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next);
 
         expect(next).toHaveBeenCalled();
       });
@@ -386,10 +377,245 @@ describe('AuthenticationUtils', () => {
         } as Koa.Context;
         const next = jest.fn();
 
-        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
-          ctx,
-          next,
-        );
+        await AuthenticationUtils.authorizeActiveVerifiedUsers()(ctx, next);
+
+        expect(next).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('authorizeAdmins', () => {
+    describe('should throw ForbiddenError', () => {
+      test('when user is inactive', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: inactiveUser,
+            userState: [UserState.INACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdmins()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is unverified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: {
+              ...verifiedUser,
+              isEmailVerified: false,
+              role: UserRole.ADMIN,
+            },
+            userState: [UserState.UNVERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdmins()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is deleted', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, isDeleted: true, role: UserRole.ADMIN },
+            userState: [UserState.DELETED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdmins()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is moderator', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.MODERATOR },
+            userState: [UserState.VERIFIED, UserState.ACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdmins()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is seller', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.SELLER },
+            userState: [UserState.VERIFIED, UserState.ACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdmins()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is buyer', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.BUYER },
+            userState: [UserState.VERIFIED, UserState.ACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdmins()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('should authorize the user', () => {
+      test('when user, with role admin, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.ADMIN },
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAdmins()(ctx, next);
+
+        expect(next).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('authorizeAdminsAndModerators', () => {
+    describe('should throw ForbiddenError', () => {
+      test('when user is inactive', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: inactiveUser,
+            userState: [UserState.INACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is unverified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: {
+              ...verifiedUser,
+              isEmailVerified: false,
+              role: UserRole.ADMIN,
+            },
+            userState: [UserState.UNVERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is deleted', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, isDeleted: true, role: UserRole.ADMIN },
+            userState: [UserState.DELETED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is seller', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.SELLER },
+            userState: [UserState.VERIFIED, UserState.ACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is buyer', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.BUYER },
+            userState: [UserState.VERIFIED, UserState.ACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('should authorize the user', () => {
+      test('when user, with role admin, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.ADMIN },
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next);
+
+        expect(next).toHaveBeenCalled();
+      });
+
+      test('when user, with role moderator, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.MODERATOR },
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAdminsAndModerators()(ctx, next);
 
         expect(next).toHaveBeenCalled();
       });
