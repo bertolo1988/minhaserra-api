@@ -1,14 +1,13 @@
 import Koa from 'koa';
-import { CustomJwtPayload, JwtUtils } from '../utils/jwt-utils';
-import moment from 'moment';
 import { UsersRepository } from '../controllers/users';
-import { UnauthorizedError } from '../types/errors/unauthorized.error';
 import {
   UserModel,
   UserRole,
   UserState,
 } from '../controllers/users/users.types';
 import { ForbiddenError } from '../types/errors/forbidden.error';
+import { UnauthorizedError } from '../types/errors/unauthorized.error';
+import { CustomJwtPayload, JwtUtils } from '../utils/jwt-utils';
 
 export class AuthenticationUtils {
   public static async authenticateUserMiddleware(
