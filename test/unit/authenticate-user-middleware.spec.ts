@@ -2,13 +2,19 @@ import Koa from 'koa';
 import moment from 'moment';
 import tk from 'timekeeper';
 
-import { AuthenticationUtils } from '../../src/middlewares/authenticate-user.middleware';
-import { UnauthorizedError } from '../../src/types/errors/unauthorized.error';
 import CONFIG from '../../src/config';
-import { getAuthorizationHeader } from '../test-utils';
-import { verifiedUser } from '../seeds/login.seed';
 import { UsersRepository } from '../../src/controllers/users';
 import { UserRole, UserState } from '../../src/controllers/users/users.types';
+import { AuthenticationUtils } from '../../src/middlewares/authenticate-user.middleware';
+import { ForbiddenError } from '../../src/types/errors/forbidden.error';
+import { UnauthorizedError } from '../../src/types/errors/unauthorized.error';
+import {
+  inactiveUser,
+  softDeletedUser,
+  unverifiedUser,
+  verifiedUser,
+} from '../seeds/login.seed';
+import { getAuthorizationHeader } from '../test-utils';
 
 describe('AuthenticationUtils', () => {
   afterEach(() => {
@@ -17,7 +23,7 @@ describe('AuthenticationUtils', () => {
   });
 
   describe('authenticateUserMiddleware', () => {
-    describe('should return UnauthorizedError', () => {
+    describe('should throw UnauthorizedError', () => {
       test('when authorization header is not present', async () => {
         const ctx: Koa.Context = {
           request: {
@@ -264,6 +270,128 @@ describe('AuthenticationUtils', () => {
         expect(ctx.state.user).toEqual(user);
         expect(ctx.state.userState).toContain(UserState.ACTIVE);
         expect(ctx.state.userState).toContain(UserState.VERIFIED);
+      });
+    });
+  });
+
+  describe('authorizeAllActiveVerifiedMiddleware', () => {
+    describe('should throw ForbiddenError', () => {
+      test('when user is inactive', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: inactiveUser,
+            userState: [UserState.INACTIVE],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is unverified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: unverifiedUser,
+            userState: [UserState.UNVERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+
+      test('when user is deleted', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: softDeletedUser,
+            userState: [UserState.DELETED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await expect(
+          AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(ctx, next),
+        ).rejects.toThrow(ForbiddenError);
+
+        expect(next).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('should authorize the user', () => {
+      test('when user, with role buyer, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: verifiedUser,
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
+          ctx,
+          next,
+        );
+
+        expect(next).toHaveBeenCalled();
+      });
+
+      test('when user, with role seller, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.SELLER },
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
+          ctx,
+          next,
+        );
+
+        expect(next).toHaveBeenCalled();
+      });
+
+      test('when user, with role moderator, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.MODERATOR },
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
+          ctx,
+          next,
+        );
+
+        expect(next).toHaveBeenCalled();
+      });
+
+      test('when user, with role admin, is active and verified', async () => {
+        const ctx: Koa.Context = {
+          state: {
+            user: { ...verifiedUser, role: UserRole.ADMIN },
+            userState: [UserState.ACTIVE, UserState.VERIFIED],
+          },
+        } as Koa.Context;
+        const next = jest.fn();
+
+        await AuthenticationUtils.authorizeAllActiveVerifiedMiddleware()(
+          ctx,
+          next,
+        );
+
+        expect(next).toHaveBeenCalled();
       });
     });
   });
