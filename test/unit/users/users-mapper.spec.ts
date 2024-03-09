@@ -29,6 +29,20 @@ describe('UsersMapper', () => {
   });
 
   describe('mapUserModelToPresentedUserModel', () => {
+    test('should return object with id', () => {
+      const model: UserModel = verifiedUserSeller;
+      const presentedUserModel: PresentedUserModel =
+        UsersMapper.mapUserModelToPresentedUserModel(model);
+      expect(presentedUserModel.id).toBe(model.id);
+    });
+
+    test('should return object with email', () => {
+      const model: UserModel = verifiedUserSeller;
+      const presentedUserModel: PresentedUserModel =
+        UsersMapper.mapUserModelToPresentedUserModel(model);
+      expect(presentedUserModel.email).toBe(model.email);
+    });
+
     test('should return object without passwordHash', () => {
       const model: UserModel = verifiedUserSeller;
       const presentedUserModel: PresentedUserModel =
