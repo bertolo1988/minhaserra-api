@@ -2,7 +2,9 @@ import Koa from 'koa';
 import moment from 'moment';
 import CONFIG from '../../config';
 import CONSTANTS from '../../constants';
+import { ForbiddenError } from '../../types/errors';
 import { JwtUtils } from '../../utils/jwt-utils';
+import { KoaUtils } from '../../utils/koa-utils';
 import { PasswordUtils } from '../../utils/password-utils';
 import { ContactVerificationsRepository } from '../contact-verifications';
 import {
@@ -12,9 +14,9 @@ import {
 import emailServiceInstance from '../emails';
 import { EmailVerficationTemplateData } from '../emails/email-templates';
 import { EmailTemplateType } from '../emails/email.types';
+import { UsersMapper } from './users.mapper';
 import { UsersRepository } from './users.repository';
 import { UserDto } from './users.types';
-import { mapUserModelToPresentedUserModel } from './users.mapper';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -92,6 +94,11 @@ export class UsersController {
 
   static async getUserById(ctx: Koa.Context, _next: Koa.Next) {
     const { id } = ctx.params;
+
+    if (!KoaUtils.isUserAdminOrModerator(ctx) && id != ctx.state.user.id) {
+      throw new ForbiddenError('You are not allowed to access this resource');
+    }
+
     const user = await UsersRepository.getById(id);
     if (!user) {
       ctx.status = 404;
@@ -99,6 +106,6 @@ export class UsersController {
       return;
     }
     ctx.status = 200;
-    ctx.body = mapUserModelToPresentedUserModel(user);
+    ctx.body = UsersMapper.mapUserModelToPresentedUserModel(user);
   }
 }

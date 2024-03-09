@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import CONFIG from '../config';
 import { UserRole } from '../controllers/users/users.types';
-import { UnauthorizedError } from '../types/errors/unauthorized.error';
+import { UnauthorizedError } from '../types/errors';
 
 export type RawJwtPayload = {
   id: string;

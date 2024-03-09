@@ -5,8 +5,7 @@ import {
   UserRole,
   UserState,
 } from '../controllers/users/users.types';
-import { ForbiddenError } from '../types/errors/forbidden.error';
-import { UnauthorizedError } from '../types/errors/unauthorized.error';
+import { ForbiddenError, UnauthorizedError } from '../types/errors';
 import { CustomJwtPayload, JwtUtils } from '../utils/jwt-utils';
 
 export class AuthenticationUtils {

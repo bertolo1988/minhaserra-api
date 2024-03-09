@@ -1,7 +1,11 @@
 import Koa from 'koa';
 
-import { NotFoundError, ValidationError } from '../../types/errors';
-import { UnauthorizedError } from '../../types/errors/unauthorized.error';
+import {
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from '../../types/errors';
 
 function safeSerialize(input: unknown | Error | any): string {
   try {
@@ -20,6 +24,15 @@ export class ErrorsController {
 
       ctx.status = 500;
       ctx.body = { message: 'Server error' };
+
+      if (ForbiddenError.isForbiddenError(err)) {
+        const forbiddenError: ForbiddenError = err as ForbiddenError;
+        ctx.status = forbiddenError.statusCode;
+        ctx.body = {
+          message: forbiddenError.message,
+        };
+        return;
+      }
 
       if (UnauthorizedError.isUnauthorizedError(err)) {
         const unauthorizedError: UnauthorizedError = err as UnauthorizedError;

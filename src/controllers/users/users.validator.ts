@@ -3,13 +3,13 @@ import Koa from 'koa';
 
 import { ValidationError } from '../../types/errors';
 import { ajv } from '../../utils/ajv';
+import isValidUUID from '../../utils/is-valid-uuid';
 import {
   LoginDto,
   LoginDtoSchema,
   UserDto,
   UserDtoSchema,
 } from './users.types';
-import isValidUUID from '../../utils/is-valid-uuid';
 
 const createUserValidator: ValidateFunction =
   ajv.compile<UserDto>(UserDtoSchema);
@@ -37,6 +37,7 @@ export class UsersValidator {
     if (!isValidUUID(id)) {
       throw new ValidationError(`Invalid id: ${id}`);
     }
+
     await next();
   }
 }

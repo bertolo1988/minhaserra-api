@@ -9,7 +9,7 @@ import {
   CreateContactVerificationModel,
 } from './contact-verifications.types';
 
-function mapUserDtoToCreateUserModel(
+function mapContactVerificationDtoToCreateContactVerificationModel(
   dto: ContactVerificationDto,
 ): CreateContactVerificationModel {
   return {
@@ -23,7 +23,7 @@ function mapUserDtoToCreateUserModel(
 export class ContactVerificationsRepository {
   static async createOne(dto: ContactVerificationDto): Promise<{ id: string }> {
     const knex = await getDatabaseInstance();
-    const data = mapUserDtoToCreateUserModel(dto);
+    const data = mapContactVerificationDtoToCreateContactVerificationModel(dto);
     const result = (await knex('contact_verifications').insert(
       CaseConverter.objectKeysCamelToSnake(data),
       ['id'],

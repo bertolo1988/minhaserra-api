@@ -3,13 +3,13 @@ import _ from 'lodash';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { PasswordUtils } from '../../utils/password-utils';
-import { mapUserDtoToCreateUserModel } from './users.mapper';
+import { UsersMapper } from './users.mapper';
 import { UserDto, UserModel } from './users.types';
 
 export class UsersRepository {
   static async createOne(dto: UserDto): Promise<{ id: string }> {
     const knex = await getDatabaseInstance();
-    const data = mapUserDtoToCreateUserModel(dto);
+    const data = UsersMapper.mapUserDtoToCreateUserModel(dto);
     const result = (await knex('users').insert(
       CaseConverter.objectKeysCamelToSnake(data),
       ['id'],

@@ -6,13 +6,12 @@ import CONFIG from '../../src/config';
 import { UsersRepository } from '../../src/controllers/users';
 import { UserRole, UserState } from '../../src/controllers/users/users.types';
 import { AuthenticationUtils } from '../../src/middlewares/authenticate-user.middleware';
-import { ForbiddenError } from '../../src/types/errors/forbidden.error';
-import { UnauthorizedError } from '../../src/types/errors/unauthorized.error';
+import { ForbiddenError, UnauthorizedError } from '../../src/types/errors';
 import {
   inactiveUser,
   softDeletedUser,
   unverifiedUser,
-  verifiedUser,
+  verifiedUserBuyer,
 } from '../seeds/login.seed';
 import { getAuthorizationHeader } from '../test-utils';
 
@@ -99,7 +98,8 @@ describe('AuthenticationUtils', () => {
           'hours',
         );
         tk.travel(fewHoursAgo.toDate());
-        const expiredAuthorizationHeader = getAuthorizationHeader(verifiedUser);
+        const expiredAuthorizationHeader =
+          getAuthorizationHeader(verifiedUserBuyer);
         tk.travel(nowPlusOneMinute.toDate());
 
         const ctx: Koa.Context = {
@@ -130,7 +130,7 @@ describe('AuthenticationUtils', () => {
         const ctx: Koa.Context = {
           request: {
             headers: {
-              authorization: getAuthorizationHeader(verifiedUser),
+              authorization: getAuthorizationHeader(verifiedUserBuyer),
             },
           },
         } as Koa.Context;
@@ -140,19 +140,19 @@ describe('AuthenticationUtils', () => {
           AuthenticationUtils.authenticateUserMiddleware(ctx, next),
         ).rejects.toThrow(UnauthorizedError);
 
-        expect(getUserByIdMock).toHaveBeenCalledWith(verifiedUser.id);
+        expect(getUserByIdMock).toHaveBeenCalledWith(verifiedUserBuyer.id);
         expect(next).not.toHaveBeenCalled();
       });
 
       test('when user is deleted', async () => {
         const getUserByIdMock = jest
           .spyOn(UsersRepository, 'getById')
-          .mockResolvedValue({ ...verifiedUser, isDeleted: true });
+          .mockResolvedValue({ ...verifiedUserBuyer, isDeleted: true });
 
         const ctx: Koa.Context = {
           request: {
             headers: {
-              authorization: getAuthorizationHeader(verifiedUser),
+              authorization: getAuthorizationHeader(verifiedUserBuyer),
             },
           },
         } as Koa.Context;
@@ -162,7 +162,7 @@ describe('AuthenticationUtils', () => {
           AuthenticationUtils.authenticateUserMiddleware(ctx, next),
         ).rejects.toThrow(UnauthorizedError);
 
-        expect(getUserByIdMock).toHaveBeenCalledWith(verifiedUser.id);
+        expect(getUserByIdMock).toHaveBeenCalledWith(verifiedUserBuyer.id);
         expect(next).not.toHaveBeenCalled();
       });
     });
@@ -171,13 +171,13 @@ describe('AuthenticationUtils', () => {
       test('when an active and verified user with role buyer is found', async () => {
         const getUserByIdMock = jest
           .spyOn(UsersRepository, 'getById')
-          .mockResolvedValue(verifiedUser);
+          .mockResolvedValue(verifiedUserBuyer);
 
         const ctx: Koa.Context = {
           state: {},
           request: {
             headers: {
-              authorization: getAuthorizationHeader(verifiedUser),
+              authorization: getAuthorizationHeader(verifiedUserBuyer),
             },
           },
         } as Koa.Context;
@@ -185,17 +185,17 @@ describe('AuthenticationUtils', () => {
 
         await AuthenticationUtils.authenticateUserMiddleware(ctx, next);
 
-        expect(getUserByIdMock).toHaveBeenCalledWith(verifiedUser.id);
+        expect(getUserByIdMock).toHaveBeenCalledWith(verifiedUserBuyer.id);
         expect(next).toHaveBeenCalled();
 
-        expect(ctx.state.user).toEqual(verifiedUser);
+        expect(ctx.state.user).toEqual(verifiedUserBuyer);
         expect(ctx.state.user.role).toEqual(UserRole.BUYER);
         expect(ctx.state.userState).toContain(UserState.ACTIVE);
         expect(ctx.state.userState).toContain(UserState.VERIFIED);
       });
 
       test('when an active and verified user with role admin is found', async () => {
-        const user = { ...verifiedUser, role: UserRole.ADMIN };
+        const user = { ...verifiedUserBuyer, role: UserRole.ADMIN };
         const getUserByIdMock = jest
           .spyOn(UsersRepository, 'getById')
           .mockResolvedValue(user);
@@ -221,7 +221,7 @@ describe('AuthenticationUtils', () => {
       });
 
       test('when an active and verified user with role seller is found', async () => {
-        const user = { ...verifiedUser, role: UserRole.SELLER };
+        const user = { ...verifiedUserBuyer, role: UserRole.SELLER };
         const getUserByIdMock = jest
           .spyOn(UsersRepository, 'getById')
           .mockResolvedValue(user);
@@ -247,7 +247,7 @@ describe('AuthenticationUtils', () => {
       });
 
       test('when an active and verified user with role moderator is found', async () => {
-        const user = { ...verifiedUser, role: UserRole.MODERATOR };
+        const user = { ...verifiedUserBuyer, role: UserRole.MODERATOR };
         const getUserByIdMock = jest
           .spyOn(UsersRepository, 'getById')
           .mockResolvedValue(user);
@@ -329,7 +329,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role buyer, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: verifiedUser,
+            user: verifiedUserBuyer,
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;
@@ -343,7 +343,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role seller, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.SELLER },
+            user: { ...verifiedUserBuyer, role: UserRole.SELLER },
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;
@@ -357,7 +357,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role moderator, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.MODERATOR },
+            user: { ...verifiedUserBuyer, role: UserRole.MODERATOR },
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;
@@ -371,7 +371,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role admin, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.ADMIN },
+            user: { ...verifiedUserBuyer, role: UserRole.ADMIN },
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;
@@ -406,7 +406,7 @@ describe('AuthenticationUtils', () => {
         const ctx: Koa.Context = {
           state: {
             user: {
-              ...verifiedUser,
+              ...verifiedUserBuyer,
               isEmailVerified: false,
               role: UserRole.ADMIN,
             },
@@ -425,7 +425,11 @@ describe('AuthenticationUtils', () => {
       test('when user is deleted', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, isDeleted: true, role: UserRole.ADMIN },
+            user: {
+              ...verifiedUserBuyer,
+              isDeleted: true,
+              role: UserRole.ADMIN,
+            },
             userState: [UserState.DELETED],
           },
         } as Koa.Context;
@@ -441,7 +445,7 @@ describe('AuthenticationUtils', () => {
       test('when user is moderator', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.MODERATOR },
+            user: { ...verifiedUserBuyer, role: UserRole.MODERATOR },
             userState: [UserState.VERIFIED, UserState.ACTIVE],
           },
         } as Koa.Context;
@@ -457,7 +461,7 @@ describe('AuthenticationUtils', () => {
       test('when user is seller', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.SELLER },
+            user: { ...verifiedUserBuyer, role: UserRole.SELLER },
             userState: [UserState.VERIFIED, UserState.ACTIVE],
           },
         } as Koa.Context;
@@ -473,7 +477,7 @@ describe('AuthenticationUtils', () => {
       test('when user is buyer', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.BUYER },
+            user: { ...verifiedUserBuyer, role: UserRole.BUYER },
             userState: [UserState.VERIFIED, UserState.ACTIVE],
           },
         } as Koa.Context;
@@ -491,7 +495,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role admin, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.ADMIN },
+            user: { ...verifiedUserBuyer, role: UserRole.ADMIN },
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;
@@ -526,7 +530,7 @@ describe('AuthenticationUtils', () => {
         const ctx: Koa.Context = {
           state: {
             user: {
-              ...verifiedUser,
+              ...verifiedUserBuyer,
               isEmailVerified: false,
               role: UserRole.ADMIN,
             },
@@ -545,7 +549,11 @@ describe('AuthenticationUtils', () => {
       test('when user is deleted', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, isDeleted: true, role: UserRole.ADMIN },
+            user: {
+              ...verifiedUserBuyer,
+              isDeleted: true,
+              role: UserRole.ADMIN,
+            },
             userState: [UserState.DELETED],
           },
         } as Koa.Context;
@@ -561,7 +569,7 @@ describe('AuthenticationUtils', () => {
       test('when user is seller', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.SELLER },
+            user: { ...verifiedUserBuyer, role: UserRole.SELLER },
             userState: [UserState.VERIFIED, UserState.ACTIVE],
           },
         } as Koa.Context;
@@ -577,7 +585,7 @@ describe('AuthenticationUtils', () => {
       test('when user is buyer', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.BUYER },
+            user: { ...verifiedUserBuyer, role: UserRole.BUYER },
             userState: [UserState.VERIFIED, UserState.ACTIVE],
           },
         } as Koa.Context;
@@ -595,7 +603,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role admin, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.ADMIN },
+            user: { ...verifiedUserBuyer, role: UserRole.ADMIN },
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;
@@ -609,7 +617,7 @@ describe('AuthenticationUtils', () => {
       test('when user, with role moderator, is active and verified', async () => {
         const ctx: Koa.Context = {
           state: {
-            user: { ...verifiedUser, role: UserRole.MODERATOR },
+            user: { ...verifiedUserBuyer, role: UserRole.MODERATOR },
             userState: [UserState.ACTIVE, UserState.VERIFIED],
           },
         } as Koa.Context;

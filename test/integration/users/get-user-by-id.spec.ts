@@ -1,7 +1,14 @@
 import moment from 'moment';
 import tk from 'timekeeper';
 import CONFIG from '../../../src/config';
-import { verifiedUser } from '../../seeds/login.seed';
+import { UsersMapper } from '../../../src/controllers/users/users.mapper';
+import {
+  unverifiedUser,
+  verifiedUserAdmin,
+  verifiedUserBuyer,
+  verifiedUserModerator,
+  verifiedUserSeller,
+} from '../../seeds/multiple-users.seed';
 import {
   DatabaseSeedNames,
   getAuthorizationHeader,
@@ -13,7 +20,12 @@ import TestServerSingleton from '../test-server-instance';
 describe('GET /api/users/:id', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
-    await runSeedByName(DatabaseSeedNames.LOGIN);
+    await runSeedByName(DatabaseSeedNames.MULTIPLE_USERS);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    tk.reset();
   });
 
   describe('should return 400', () => {
@@ -22,7 +34,7 @@ describe('GET /api/users/:id', () => {
       const response = await fetch(getTestServerUrl(`/api/users/${id}`).href, {
         method: 'GET',
         headers: {
-          Authorization: getAuthorizationHeader(verifiedUser),
+          Authorization: getAuthorizationHeader(verifiedUserBuyer),
           'Content-Type': 'application/json',
         },
       });
@@ -81,7 +93,8 @@ describe('GET /api/users/:id', () => {
         'hours',
       );
       tk.travel(fewHoursAgo.toDate());
-      const expiredAuthorizationHeader = getAuthorizationHeader(verifiedUser);
+      const expiredAuthorizationHeader =
+        getAuthorizationHeader(verifiedUserBuyer);
       tk.travel(nowPlusOneMinute.toDate());
       const id = 'df8d4677-09dd-41bc-a283-377d502f693e';
       const response = await fetch(getTestServerUrl(`/api/users/${id}`).href, {
@@ -95,62 +108,143 @@ describe('GET /api/users/:id', () => {
       const body = await response.json();
       expect(body.message).toBe(`Authorization expired`);
     });
+  });
 
-    test.skip('if user is deleted', async () => {
-      // TODO
+  describe('should return 403', () => {
+    test('if user is buyer and provides id different than his own', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${unverifiedUser.id}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe(`You are not allowed to access this resource`);
+    });
+
+    test('if user is seller and provides id different than his own', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserSeller),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe(`You are not allowed to access this resource`);
     });
   });
 
-  describe.skip('should return 403', () => {
-    test.skip('if user is inactive', async () => {
-      // TODO
-    });
+  describe('should return 200', () => {
+    test('if normal verified and active user fetches his own data', async () => {
+      const mapUserModelToPresentedUserModelSpy = jest.spyOn(
+        UsersMapper,
+        'mapUserModelToPresentedUserModel',
+      );
 
-    test.skip('if user is unverified', async () => {
-      // TODO
-    });
-
-    test.skip('if user is buyer and provides id different than his own', async () => {
-      const id = 'not-valid-uuid';
-      const response = await fetch(getTestServerUrl(`/api/users/${id}`).href, {
-        method: 'GET',
-        headers: {
-          Authorization: getAuthorizationHeader(verifiedUser),
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
         },
-      });
-      expect(response.status).toBe(400);
-      const body = await response.json();
-      expect(body.message).toBe(`Invalid id: ${id}`);
-    });
-
-    test.skip('if user is seller and provides id different than his own', async () => {
-      const id = 'not-valid-uuid';
-      const response = await fetch(getTestServerUrl(`/api/users/${id}`).href, {
-        method: 'GET',
-        headers: {
-          Authorization: getAuthorizationHeader(verifiedUser),
-          'Content-Type': 'application/json',
-        },
-      });
-      expect(response.status).toBe(400);
-      const body = await response.json();
-      expect(body.message).toBe(`Invalid id: ${id}`);
-    });
-  });
-
-  describe.skip('should return 200', () => {
-    test('if the credentials are correct for a verified user', async () => {
-      const id = 'not-valid-uuid';
-      const response = await fetch(getTestServerUrl(`/api/users/${id}`).href, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      );
+      expect(mapUserModelToPresentedUserModelSpy).toHaveBeenCalledTimes(1);
       expect(response.status).toBe(200);
       const body = await response.json();
-      console.log(2222, body);
+      expect(body).toMatchObject({
+        id: verifiedUserBuyer.id,
+        organizationName: null,
+        email: verifiedUserBuyer.email,
+        role: verifiedUserBuyer.role,
+        firstName: verifiedUserBuyer.firstName,
+        lastName: verifiedUserBuyer.lastName,
+        isEmailVerified: verifiedUserBuyer.isEmailVerified,
+        termsVersion: 1,
+        lastLoginAt: null,
+        createdAt: verifiedUserBuyer.createdAt.toISOString(),
+        updatedAt: verifiedUserBuyer.updatedAt.toISOString(),
+      });
+    });
+
+    test('if admin fetches another user data', async () => {
+      const mapUserModelToPresentedUserModelSpy = jest.spyOn(
+        UsersMapper,
+        'mapUserModelToPresentedUserModel',
+      );
+
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserAdmin),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(mapUserModelToPresentedUserModelSpy).toHaveBeenCalledTimes(1);
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body).toMatchObject({
+        id: verifiedUserBuyer.id,
+        organizationName: null,
+        email: verifiedUserBuyer.email,
+        role: verifiedUserBuyer.role,
+        firstName: verifiedUserBuyer.firstName,
+        lastName: verifiedUserBuyer.lastName,
+        isEmailVerified: verifiedUserBuyer.isEmailVerified,
+        termsVersion: 1,
+        lastLoginAt: null,
+        createdAt: verifiedUserBuyer.createdAt.toISOString(),
+        updatedAt: verifiedUserBuyer.updatedAt.toISOString(),
+      });
+    });
+
+    test('if moderator fetches another user data', async () => {
+      const mapUserModelToPresentedUserModelSpy = jest.spyOn(
+        UsersMapper,
+        'mapUserModelToPresentedUserModel',
+      );
+
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserModerator),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(mapUserModelToPresentedUserModelSpy).toHaveBeenCalledTimes(1);
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body).toMatchObject({
+        id: verifiedUserBuyer.id,
+        organizationName: null,
+        email: verifiedUserBuyer.email,
+        role: verifiedUserBuyer.role,
+        firstName: verifiedUserBuyer.firstName,
+        lastName: verifiedUserBuyer.lastName,
+        isEmailVerified: verifiedUserBuyer.isEmailVerified,
+        termsVersion: 1,
+        lastLoginAt: null,
+        createdAt: verifiedUserBuyer.createdAt.toISOString(),
+        updatedAt: verifiedUserBuyer.updatedAt.toISOString(),
+      });
     });
   });
 });

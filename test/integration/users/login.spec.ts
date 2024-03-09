@@ -6,9 +6,9 @@ import {
   softDeletedUserPassword,
   unverifiedUser,
   unverifiedUserPassword,
-  verifiedUser,
-  verifiedUserPassword,
-} from '../../seeds/login.seed';
+  verifiedUserBuyer,
+  verifiedUserBuyerPassword,
+} from '../../seeds/multiple-users.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
@@ -16,7 +16,7 @@ import TestServerSingleton from '../test-server-instance';
 describe('POST /api/login', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
-    await runSeedByName(DatabaseSeedNames.LOGIN);
+    await runSeedByName(DatabaseSeedNames.MULTIPLE_USERS);
   });
 
   describe('should return 400', () => {
@@ -121,7 +121,7 @@ describe('POST /api/login', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: verifiedUser.email,
+          email: verifiedUserBuyer.email,
           password: 'wrong-password-123%',
         }),
       });
@@ -139,8 +139,8 @@ describe('POST /api/login', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: verifiedUser.email,
-          password: verifiedUserPassword,
+          email: verifiedUserBuyer.email,
+          password: verifiedUserBuyerPassword,
         }),
       });
       expect(response.status).toBe(200);
@@ -149,9 +149,9 @@ describe('POST /api/login', () => {
       const decryptedPayload: CustomJwtPayload = JwtUtils.verify(body.token);
       expect(decryptedPayload.iat).toBeDefined();
       expect(decryptedPayload.exp).toBeDefined();
-      expect(decryptedPayload.id).toBe(verifiedUser.id);
-      expect(decryptedPayload.role).toBe(verifiedUser.role);
-      expect(decryptedPayload.email).toBe(verifiedUser.email);
+      expect(decryptedPayload.id).toBe(verifiedUserBuyer.id);
+      expect(decryptedPayload.role).toBe(verifiedUserBuyer.role);
+      expect(decryptedPayload.email).toBe(verifiedUserBuyer.email);
     });
   });
 });
