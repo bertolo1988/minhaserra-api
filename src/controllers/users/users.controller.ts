@@ -85,6 +85,7 @@ export class UsersController {
 
     ctx.status = 200;
     ctx.body = {
+      id: user.id,
       token: JwtUtils.sign({
         id: user.id,
         role: user.role,

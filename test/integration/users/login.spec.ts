@@ -145,6 +145,7 @@ describe('POST /api/login', () => {
       });
       expect(response.status).toBe(200);
       const body = await response.json();
+      expect(body.id).toBe(verifiedUserBuyer.id);
       expect(body.token).toBeDefined();
       const decryptedPayload: CustomJwtPayload = JwtUtils.verify(body.token);
       expect(decryptedPayload.iat).toBeDefined();
