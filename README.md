@@ -20,11 +20,17 @@ AWS_SECRET_ACCESS_KEY=
 JWT_SECRET=
 ```
 
-TODOS:
+# TODOS:
+
+## nice to have
 
 - add sleep middleware to login, password reset, and email recovery
 - allow user that soft deleted account to re-enable it using createUser
 - narrow AWS account perms
 - prevent SQL injection
 - only allow one password reset active at a time per user
-- unskip integration tests get-user-by-id.spec
+
+## important
+
+- PUT api/users continue
+- PATCH /users/:id/email

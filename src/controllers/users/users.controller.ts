@@ -108,4 +108,8 @@ export class UsersController {
     ctx.status = 200;
     ctx.body = UsersMapper.mapUserModelToPresentedUserModel(user);
   }
+
+  static async updateUserById(ctx: Koa.Context, _next: Koa.Next) {
+    // TODO: Implement
+  }
 }

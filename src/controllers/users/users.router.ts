@@ -21,4 +21,12 @@ export function configureUsersRouter(router: Router) {
     UsersValidator.validateCreateUser,
     UsersController.createUser,
   );
+
+  router.put(
+    '/users/:id',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    UsersValidator.validateUpdateUser,
+    UsersController.updateUserById,
+  );
 }

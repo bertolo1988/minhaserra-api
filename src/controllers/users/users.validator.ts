@@ -40,4 +40,9 @@ export class UsersValidator {
 
     await next();
   }
+
+  static async validateUpdateUser(ctx: Koa.Context, next: Koa.Next) {
+    // TODO: Implement
+    await next();
+  }
 }
