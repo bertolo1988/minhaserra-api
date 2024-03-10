@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { Algorithm } from 'jsonwebtoken';
+import CONSTANTS from './constants';
 
 dotenv.config();
 
@@ -9,11 +10,11 @@ const CONFIG = {
     url: process.env.UI_URL,
   },
   server: {
-    port: 8085,
+    port: parseInt(process.env.SERVER_PORT as string),
     url: process.env.SERVER_URL,
   },
   emails: {
-    noReplyMail: 'no-reply@minhaserra.com',
+    noReplyMail: CONSTANTS.NO_REPLY_EMAIL_ADDRESS,
   },
   aws: {
     region: process.env.AWS_REGION,
@@ -29,8 +30,8 @@ const CONFIG = {
   },
   authentication: {
     jwtSecret: process.env.JWT_SECRET as string,
-    jwtExpirationHours: 6,
-    algorithm: 'HS512' as Algorithm,
+    jwtExpirationHours: CONSTANTS.JWT_EXPIRATION_HOURS,
+    algorithm: CONSTANTS.JWT_ALGORITHM as Algorithm,
   },
 };
 
