@@ -12,7 +12,7 @@ import {
   softDeletedUser,
   unverifiedUser,
   verifiedUserBuyer,
-} from '../seeds/login.seed';
+} from '../seeds/multiple-users.seed';
 import { getAuthorizationHeader } from '../test-utils';
 
 describe('AuthenticationUtils', () => {
