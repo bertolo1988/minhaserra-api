@@ -4,7 +4,7 @@ import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { PasswordUtils } from '../../utils/password-utils';
 import { UsersMapper } from './users.mapper';
-import { UserDto, UserModel } from './users.types';
+import { UpdateUserDto, UserDto, UserModel } from './users.types';
 
 export class UsersRepository {
   static async createOne(dto: UserDto): Promise<{ id: string }> {
@@ -120,6 +120,33 @@ export class UsersRepository {
         ],
       )
       .transacting(transaction);
+    return updateResult;
+  }
+
+  static async updateOneUserById(
+    id: string,
+    data: UpdateUserDto,
+  ): Promise<
+    {
+      id: string;
+      first_name: string;
+      last_name: string;
+      organization_name: string;
+      terms_version: number;
+      updated_at: Date;
+    }[]
+  > {
+    const knex = await getDatabaseInstance();
+    const updateResult = await knex('users')
+      .where('id', id)
+      .update(CaseConverter.objectKeysCamelToSnake(data), [
+        'id',
+        'first_name',
+        'last_name',
+        'organization_name',
+        'terms_version',
+        'updated_at',
+      ]);
     return updateResult;
   }
 }

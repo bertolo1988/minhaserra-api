@@ -111,3 +111,22 @@ export type PresentedUserModel = Omit<
   | 'isActive'
   | 'isDeleted'
 >;
+
+export type UpdateUserDto = {
+  firstName?: string;
+  lastName?: string;
+  organizationName?: string;
+  termsVersion?: number;
+};
+
+export const UpdateUserDtoSchema = {
+  type: 'object',
+  properties: {
+    organizationName: { type: 'string', nullable: true },
+    firstName: { type: 'string', nullable: true },
+    lastName: { type: 'string', nullable: true },
+    termsVersion: { type: 'number', nullable: true },
+  },
+  required: [],
+  additionalProperties: false,
+};

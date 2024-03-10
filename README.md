@@ -32,5 +32,4 @@ JWT_SECRET=
 
 ## important
 
-- PUT api/users continue
 - PATCH /users/:id/email

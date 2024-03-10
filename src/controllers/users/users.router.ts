@@ -23,10 +23,10 @@ export function configureUsersRouter(router: Router) {
   );
 
   router.put(
-    '/users/:id',
+    '/users',
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedUsers(),
     UsersValidator.validateUpdateUser,
-    UsersController.updateUserById,
+    UsersController.updateUser,
   );
 }

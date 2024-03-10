@@ -16,7 +16,8 @@ import { EmailVerficationTemplateData } from '../emails/email-templates';
 import { EmailTemplateType } from '../emails/email.types';
 import { UsersMapper } from './users.mapper';
 import { UsersRepository } from './users.repository';
-import { UserDto } from './users.types';
+import { UpdateUserDto, UserDto } from './users.types';
+import { isUpdateSuccessfull } from '../../knex-database';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -109,7 +110,16 @@ export class UsersController {
     ctx.body = UsersMapper.mapUserModelToPresentedUserModel(user);
   }
 
-  static async updateUserById(ctx: Koa.Context, _next: Koa.Next) {
-    // TODO: Implement
+  static async updateUser(ctx: Koa.Context, _next: Koa.Next) {
+    const userId: string = ctx.state.user.id as string;
+    const dto: UpdateUserDto = ctx.request.body as UpdateUserDto;
+
+    const updateResult = await UsersRepository.updateOneUserById(userId, dto);
+    if (isUpdateSuccessfull(updateResult)) {
+      ctx.status = 200;
+      ctx.body = { message: 'User successfully updated' };
+      return;
+    }
+    throw new Error('Failed to update user');
   }
 }
