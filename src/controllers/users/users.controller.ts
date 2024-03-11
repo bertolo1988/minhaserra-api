@@ -112,8 +112,12 @@ export class UsersController {
   }
 
   static async updateUser(ctx: Koa.Context, _next: Koa.Next) {
-    const userId: string = ctx.state.user.id as string;
+    const userId: string = ctx.params.id;
     const dto: UpdateUserDto = ctx.request.body as UpdateUserDto;
+
+    if (!KoaUtils.isUserAdminOrModerator(ctx) && userId != ctx.state.user.id) {
+      throw new ForbiddenError('You are not allowed to access this resource');
+    }
 
     const updateResult = await UsersRepository.updateOneUserById(userId, dto);
     if (isUpdateSuccessfull(updateResult)) {

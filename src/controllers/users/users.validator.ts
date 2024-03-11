@@ -46,9 +46,15 @@ export class UsersValidator {
   }
 
   static async validateUpdateUser(ctx: Koa.Context, next: Koa.Next) {
+    const { id } = ctx.params;
+    if (!isValidUUID(id)) {
+      throw new ValidationError(`Invalid id: ${id}`);
+    }
+
     const valid = updateUserValidator(ctx.request.body);
     if (!valid)
       throw new ValidationError(updateUserValidator.errors as ErrorObject[]);
+
     await next();
   }
 }

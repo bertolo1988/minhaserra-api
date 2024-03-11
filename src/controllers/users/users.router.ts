@@ -23,7 +23,7 @@ export function configureUsersRouter(router: Router) {
   );
 
   router.put(
-    '/users',
+    '/users/:id',
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedUsers(),
     UsersValidator.validateUpdateUser,
