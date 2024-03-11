@@ -1,9 +1,17 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { Knex } from 'knex';
 import moment from 'moment';
 import CONSTANTS from '../../src/constants';
 import { PasswordResetModel } from '../../src/controllers/password-resets/password-resets.types';
 import { UserModel, UserRole } from '../../src/controllers/users/users.types';
 import { CaseConverter } from '../../src/utils/case-converter';
+import { isProduction } from '../test-utils';
+
+if (isProduction()) {
+  throw new Error('Cannot truncate tables in production environment!');
+}
 
 const now = moment();
 const yearAgo = moment().subtract(1, 'year');

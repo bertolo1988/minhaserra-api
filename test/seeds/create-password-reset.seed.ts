@@ -1,8 +1,16 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { Knex } from 'knex';
 import moment from 'moment';
 import CONSTANTS from '../../src/constants';
 import { UserModel, UserRole } from '../../src/controllers/users/users.types';
 import { CaseConverter } from '../../src/utils/case-converter';
+import { isProduction } from '../test-utils';
+
+if (isProduction()) {
+  throw new Error('Cannot truncate tables in production environment!');
+}
 
 const now = moment();
 

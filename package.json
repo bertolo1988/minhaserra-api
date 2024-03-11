@@ -14,6 +14,7 @@
     "test:integration": "cross-env NODE_ENV=test jest test/integration/all-integration-tests.spec.ts",
     "seed:create": "npx knex seed:make empty_seed --knexfile knexfile.ts",
     "seed:run": "npx knex seed:run --knexfile knexfile.ts",
+    "seed:clean": "npx knex seed:run --knexfile knexfile.ts --specific=clean-database.seed.ts",
     "migrate:latest": "npx knex migrate:latest --knexfile knexfile.ts",
     "migrate:rollback": "npx knex migrate:rollback --all --knexfile knexfile.ts",
     "migrate:up": "npx knex migrate:up --knexfile knexfile.ts",

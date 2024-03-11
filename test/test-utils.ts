@@ -4,8 +4,15 @@ import { getDatabaseInstance } from '../src/knex-database';
 import { JwtUtils } from '../src/utils/jwt-utils';
 import { UserModel } from '../src/controllers/users/users.types';
 
-function isTestEnvironment() {
-  return CONFIG.env === 'test';
+export function isProduction() {
+  return (
+    CONFIG.env?.toLowerCase() === 'production' ||
+    CONFIG.env?.toLowerCase() === 'prod'
+  );
+}
+
+export function isTestEnvironment() {
+  return CONFIG.env?.toLowerCase() === 'test';
 }
 
 export async function truncateAllTables() {
