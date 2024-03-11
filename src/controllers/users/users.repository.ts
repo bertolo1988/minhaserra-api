@@ -139,14 +139,20 @@ export class UsersRepository {
     const knex = await getDatabaseInstance();
     const updateResult = await knex('users')
       .where('id', id)
-      .update(CaseConverter.objectKeysCamelToSnake(data), [
-        'id',
-        'first_name',
-        'last_name',
-        'organization_name',
-        'terms_version',
-        'updated_at',
-      ]);
+      .update(
+        CaseConverter.objectKeysCamelToSnake({
+          ...data,
+          updatedAt: new Date(),
+        }),
+        [
+          'id',
+          'first_name',
+          'last_name',
+          'organization_name',
+          'terms_version',
+          'updated_at',
+        ],
+      );
     return updateResult;
   }
 }
