@@ -7,6 +7,7 @@ export interface EmailTemplate {
 
 export type EmailVerficationTemplateData = {
   verificationUrl: string;
+  expiresAt: string;
 };
 
 export class EmailVerficationTemplate implements EmailTemplate {
@@ -15,7 +16,7 @@ export class EmailVerficationTemplate implements EmailTemplate {
   }
 
   getBody(data: EmailVerficationTemplateData): string {
-    return `<p>Click <a href="${data.verificationUrl}">here</a> to verify your email</p>`;
+    return `<p>Click <a href="${data.verificationUrl}">here</a> to verify your email</p><p>This link will expire at ${data.expiresAt}</p>`;
   }
 }
 

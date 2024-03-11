@@ -31,14 +31,16 @@ export class UsersController {
     }
 
     const { id: userId } = await UsersRepository.createOne(dto);
+    const expiresAt = moment().add(
+      CONSTANTS.CONTACT_VERIFICATION_EXPIRY_HOURS,
+      'hours',
+    );
 
     const contactVerificationDto: ContactVerificationDto = {
       userId,
       type: ContactVerifiationType.EMAIL,
       contact: dto.email,
-      expiresAt: moment()
-        .add(CONSTANTS.CONTACT_VERIFICATION_EXPIRY_HOURS, 'hours')
-        .toDate(),
+      expiresAt: expiresAt.toDate(),
     };
     const { id: contactVerificationId } =
       await ContactVerificationsRepository.createOne(contactVerificationDto);
@@ -53,6 +55,7 @@ export class UsersController {
       dto.email,
       EmailTemplateType.USER_EMAIL_VERIFICATION,
       {
+        expiresAt: expiresAt.format('Do MMMM YYYY, HH:mm'),
         verificationUrl: `${CONFIG.server.url}/api/contact-verifications/${contactVerificationId}/verify`,
       } as EmailVerficationTemplateData,
     );
