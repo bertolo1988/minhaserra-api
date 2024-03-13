@@ -1,11 +1,32 @@
 import { Schema } from 'ajv';
 
+export type AddressModel = {
+  id: string;
+  userId: string;
+  label: string;
+  countryCode: string;
+  name: string;
+  lineOne: string;
+  lineTwo?: string;
+  city: string;
+  region: string;
+  postalCode: string;
+  phoneNumber?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CreateAddressModel = Omit<
+  AddressModel,
+  'id' | 'createdAt' | 'updatedAt'
+>;
+
 export type CreateAddressDto = {
   label: string;
   countryCode: string;
   name: string;
-  line1: string;
-  line2?: string;
+  lineOne: string;
+  lineTwo?: string;
   city: string;
   region: string;
   postalCode: string;
@@ -17,14 +38,15 @@ export const CreateAddressDtoSchema: Schema = {
   properties: {
     label: { type: 'string', nullable: false, minLength: 1, maxLength: 100 },
     countryCode: {
-      type: 'country-code',
+      type: 'string',
+      format: 'country-code',
       nullable: false,
       minLength: 2,
       maxLength: 2,
     },
     name: { type: 'string', nullable: false, minLength: 1, maxLength: 100 },
-    line1: { type: 'string', nullable: false, minLength: 1, maxLength: 255 },
-    line2: { type: 'string', nullable: true, minLength: 1, maxLength: 255 },
+    lineOne: { type: 'string', nullable: false, minLength: 1, maxLength: 255 },
+    lineTwo: { type: 'string', nullable: true, minLength: 1, maxLength: 255 },
     city: { type: 'string', nullable: false, minLength: 1, maxLength: 100 },
     region: { type: 'string', nullable: false, minLength: 1, maxLength: 100 },
     postalCode: {
@@ -44,7 +66,7 @@ export const CreateAddressDtoSchema: Schema = {
     'label',
     'countryCode',
     'name',
-    'line1',
+    'lineOne',
     'city',
     'region',
     'postalCode',

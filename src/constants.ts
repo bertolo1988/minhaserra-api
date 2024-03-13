@@ -6,6 +6,7 @@ const CONSTANTS = {
   NO_REPLY_EMAIL_ADDRESS: 'no-reply@minhaserra.com',
   JWT_EXPIRATION_HOURS: 6,
   JWT_ALGORITHM: 'HS512',
+  MAX_ADDRESSES_PER_USER: 10,
 };
 
 export default CONSTANTS;
