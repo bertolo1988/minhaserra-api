@@ -2,6 +2,8 @@ import Ajv from 'ajv';
 import ajvErrors from 'ajv-errors';
 import ajvFormats from 'ajv-formats';
 
+import { isValidIso3166Alpha2Code } from './other-utils';
+
 const ajv = new Ajv({ allErrors: true });
 ajvErrors(ajv);
 ajvFormats(ajv);
@@ -20,5 +22,10 @@ ajv.addFormat(
   'password',
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$€£§!%*?&#<>«»=+_])[A-Za-z\d@$€£§!%*?&#<>«»=+_]{8,}$/,
 );
+
+ajv.addFormat('country-code', {
+  type: 'string',
+  validate: isValidIso3166Alpha2Code,
+});
 
 export { ajv };
