@@ -23,5 +23,3 @@ JWT_SECRET=
 [migrations cli](https://knexjs.org/guide/migrations.html#migration-cli)
 
 [seed files](https://knexjs.org/guide/migrations.html#seed-files)
-
-country codes ISO 3166-1 alpha-2
