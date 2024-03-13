@@ -1,3 +1,5 @@
+import { Schema } from 'ajv';
+
 export type CreateAddressDto = {
   label: string;
   countryCode: string;
@@ -10,7 +12,7 @@ export type CreateAddressDto = {
   phoneNumber?: string;
 };
 
-export const CreateAddressDtoSchema = {
+export const CreateAddressDtoSchema: Schema = {
   type: 'object',
   properties: {
     label: { type: 'string', nullable: false },
