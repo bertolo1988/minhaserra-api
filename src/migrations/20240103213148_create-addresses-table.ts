@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('label', 100).notNullable();
     table.string('country_code', 2).notNullable();
     table.string('name', 100).notNullable();
-    table.string('line_1', 255).nullable();
+    table.string('line_1', 255).notNullable();
     table.string('line_2', 255).nullable();
     table.string('city', 100).notNullable();
     table.string('region', 100).notNullable();
