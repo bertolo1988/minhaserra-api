@@ -155,8 +155,6 @@ export const unverifiedUser: UserModel = {
 
 export async function seed(knex: Knex): Promise<void> {
   await knex('users').del();
-  await knex('contact_verifications').del();
-
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedUserAdmin),
     CaseConverter.objectKeysCamelToSnake(verifiedUserModerator),

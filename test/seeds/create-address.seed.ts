@@ -34,9 +34,8 @@ export const verifiedUserAdmin: UserModel = {
 };
 
 export async function seed(knex: Knex): Promise<void> {
-  await knex('users').del();
   await knex('addresses').del();
-
+  await knex('users').del();
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedUserAdmin),
   ]);

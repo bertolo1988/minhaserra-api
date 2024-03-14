@@ -1,3 +1,5 @@
+import CONSTANTS from '../../../src/constants';
+import { AddressesRepository } from '../../../src/controllers/addresses/addresses.repository';
 import { CreateAddressDto } from '../../../src/controllers/addresses/addresses.types';
 import { verifiedUserAdmin } from '../../seeds/create-address.seed';
 import {
@@ -18,9 +20,89 @@ describe('POST api/addresses', () => {
     jest.clearAllMocks();
   });
 
-  describe('should return 400', () => {});
+  describe('should return 400', () => {
+    it('if country code has only one character', async () => {
+      const data: CreateAddressDto = {
+        label: 'Home',
+        countryCode: 'U',
+        name: 'John Doe',
+        lineOne: '123 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        postalCode: '62701',
+      };
+      const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedUserAdmin),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'countryCode' must have two characters and be valid according to ISO 3166-1 alpha-2`,
+      );
+    });
 
-  describe('should return 403', () => {});
+    it('if phoneNumber is over 50 chars', async () => {
+      const data: CreateAddressDto = {
+        label: 'Home',
+        countryCode: 'PT',
+        name: 'John Doe',
+        lineOne: '123 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        postalCode: 'u94uXr9jedpk3hoVksDzh8Hv7CXdEJmQALMNdvTnR253Tjn3ZNE',
+      };
+      const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedUserAdmin),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'postalCode' must be a string with a maximum length of 50 characters`,
+      );
+    });
+
+    it('if maximum number of addresses is exceeded', async () => {
+      const countAddressesMock = jest
+        .spyOn(AddressesRepository, 'countAddressesByUserId')
+        .mockImplementationOnce(async () => CONSTANTS.MAX_ADDRESSES_PER_USER);
+
+      const data: CreateAddressDto = {
+        label: 'Home',
+        countryCode: 'PT',
+        name: 'John Doe',
+        lineOne: '123 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        lineTwo: 'Apt 1',
+        postalCode: 'u94uXr9jed',
+      };
+      const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedUserAdmin),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `User has reached the maximum amount of addresses`,
+      );
+      expect(countAddressesMock).toHaveBeenCalledWith(verifiedUserAdmin.id);
+      countAddressesMock.mockClear();
+    });
+  });
 
   describe('should return 201', () => {
     it('should return 201', async () => {
