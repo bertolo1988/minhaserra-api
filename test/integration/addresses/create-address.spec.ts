@@ -1,7 +1,12 @@
 import CONSTANTS from '../../../src/constants';
 import { AddressesRepository } from '../../../src/controllers/addresses/addresses.repository';
 import { CreateAddressDto } from '../../../src/controllers/addresses/addresses.types';
-import { verifiedUserAdmin } from '../../seeds/create-address.seed';
+import {
+  inactiveUser,
+  softDeletedUser,
+  unverifiedUser,
+  verifiedUserAdmin,
+} from '../../seeds/multiple-users.seed';
 import {
   DatabaseSeedNames,
   getAuthorizationHeader,
@@ -13,7 +18,7 @@ import TestServerSingleton from '../test-server-instance';
 describe('POST api/addresses', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
-    await runSeedByName(DatabaseSeedNames.CREATE_ADDRESS);
+    await runSeedByName(DatabaseSeedNames.MULTIPLE_USERS);
   });
 
   afterEach(() => {
@@ -101,6 +106,79 @@ describe('POST api/addresses', () => {
       );
       expect(countAddressesMock).toHaveBeenCalledWith(verifiedUserAdmin.id);
       countAddressesMock.mockClear();
+    });
+  });
+
+  describe('should return 403', () => {
+    it('if user is not verified', async () => {
+      const data: CreateAddressDto = {
+        label: 'Home',
+        countryCode: 'US',
+        name: 'John Doe',
+        lineOne: '123 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        postalCode: '62701',
+      };
+      const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(unverifiedUser),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
+    });
+
+    it('if user is inactive', async () => {
+      const data: CreateAddressDto = {
+        label: 'Home',
+        countryCode: 'US',
+        name: 'John Doe',
+        lineOne: '123 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        postalCode: '62701',
+      };
+      const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(inactiveUser),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
+    });
+  });
+
+  describe('should return 401', () => {
+    it('if user is soft deleted', async () => {
+      const data: CreateAddressDto = {
+        label: 'Home',
+        countryCode: 'US',
+        name: 'John Doe',
+        lineOne: '123 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        postalCode: '62701',
+      };
+      const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(softDeletedUser),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body.message).toBe('Unauthorized');
     });
   });
 
