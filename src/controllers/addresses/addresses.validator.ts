@@ -25,4 +25,8 @@ export class AddressesValidator {
     }
     await next();
   }
+
+  static async validateGetAddresses(ctx: Koa.Context, next: Koa.Next) {
+    await next();
+  }
 }

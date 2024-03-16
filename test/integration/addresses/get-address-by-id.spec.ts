@@ -1,5 +1,7 @@
 import {
+  inactiveUser,
   inactiveUserAddress,
+  nonVerifiedUser,
   softDeletedUser,
   verifiedUserBuyer,
   verifiedUserBuyerAddress,
@@ -54,6 +56,42 @@ describe('GET /api/addresses/:id', () => {
       expect(response.status).toBe(401);
       const body = await response.json();
       expect(body.message).toBe('Unauthorized');
+    });
+  });
+
+  describe('should return 403', () => {
+    it('if user is inactive', async () => {
+      const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
+      const response = await fetch(
+        getTestServerUrl(`/api/addresses/${addressId}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(inactiveUser),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
+    });
+
+    it('if user is not verified', async () => {
+      const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
+      const response = await fetch(
+        getTestServerUrl(`/api/addresses/${addressId}`).href,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: getAuthorizationHeader(nonVerifiedUser),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
     });
   });
 

@@ -4,7 +4,13 @@ import { AddressesController } from './addresses.controller';
 import { AddressesValidator } from './addresses.validator';
 
 export function configureAddressesRouter(router: Router) {
-  router.get('/addresses', AddressesController.getAddresses);
+  router.get(
+    '/addresses',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    AddressesValidator.validateGetAddresses,
+    AddressesController.getAddresses,
+  );
   router.get(
     '/addresses/:id',
     AuthenticationUtils.authenticateUserMiddleware,

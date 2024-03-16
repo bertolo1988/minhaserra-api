@@ -31,11 +31,22 @@ export class AddressesRepository {
   static async getUserAddressById(
     id: string,
     userId: string,
-  ): Promise<AddressModel> {
+  ): Promise<AddressModel | undefined> {
     const knex = await getDatabaseInstance();
     const result = (await knex<AddressModel>('addresses')
       .where(CaseConverter.objectKeysCamelToSnake({ id, userId }))
       .first()) as AddressModel;
     return CaseConverter.objectKeysSnakeToCamel(result) as AddressModel;
+  }
+
+  static async getAddressesByUserId(userId: string): Promise<AddressModel[]> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<AddressModel>('addresses').where(
+      CaseConverter.objectKeysCamelToSnake({ userId }),
+    );
+    if (!result) return [];
+    return result.map(
+      (r) => CaseConverter.objectKeysSnakeToCamel(r) as AddressModel,
+    );
   }
 }

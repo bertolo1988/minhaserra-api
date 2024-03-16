@@ -31,7 +31,11 @@ export class AddressesController {
   }
 
   static async getAddresses(ctx: Koa.Context, _next: Koa.Next) {
-    ctx.body = 'getAddresses';
+    const userId = ctx.state.user.id as string;
+
+    const addresses = await AddressesRepository.getAddressesByUserId(userId);
+    ctx.status = 200;
+    ctx.body = addresses;
   }
 
   static async getOneAddress(ctx: Koa.Context, _next: Koa.Next) {

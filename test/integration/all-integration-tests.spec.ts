@@ -21,4 +21,5 @@ describe('Integration tests', () => {
   require('./users/update-user.spec');
   require('./addresses/create-address.spec');
   require('./addresses/get-address-by-id.spec');
+  require('./addresses/get-addresses.spec');
 });
