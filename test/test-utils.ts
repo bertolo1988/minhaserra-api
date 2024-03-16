@@ -27,7 +27,7 @@ export async function truncateAllTables() {
 }
 
 export enum DatabaseSeedNames {
-  CREATE_ADDRESS = 'create-address.seed.ts',
+  GET_ADDRESS_BY_ID = 'get-address-by-id.seed.ts',
   CLEAN_DATABASE = 'clean-database.seed.ts',
   MULTIPLE_USERS = 'multiple-users.seed.ts',
   VERIFY_USER_EMAIL = 'verify-user-email.seed.ts',

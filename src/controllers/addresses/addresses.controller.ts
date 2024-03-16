@@ -35,7 +35,17 @@ export class AddressesController {
   }
 
   static async getOneAddress(ctx: Koa.Context, _next: Koa.Next) {
-    ctx.body = 'getOneAddress';
+    const { id } = ctx.params;
+    const userId = ctx.state.user.id as string;
+
+    const address = await AddressesRepository.getUserAddressById(id, userId);
+    if (!address) {
+      ctx.status = 404;
+      ctx.body = { message: 'Address not found' };
+      return;
+    }
+    ctx.status = 200;
+    ctx.body = address;
   }
 
   static async updateAddress(ctx: Koa.Context, _next: Koa.Next) {

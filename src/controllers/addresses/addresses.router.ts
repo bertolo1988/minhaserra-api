@@ -5,7 +5,13 @@ import { AddressesValidator } from './addresses.validator';
 
 export function configureAddressesRouter(router: Router) {
   router.get('/addresses', AddressesController.getAddresses);
-  router.get('/addresses/:id', AddressesController.getOneAddress);
+  router.get(
+    '/addresses/:id',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    AddressesValidator.validateGetOneAddress,
+    AddressesController.getOneAddress,
+  );
   router.post(
     '/addresses',
     AuthenticationUtils.authenticateUserMiddleware,
