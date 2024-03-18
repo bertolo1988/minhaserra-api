@@ -16,7 +16,6 @@ export enum UserRole {
 export type UserDto = {
   email: string;
   role: UserRole;
-  organizationName?: string;
   firstName: string;
   lastName: string;
   password: string;
@@ -42,7 +41,6 @@ export const UserDtoSchema = {
       nullable: false,
       errorMessage: `'role' must be either "buyer" or "seller"`,
     },
-    organizationName: { type: 'string', nullable: true },
     firstName: { type: 'string', nullable: false },
     lastName: { type: 'string', nullable: false },
     password: PasswordSchema,
@@ -63,7 +61,6 @@ export type UserModel = {
   id: string;
   email: string;
   role: UserRole;
-  organizationName?: string;
   firstName: string;
   lastName?: string;
   isEmailVerified: boolean;
@@ -74,6 +71,10 @@ export type UserModel = {
   passwordIterations: number;
   termsVersion: number;
   lastLoginAt?: Date;
+  invoiceName?: string;
+  invoiceTaxNumber?: string;
+  invoiceAddressId?: string;
+  shippingAddressId?: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -115,14 +116,12 @@ export type PresentedUserModel = Omit<
 export type UpdateUserDto = {
   firstName?: string;
   lastName?: string;
-  organizationName?: string;
   termsVersion?: number;
 };
 
 export const UpdateUserDtoSchema = {
   type: 'object',
   properties: {
-    organizationName: { type: 'string', nullable: true },
     firstName: { type: 'string', nullable: true },
     lastName: { type: 'string', nullable: true },
     termsVersion: { type: 'number', nullable: true },

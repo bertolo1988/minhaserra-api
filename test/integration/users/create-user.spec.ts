@@ -136,7 +136,6 @@ describe('POST /api/users', () => {
     test('when user already exists', async () => {
       const userDto = {
         email: userData.email,
-        organizationName: 'My Organization',
         role: UserRole.BUYER,
         firstName: 'John',
 
@@ -161,7 +160,6 @@ describe('POST /api/users', () => {
     test('when user already exists, but same email is provided with different casing', async () => {
       const userDto = {
         email: userData.email.toUpperCase(),
-        organizationName: 'My Organization',
         role: UserRole.BUYER,
         firstName: 'John',
 
@@ -188,7 +186,6 @@ describe('POST /api/users', () => {
     test('when user is created successfully', async () => {
       const userDto = {
         email: 'tiagobertolo@gmail.com',
-        organizationName: 'My Organization',
         role: UserRole.BUYER,
         firstName: 'John',
         lastName: 'Doe',

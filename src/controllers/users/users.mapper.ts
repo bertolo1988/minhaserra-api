@@ -13,7 +13,6 @@ export class UsersMapper {
     return {
       email: dto.email,
       role: dto.role,
-      organizationName: dto.organizationName,
       firstName: dto.firstName,
       lastName: dto.lastName,
       passwordHash: hash,

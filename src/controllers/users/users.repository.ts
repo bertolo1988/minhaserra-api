@@ -131,7 +131,6 @@ export class UsersRepository {
       id: string;
       first_name: string;
       last_name: string;
-      organization_name: string;
       terms_version: number;
       updated_at: Date;
     }[]
@@ -144,14 +143,7 @@ export class UsersRepository {
           ...data,
           updatedAt: new Date(),
         }),
-        [
-          'id',
-          'first_name',
-          'last_name',
-          'organization_name',
-          'terms_version',
-          'updated_at',
-        ],
+        ['id', 'first_name', 'last_name', 'terms_version', 'updated_at'],
       );
     return updateResult;
   }

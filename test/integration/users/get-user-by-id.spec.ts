@@ -166,7 +166,6 @@ describe('GET /api/users/:id', () => {
       const body = await response.json();
       expect(body).toMatchObject({
         id: verifiedUserBuyer.id,
-        organizationName: null,
         email: verifiedUserBuyer.email,
         role: verifiedUserBuyer.role,
         firstName: verifiedUserBuyer.firstName,
@@ -200,7 +199,6 @@ describe('GET /api/users/:id', () => {
       const body = await response.json();
       expect(body).toMatchObject({
         id: verifiedUserBuyer.id,
-        organizationName: null,
         email: verifiedUserBuyer.email,
         role: verifiedUserBuyer.role,
         firstName: verifiedUserBuyer.firstName,
@@ -234,7 +232,6 @@ describe('GET /api/users/:id', () => {
       const body = await response.json();
       expect(body).toMatchObject({
         id: verifiedUserBuyer.id,
-        organizationName: null,
         email: verifiedUserBuyer.email,
         role: verifiedUserBuyer.role,
         firstName: verifiedUserBuyer.firstName,

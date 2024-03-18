@@ -319,7 +319,6 @@ describe('PUT /api/users/:id', () => {
       const updateData: UpdateUserDto = {
         firstName: 'Bruna',
         lastName: 'Franco',
-        organizationName: 'Bruna Franco Lda',
         termsVersion: 5,
       };
       const updateOneUserByIdSpy = jest.spyOn(
@@ -352,7 +351,6 @@ describe('PUT /api/users/:id', () => {
         id: verifiedUserSeller.id,
         first_name: updateData.firstName,
         last_name: updateData.lastName,
-        organization_name: updateData.organizationName,
         terms_version: updateData.termsVersion,
       });
     });
@@ -361,7 +359,6 @@ describe('PUT /api/users/:id', () => {
       const updateData: UpdateUserDto = {
         firstName: 'Bruna',
         lastName: 'Franco',
-        organizationName: 'Bruna Franco Lda',
         termsVersion: 5,
       };
       const updateOneUserByIdSpy = jest.spyOn(
@@ -394,7 +391,6 @@ describe('PUT /api/users/:id', () => {
         id: inactiveUser.id,
         first_name: updateData.firstName,
         last_name: updateData.lastName,
-        organization_name: updateData.organizationName,
         terms_version: updateData.termsVersion,
       });
     });
@@ -403,7 +399,6 @@ describe('PUT /api/users/:id', () => {
       const updateData: UpdateUserDto = {
         firstName: 'Bruna',
         lastName: 'Franco',
-        organizationName: 'Bruna Franco Lda',
         termsVersion: 5,
       };
       const updateOneUserByIdSpy = jest.spyOn(
@@ -436,7 +431,6 @@ describe('PUT /api/users/:id', () => {
         id: softDeletedUser.id,
         first_name: updateData.firstName,
         last_name: updateData.lastName,
-        organization_name: updateData.organizationName,
         terms_version: updateData.termsVersion,
       });
     });
