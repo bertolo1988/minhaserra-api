@@ -26,7 +26,7 @@ describe('POST api/addresses', () => {
   });
 
   describe('should return 400', () => {
-    it('if country code has only one character', async () => {
+    test('if country code has only one character', async () => {
       const data: CreateAddressDto = {
         label: 'Home',
         countryCode: 'U',
@@ -51,7 +51,7 @@ describe('POST api/addresses', () => {
       );
     });
 
-    it('if phoneNumber is over 50 chars', async () => {
+    test('if phoneNumber is over 50 chars', async () => {
       const data: CreateAddressDto = {
         label: 'Home',
         countryCode: 'PT',
@@ -76,7 +76,7 @@ describe('POST api/addresses', () => {
       );
     });
 
-    it('if maximum number of addresses is exceeded', async () => {
+    test('if maximum number of addresses is exceeded', async () => {
       const countAddressesMock = jest
         .spyOn(AddressesRepository, 'countAddressesByUserId')
         .mockImplementationOnce(async () => CONSTANTS.MAX_ADDRESSES_PER_USER);
@@ -110,7 +110,7 @@ describe('POST api/addresses', () => {
   });
 
   describe('should return 403', () => {
-    it('if user is not verified', async () => {
+    test('if user is not verified', async () => {
       const data: CreateAddressDto = {
         label: 'Home',
         countryCode: 'US',
@@ -133,7 +133,7 @@ describe('POST api/addresses', () => {
       expect(body.message).toBe('Forbidden');
     });
 
-    it('if user is inactive', async () => {
+    test('if user is inactive', async () => {
       const data: CreateAddressDto = {
         label: 'Home',
         countryCode: 'US',
@@ -158,7 +158,7 @@ describe('POST api/addresses', () => {
   });
 
   describe('should return 401', () => {
-    it('if user is soft deleted', async () => {
+    test('if user is soft deleted', async () => {
       const data: CreateAddressDto = {
         label: 'Home',
         countryCode: 'US',
@@ -183,7 +183,7 @@ describe('POST api/addresses', () => {
   });
 
   describe('should return 201', () => {
-    it('should return 201', async () => {
+    test('should return 201', async () => {
       const data: CreateAddressDto = {
         label: 'Home',
         countryCode: 'US',

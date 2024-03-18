@@ -3,6 +3,7 @@ import CONSTANTS from '../../constants';
 import { ValidationError } from '../../types/errors';
 import { AddressesRepository } from './addresses.repository';
 import { CreateAddressDto } from './addresses.types';
+import { isDeleteSuccessfull } from '../../knex-database';
 
 export class AddressesController {
   static async createAddress(ctx: Koa.Context, _next: Koa.Next) {
@@ -52,11 +53,20 @@ export class AddressesController {
     ctx.body = address;
   }
 
-  static async updateAddress(ctx: Koa.Context, _next: Koa.Next) {
-    ctx.body = 'updateAddress';
-  }
+  static async deleteOneAddress(ctx: Koa.Context, _next: Koa.Next) {
+    const { id } = ctx.params;
+    const userId = ctx.state.user.id as string;
 
-  static async deleteAddress(ctx: Koa.Context, _next: Koa.Next) {
-    ctx.body = 'deleteAddress';
+    const deleteResult = await AddressesRepository.deleteOneAddressById(
+      id,
+      userId,
+    );
+    if (isDeleteSuccessfull(deleteResult)) {
+      ctx.status = 200;
+      ctx.body = { message: 'Address deleted successfully' };
+    } else {
+      ctx.status = 404;
+      ctx.body = { message: 'Address not found' };
+    }
   }
 }

@@ -2,20 +2,20 @@ import Router from 'koa-router';
 import { AuthenticationUtils } from '../../middlewares/authenticate-user.middleware';
 import { AddressesController } from './addresses.controller';
 import { AddressesValidator } from './addresses.validator';
+import { validateIdValidUuid } from '../../middlewares/param-is-valid-uuid.middleware';
 
 export function configureAddressesRouter(router: Router) {
   router.get(
     '/addresses',
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedUsers(),
-    AddressesValidator.validateGetAddresses,
     AddressesController.getAddresses,
   );
   router.get(
     '/addresses/:id',
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedUsers(),
-    AddressesValidator.validateGetOneAddress,
+    validateIdValidUuid,
     AddressesController.getOneAddress,
   );
   router.post(
@@ -25,6 +25,11 @@ export function configureAddressesRouter(router: Router) {
     AddressesValidator.validateCreateAddress,
     AddressesController.createAddress,
   );
-  router.put('/addresses/:id', AddressesController.updateAddress);
-  router.delete('/addresses/:id', AddressesController.deleteAddress);
+  router.delete(
+    '/addresses/:id',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    validateIdValidUuid,
+    AddressesController.deleteOneAddress,
+  );
 }

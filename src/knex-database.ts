@@ -49,5 +49,12 @@ export function isUpdateSuccessfull(
   updateResult: any[],
   expectedRowUpdtes = 1,
 ): boolean {
-  return updateResult.length === expectedRowUpdtes;
+  return updateResult && updateResult.length === expectedRowUpdtes;
+}
+
+export function isDeleteSuccessfull(
+  deleteResult: any[],
+  expectedRowDeletes = 1,
+): boolean {
+  return deleteResult && deleteResult.length === expectedRowDeletes;
 }

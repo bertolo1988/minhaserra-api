@@ -25,7 +25,7 @@ describe('GET /api/addresses/:id', () => {
   });
 
   describe('should return 401', () => {
-    it('if user is not authenticated', async () => {
+    test('if user is not authenticated', async () => {
       const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${addressId}`).href,
@@ -41,7 +41,7 @@ describe('GET /api/addresses/:id', () => {
       expect(body.message).toBe('Unauthorized');
     });
 
-    it('if user is soft deleted', async () => {
+    test('if user is soft deleted', async () => {
       const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${addressId}`).href,
@@ -60,7 +60,7 @@ describe('GET /api/addresses/:id', () => {
   });
 
   describe('should return 403', () => {
-    it('if user is inactive', async () => {
+    test('if user is inactive', async () => {
       const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${addressId}`).href,
@@ -77,7 +77,7 @@ describe('GET /api/addresses/:id', () => {
       expect(body.message).toBe('Forbidden');
     });
 
-    it('if user is not verified', async () => {
+    test('if user is not verified', async () => {
       const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${addressId}`).href,
@@ -96,7 +96,7 @@ describe('GET /api/addresses/:id', () => {
   });
 
   describe('should return 400', () => {
-    it('if address id is not valid uuid', async () => {
+    test('if address id is not valid uuid', async () => {
       const addressId = '1111';
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${addressId}`).href,
@@ -115,7 +115,7 @@ describe('GET /api/addresses/:id', () => {
   });
 
   describe('should return 404', () => {
-    it('if user targets non existing address', async () => {
+    test('if user targets non existing address', async () => {
       const addressId = '1f655f84-9fde-45d6-ae80-0749f7449881';
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${addressId}`).href,
@@ -132,7 +132,7 @@ describe('GET /api/addresses/:id', () => {
       expect(body.message).toBe(`Address not found`);
     });
 
-    it('if user targets address owned by another player', async () => {
+    test('if user targets address owned by another player', async () => {
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${inactiveUserAddress.id}`).href,
         {
@@ -150,7 +150,7 @@ describe('GET /api/addresses/:id', () => {
   });
 
   describe('should return 200 and an address', () => {
-    it('if user is active verified and targeted one of his addresses', async () => {
+    test('if user is active verified and targeted one of his addresses', async () => {
       const response = await fetch(
         getTestServerUrl(`/api/addresses/${verifiedUserBuyerAddress.id}`).href,
         {

@@ -22,4 +22,5 @@ describe('Integration tests', () => {
   require('./addresses/create-address.spec');
   require('./addresses/get-address-by-id.spec');
   require('./addresses/get-addresses.spec');
+  require('./addresses/delete-address.spec');
 });

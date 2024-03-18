@@ -7,7 +7,6 @@ import { AddressModel } from '../../src/controllers/addresses/addresses.types';
 import { UserModel, UserRole } from '../../src/controllers/users/users.types';
 import { CaseConverter } from '../../src/utils/case-converter';
 import { isProduction } from '../test-utils';
-import { Case } from 'change-case-all';
 
 if (isProduction()) {
   throw new Error('Cannot truncate tables in production environment!');

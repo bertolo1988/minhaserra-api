@@ -49,4 +49,15 @@ export class AddressesRepository {
       (r) => CaseConverter.objectKeysSnakeToCamel(r) as AddressModel,
     );
   }
+
+  static async deleteOneAddressById(
+    id: string,
+    userId: string,
+  ): Promise<{ id: string }[]> {
+    const knex = await getDatabaseInstance();
+    const result = (await knex('addresses')
+      .where(CaseConverter.objectKeysCamelToSnake({ id, userId }))
+      .del(['id'])) as { id: string }[];
+    return result;
+  }
 }

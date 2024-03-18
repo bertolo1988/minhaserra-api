@@ -27,7 +27,7 @@ describe('GET /api/addresses', () => {
   });
 
   describe('should return 401', () => {
-    it('if user is not authenticated', async () => {
+    test('if user is not authenticated', async () => {
       const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
         method: 'GET',
         headers: {
@@ -39,7 +39,7 @@ describe('GET /api/addresses', () => {
       expect(body.message).toBe('Unauthorized');
     });
 
-    it('if user is soft deleted', async () => {
+    test('if user is soft deleted', async () => {
       const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
         method: 'GET',
         headers: {
@@ -54,7 +54,7 @@ describe('GET /api/addresses', () => {
   });
 
   describe('should return 403', () => {
-    it('if user is inactive', async () => {
+    test('if user is inactive', async () => {
       const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
         method: 'GET',
         headers: {
@@ -67,7 +67,7 @@ describe('GET /api/addresses', () => {
       expect(body.message).toBe('Forbidden');
     });
 
-    it('if user is not verified', async () => {
+    test('if user is not verified', async () => {
       const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
         method: 'GET',
         headers: {
@@ -82,7 +82,7 @@ describe('GET /api/addresses', () => {
   });
 
   describe('should return 200 and', () => {
-    it('an empty list of addresses if the user has none', async () => {
+    test('an empty list of addresses if the user has none', async () => {
       const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
         method: 'GET',
         headers: {
@@ -96,7 +96,7 @@ describe('GET /api/addresses', () => {
       expect(body).toEqual([]);
     });
 
-    it('a list of addresses if the user has any', async () => {
+    test('a list of addresses if the user has any', async () => {
       const response = await fetch(getTestServerUrl(`/api/addresses`).href, {
         method: 'GET',
         headers: {
