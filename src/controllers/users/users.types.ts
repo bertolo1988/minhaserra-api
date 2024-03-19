@@ -117,6 +117,10 @@ export type UpdateUserDto = {
   firstName?: string;
   lastName?: string;
   termsVersion?: number;
+  invoiceName?: string;
+  invoiceTaxNumber?: string;
+  invoiceAddressId?: string;
+  shippingAddressId?: string;
 };
 
 export const UpdateUserDtoSchema = {
@@ -125,6 +129,10 @@ export const UpdateUserDtoSchema = {
     firstName: { type: 'string', nullable: true },
     lastName: { type: 'string', nullable: true },
     termsVersion: { type: 'number', nullable: true },
+    invoiceName: { type: 'string', nullable: true },
+    invoiceTaxNumber: { type: 'string', nullable: true },
+    invoiceAddressId: { type: 'string', nullable: true, format: 'uuid' },
+    shippingAddressId: { type: 'string', nullable: true, format: 'uuid' },
   },
   required: [],
   additionalProperties: false,

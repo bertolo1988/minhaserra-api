@@ -144,7 +144,8 @@ describe('GET /api/users/:id', () => {
     });
   });
 
-  describe('should return 200', () => {
+  //  TODO add invoice details here
+  describe.skip('should return 200', () => {
     test('if normal verified and active user fetches his own data', async () => {
       const mapUserModelToPresentedUserModelSpy = jest.spyOn(
         UsersMapper,

@@ -236,6 +236,10 @@ describe('PUT /api/users/:id', () => {
       const body = await response.json();
       expect(body.message).toBe(`must NOT have additional properties`);
     });
+
+    test.skip('if user tries to update his invoice address id with a malformed uuid', async () => {});
+
+    test.skip('if user tries to update his shipping address id with a malformed uuid', async () => {});
   });
 
   describe('should return 401', () => {
@@ -311,6 +315,56 @@ describe('PUT /api/users/:id', () => {
       expect(response.status).toBe(403);
       const body = await response.json();
       expect(body.message).toBe(`You are not allowed to access this resource`);
+    });
+  });
+
+  describe('should return 404', () => {
+    test('if user sets his invoice address with an address that does not exist', async () => {
+      const updateData: UpdateUserDto = {
+        firstName: 'Bruna',
+        lastName: 'Franco',
+        termsVersion: 5,
+        invoiceAddressId: 'be365f3e-06cd-40f7-b56c-3153de790d33',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserSeller.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe(`Invoice address not found`);
+    });
+
+    test('if user sets his shipping address with an address that does not exist', async () => {
+      const updateData: UpdateUserDto = {
+        firstName: 'Bruna',
+        lastName: 'Franco',
+        termsVersion: 5,
+        shippingAddressId: 'be365f3e-06cd-40f7-b56c-3153de790d33',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserSeller.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe(`Shipping address not found`);
     });
   });
 
@@ -434,5 +488,7 @@ describe('PUT /api/users/:id', () => {
         terms_version: updateData.termsVersion,
       });
     });
+
+    test.skip('if user correctly sets his invoice, shipping address, company name and tax number', async () => {});
   });
 });

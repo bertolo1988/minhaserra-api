@@ -1,10 +1,13 @@
 import { Knex } from 'knex';
+import { PG_ERROR } from 'pg-error-codes-ts/lib';
+
 import _ from 'lodash';
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { PasswordUtils } from '../../utils/password-utils';
 import { UsersMapper } from './users.mapper';
 import { UpdateUserDto, UserDto, UserModel } from './users.types';
+import { NotFoundError } from '../../types/errors';
 
 export class UsersRepository {
   static async createOne(dto: UserDto): Promise<{ id: string }> {
@@ -132,19 +135,45 @@ export class UsersRepository {
       first_name: string;
       last_name: string;
       terms_version: number;
+      invoice_name?: string;
+      invoice_tax_number?: string;
+      invoice_address_id?: string;
+      shipping_address_id?: string;
       updated_at: Date;
     }[]
   > {
-    const knex = await getDatabaseInstance();
-    const updateResult = await knex('users')
-      .where('id', id)
-      .update(
-        CaseConverter.objectKeysCamelToSnake({
-          ...data,
-          updatedAt: new Date(),
-        }),
-        ['id', 'first_name', 'last_name', 'terms_version', 'updated_at'],
-      );
-    return updateResult;
+    try {
+      const knex = await getDatabaseInstance();
+      const updateResult = await knex('users')
+        .where('id', id)
+        .update(
+          CaseConverter.objectKeysCamelToSnake({
+            ...data,
+            updatedAt: new Date(),
+          }),
+          [
+            'id',
+            'first_name',
+            'last_name',
+            'terms_version',
+            'invoice_name',
+            'invoice_tax_number',
+            'invoice_address_id',
+            'shipping_address_id',
+            'updated_at',
+          ],
+        );
+      return updateResult;
+    } catch (err: unknown) {
+      if ((err as any).code === PG_ERROR.FOREIGN_KEY_VIOLATION) {
+        if ((err as any).constraint === 'users_invoice_address_id_foreign') {
+          throw new NotFoundError('Invoice address not found');
+        }
+        if ((err as any).constraint === 'users_shipping_address_id_foreign') {
+          throw new NotFoundError('Shipping address not found');
+        }
+      }
+      throw err;
+    }
   }
 }
