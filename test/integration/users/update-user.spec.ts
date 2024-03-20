@@ -406,6 +406,42 @@ describe('PUT /api/users/:id', () => {
   });
 
   describe('should return 200', () => {
+    test('if user tries to update invoiceTaxNumber with null', async () => {
+      const updateData = {
+        invoiceTaxNumber: null,
+      };
+      const updateOneUserByIdSpy = jest.spyOn(
+        UsersRepository,
+        'updateOneUserById',
+      );
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserSeller.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.message).toBe(`User successfully updated`);
+      expect(updateOneUserByIdSpy).toHaveBeenCalledTimes(1);
+      expect(updateOneUserByIdSpy).toHaveBeenCalledWith(
+        verifiedUserSeller.id,
+        updateData,
+      );
+      const updateUserReturnResult =
+        await updateOneUserByIdSpy.mock.results[0].value;
+      expect(updateUserReturnResult.length).toBe(1);
+      expect(updateUserReturnResult[0]).toMatchObject({
+        id: verifiedUserSeller.id,
+        invoice_tax_number: null,
+      });
+    });
+
     test('if active and verified user tries to update his own data', async () => {
       const updateData: UpdateUserDto = {
         firstName: 'Bruna',
