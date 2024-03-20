@@ -6,6 +6,7 @@ import {
   unverifiedUser,
   verifiedUserAdmin,
   verifiedUserBuyer,
+  verifiedUserBuyerAddress1,
   verifiedUserModerator,
   verifiedUserSeller,
 } from '../../seeds/multiple-users.seed';
@@ -144,8 +145,7 @@ describe('GET /api/users/:id', () => {
     });
   });
 
-  //  TODO add invoice details here
-  describe.skip('should return 200', () => {
+  describe('should return 200', () => {
     test('if normal verified and active user fetches his own data', async () => {
       const mapUserModelToPresentedUserModelSpy = jest.spyOn(
         UsersMapper,
@@ -174,6 +174,10 @@ describe('GET /api/users/:id', () => {
         isEmailVerified: verifiedUserBuyer.isEmailVerified,
         termsVersion: 1,
         lastLoginAt: null,
+        invoiceName: verifiedUserBuyer.invoiceName,
+        invoiceTaxNumber: verifiedUserBuyer.invoiceTaxNumber,
+        invoiceAddressId: verifiedUserBuyerAddress1.id,
+        shippingAddressId: verifiedUserBuyerAddress1.id,
         createdAt: verifiedUserBuyer.createdAt.toISOString(),
         updatedAt: verifiedUserBuyer.updatedAt.toISOString(),
       });
@@ -207,6 +211,10 @@ describe('GET /api/users/:id', () => {
         isEmailVerified: verifiedUserBuyer.isEmailVerified,
         termsVersion: 1,
         lastLoginAt: null,
+        invoiceName: verifiedUserBuyer.invoiceName,
+        invoiceTaxNumber: verifiedUserBuyer.invoiceTaxNumber,
+        invoiceAddressId: verifiedUserBuyerAddress1.id,
+        shippingAddressId: verifiedUserBuyerAddress1.id,
         createdAt: verifiedUserBuyer.createdAt.toISOString(),
         updatedAt: verifiedUserBuyer.updatedAt.toISOString(),
       });
@@ -240,6 +248,10 @@ describe('GET /api/users/:id', () => {
         isEmailVerified: verifiedUserBuyer.isEmailVerified,
         termsVersion: 1,
         lastLoginAt: null,
+        invoiceName: verifiedUserBuyer.invoiceName,
+        invoiceTaxNumber: verifiedUserBuyer.invoiceTaxNumber,
+        invoiceAddressId: verifiedUserBuyerAddress1.id,
+        shippingAddressId: verifiedUserBuyerAddress1.id,
         createdAt: verifiedUserBuyer.createdAt.toISOString(),
         updatedAt: verifiedUserBuyer.updatedAt.toISOString(),
       });

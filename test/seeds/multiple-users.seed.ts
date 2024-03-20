@@ -54,6 +54,7 @@ export const verifiedUserModerator: UserModel = {
   updatedAt: now.toDate(),
 };
 
+const verifiedUserBuyerAddress1Id = '0081b414-5178-4a8a-a09f-92d0a0bb00fb';
 export const verifiedUserBuyerPassword = '9awj26AyDB%';
 export const verifiedUserBuyer: UserModel = {
   id: 'dbd2199f-fda4-42dc-b2d4-c73051abd786',
@@ -70,6 +71,26 @@ export const verifiedUserBuyer: UserModel = {
     '28666637e639d87832b19346772c2deeb22468b2ca3c95cc332f68bc04b2be07',
   passwordIterations: 128,
   termsVersion: 1,
+  invoiceName: 'Google LLC',
+  invoiceTaxNumber: 'PT515111118',
+  invoiceAddressId: verifiedUserBuyerAddress1Id,
+  shippingAddressId: verifiedUserBuyerAddress1Id,
+  createdAt: now.toDate(),
+  updatedAt: now.toDate(),
+};
+
+export const verifiedUserBuyerAddress1: AddressModel = {
+  id: verifiedUserBuyerAddress1Id,
+  userId: verifiedUserBuyer.id,
+  label: 'Parents house',
+  name: 'Ruth Doe',
+  lineTwo: 'n 97',
+  lineOne: 'Xihu Road',
+  city: 'Guangzhou',
+  region: 'Yuexiu District',
+  postalCode: '510030',
+  countryCode: 'CN',
+  phoneNumber: '1234567890',
   createdAt: now.toDate(),
   updatedAt: now.toDate(),
 };
@@ -154,26 +175,13 @@ export const unverifiedUser: UserModel = {
   updatedAt: now.toDate(),
 };
 
-export const verifiedUserBuyerAddress1: AddressModel = {
-  id: '0081b424-5178-4a8a-a09f-92d0a0bb00fb',
-  userId: verifiedUserBuyer.id,
-  label: 'Parents house',
-  name: 'Ruth Doe',
-  lineTwo: 'n 97',
-  lineOne: 'Xihu Road',
-  city: 'Guangzhou',
-  region: 'Yuexiu District',
-  postalCode: '510030',
-  countryCode: 'CN',
-  phoneNumber: '1234567890',
-  createdAt: now.toDate(),
-  updatedAt: now.toDate(),
-};
-
 export async function seed(knex: Knex): Promise<void> {
   await knex.raw('TRUNCATE TABLE users CASCADE');
   await knex('addresses').del();
 
+  await knex('addresses').insert([
+    CaseConverter.objectKeysCamelToSnake(verifiedUserBuyerAddress1),
+  ]);
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedUserAdmin),
     CaseConverter.objectKeysCamelToSnake(verifiedUserModerator),
@@ -182,8 +190,5 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(unverifiedUser),
     CaseConverter.objectKeysCamelToSnake(inactiveUser),
     CaseConverter.objectKeysCamelToSnake(softDeletedUser),
-  ]);
-  await knex('addresses').insert([
-    CaseConverter.objectKeysCamelToSnake(verifiedUserBuyerAddress1),
   ]);
 }
