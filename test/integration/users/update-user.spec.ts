@@ -8,6 +8,7 @@ import {
   softDeletedUser,
   verifiedUserAdmin,
   verifiedUserBuyer,
+  verifiedUserBuyerAddress1,
   verifiedUserModerator,
   verifiedUserSeller,
 } from '../../seeds/multiple-users.seed';
@@ -237,9 +238,45 @@ describe('PUT /api/users/:id', () => {
       expect(body.message).toBe(`must NOT have additional properties`);
     });
 
-    test.skip('if user tries to update his invoice address id with a malformed uuid', async () => {});
+    test('if user tries to update his invoice address id with a malformed uuid', async () => {
+      const data: UpdateUserDto = {
+        invoiceAddressId: 'malformed-uuid',
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(`'invoiceAddressId' must be a valid UUID`);
+    });
 
-    test.skip('if user tries to update his shipping address id with a malformed uuid', async () => {});
+    test('if user tries to update his shipping address id with a malformed uuid', async () => {
+      const data: UpdateUserDto = {
+        shippingAddressId: 'malformed-uuid',
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(`'shippingAddressId' must be a valid UUID`);
+    });
   });
 
   describe('should return 401', () => {
@@ -489,6 +526,46 @@ describe('PUT /api/users/:id', () => {
       });
     });
 
-    test.skip('if user correctly sets his invoice, shipping address, company name and tax number', async () => {});
+    test('if user correctly sets his invoice, shipping address, company name and tax number', async () => {
+      const updateData: UpdateUserDto = {
+        invoiceName: 'Google LLC',
+        invoiceTaxNumber: '515116022',
+        invoiceAddressId: verifiedUserBuyerAddress1.id,
+        shippingAddressId: verifiedUserBuyerAddress1.id,
+      };
+      const updateOneUserByIdSpy = jest.spyOn(
+        UsersRepository,
+        'updateOneUserById',
+      );
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.message).toBe(`User successfully updated`);
+      expect(updateOneUserByIdSpy).toHaveBeenCalledTimes(1);
+      expect(updateOneUserByIdSpy).toHaveBeenCalledWith(
+        verifiedUserBuyer.id,
+        updateData,
+      );
+      const updateUserReturnResult =
+        await updateOneUserByIdSpy.mock.results[0].value;
+      expect(updateUserReturnResult.length).toBe(1);
+      expect(updateUserReturnResult[0]).toMatchObject({
+        id: verifiedUserBuyer.id,
+        invoice_name: updateData.invoiceName,
+        invoice_tax_number: updateData.invoiceTaxNumber,
+        invoice_address_id: updateData.invoiceAddressId,
+        shipping_address_id: updateData.shippingAddressId,
+      });
+    });
   });
 });

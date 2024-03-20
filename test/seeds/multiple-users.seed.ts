@@ -6,6 +6,7 @@ import moment from 'moment';
 import { UserModel, UserRole } from '../../src/controllers/users/users.types';
 import { CaseConverter } from '../../src/utils/case-converter';
 import { isProduction } from '../test-utils';
+import { AddressModel } from '../../src/controllers/addresses/addresses.types';
 
 if (isProduction()) {
   throw new Error('Cannot truncate tables in production environment!');
@@ -153,9 +154,26 @@ export const unverifiedUser: UserModel = {
   updatedAt: now.toDate(),
 };
 
+export const verifiedUserBuyerAddress1: AddressModel = {
+  id: '0081b424-5178-4a8a-a09f-92d0a0bb00fb',
+  userId: verifiedUserBuyer.id,
+  label: 'Parents house',
+  name: 'Ruth Doe',
+  lineTwo: 'n 97',
+  lineOne: 'Xihu Road',
+  city: 'Guangzhou',
+  region: 'Yuexiu District',
+  postalCode: '510030',
+  countryCode: 'CN',
+  phoneNumber: '1234567890',
+  createdAt: now.toDate(),
+  updatedAt: now.toDate(),
+};
+
 export async function seed(knex: Knex): Promise<void> {
+  await knex.raw('TRUNCATE TABLE users CASCADE');
   await knex('addresses').del();
-  await knex('users').del();
+
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedUserAdmin),
     CaseConverter.objectKeysCamelToSnake(verifiedUserModerator),
@@ -164,5 +182,8 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(unverifiedUser),
     CaseConverter.objectKeysCamelToSnake(inactiveUser),
     CaseConverter.objectKeysCamelToSnake(softDeletedUser),
+  ]);
+  await knex('addresses').insert([
+    CaseConverter.objectKeysCamelToSnake(verifiedUserBuyerAddress1),
   ]);
 }
