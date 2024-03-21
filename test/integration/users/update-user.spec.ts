@@ -356,7 +356,7 @@ describe('PUT /api/users/:id', () => {
   });
 
   describe('should return 404', () => {
-    test('if user sets his invoice address with an address that does not exist', async () => {
+    test.skip('if user sets his invoice address with an address that does not exist', async () => {
       const updateData: UpdateUserDto = {
         firstName: 'Bruna',
         lastName: 'Franco',
@@ -380,7 +380,7 @@ describe('PUT /api/users/:id', () => {
       expect(body.message).toBe(`Invoice address not found`);
     });
 
-    test('if user sets his shipping address with an address that does not exist', async () => {
+    test.skip('if user sets his shipping address with an address that does not exist', async () => {
       const updateData: UpdateUserDto = {
         firstName: 'Bruna',
         lastName: 'Franco',

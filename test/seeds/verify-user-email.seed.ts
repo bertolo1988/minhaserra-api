@@ -106,8 +106,8 @@ export const johnContactVerificationInvalidEmail: ContactVerificationModel = {
 };
 
 export async function seed(knex: Knex): Promise<void> {
+  await knex('users').del();
   await knex('contact_verifications').del();
-  await knex.raw('TRUNCATE TABLE users CASCADE');
   await knex('addresses').del();
 
   await knex('users').insert([

@@ -9,8 +9,8 @@ if (isProduction()) {
 }
 
 export async function seed(knex: Knex): Promise<void> {
+  await knex('users').del();
   await knex('password_resets').del();
   await knex('contact_verifications').del();
-  await knex.raw('TRUNCATE TABLE users CASCADE');
   await knex('addresses').del();
 }

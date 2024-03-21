@@ -17,6 +17,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('region', 100).notNullable();
     table.string('postal_code', 50).notNullable();
     table.string('phone_number', 50).nullable();
+    table.foreign('user_id').references('users.id').onDelete('CASCADE');
     table.timestamps(true, true);
   });
 }

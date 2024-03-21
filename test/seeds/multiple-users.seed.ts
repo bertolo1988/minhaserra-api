@@ -176,12 +176,9 @@ export const unverifiedUser: UserModel = {
 };
 
 export async function seed(knex: Knex): Promise<void> {
-  await knex.raw('TRUNCATE TABLE users CASCADE');
+  await knex('users').del();
   await knex('addresses').del();
 
-  await knex('addresses').insert([
-    CaseConverter.objectKeysCamelToSnake(verifiedUserBuyerAddress1),
-  ]);
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedUserAdmin),
     CaseConverter.objectKeysCamelToSnake(verifiedUserModerator),
@@ -190,5 +187,8 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(unverifiedUser),
     CaseConverter.objectKeysCamelToSnake(inactiveUser),
     CaseConverter.objectKeysCamelToSnake(softDeletedUser),
+  ]);
+  await knex('addresses').insert([
+    CaseConverter.objectKeysCamelToSnake(verifiedUserBuyerAddress1),
   ]);
 }
