@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { AddressModel } from '../src/controllers/addresses/addresses.types';
 import { UserModel, UserRole } from '../src/controllers/users/users.types';
 
 const now = moment();
@@ -103,6 +104,27 @@ export class SeedUtils {
         '28666637e639d87832b19346772c2deeb22468b2ca3c95cc332f68bc04b2be07',
       passwordIterations: 128,
       termsVersion: 1,
+      createdAt: now.toDate(),
+      updatedAt: now.toDate(),
+    };
+  }
+
+  static getUserAddress(
+    user: UserModel,
+    addressId = '2858f2c9-3b25-47c2-a344-11996ec750e1',
+  ): AddressModel {
+    return {
+      id: addressId,
+      userId: user.id,
+      label: 'My first home',
+      name: 'John Doe',
+      lineTwo: 'n 99',
+      lineOne: 'Xihu Road',
+      city: 'Guangzhou',
+      region: 'Yuexiu District',
+      postalCode: '510030',
+      countryCode: 'CN',
+      phoneNumber: '1234567890',
       createdAt: now.toDate(),
       updatedAt: now.toDate(),
     };
