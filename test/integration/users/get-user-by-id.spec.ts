@@ -171,6 +171,7 @@ describe('GET /api/users/:id', () => {
         role: verifiedUserBuyer.role,
         firstName: verifiedUserBuyer.firstName,
         lastName: verifiedUserBuyer.lastName,
+        birthDate: moment(verifiedUserBuyer.birthDate).toISOString(),
         isEmailVerified: verifiedUserBuyer.isEmailVerified,
         termsVersion: 1,
         lastLoginAt: null,
