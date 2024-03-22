@@ -9,11 +9,11 @@ export class SeedUtils {
     return '9awj26AyDB%';
   }
 
-  static getVerifiedUser(): UserModel {
+  static getVerifiedUser(role = UserRole.BUYER): UserModel {
     return {
       id: 'dbd2199f-fda4-42dc-b2d4-c73051abd786',
       email: 'verified-user-buyer-a@minhaserra.com',
-      role: UserRole.BUYER,
+      role,
       firstName: 'Jude',
       lastName: 'Law',
       birthDate: moment('1990-01-01').toDate(),

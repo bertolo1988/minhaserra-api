@@ -40,53 +40,23 @@ export const verifiedUserBuyerB: UserModel = {
   updatedAt: now.toDate(),
 };
 
-export const verifiedUserBuyerAAddress1: AddressModel = {
-  id: '2858f2c9-3b25-47c2-a344-11996ec750e1',
-  userId: verifiedUserBuyerA.id,
-  label: `John's house`,
-  name: 'John Doe',
-  lineTwo: 'n 99',
-  lineOne: 'Xihu Road',
-  city: 'Guangzhou',
-  region: 'Yuexiu District',
-  postalCode: '510030',
-  countryCode: 'CN',
-  phoneNumber: '1234567890',
-  createdAt: now.toDate(),
-  updatedAt: now.toDate(),
-};
+export const verifiedUserBuyerAAddress1: AddressModel =
+  SeedUtils.getUserAddress(
+    verifiedUserBuyerA,
+    '2858f2c9-3b25-47c2-a344-11996ec750e1',
+  );
 
-export const verifiedUserBuyerAAddress2: AddressModel = {
-  id: '30ab9e6e-de46-4038-b6dd-49931eeee601',
-  userId: verifiedUserBuyerA.id,
-  label: 'Sister house',
-  name: 'Maria Doe',
-  lineTwo: 'n 98',
-  lineOne: 'Xihu Road',
-  city: 'Guangzhou',
-  region: 'Yuexiu District',
-  postalCode: '510030',
-  countryCode: 'CN',
-  phoneNumber: '1234567890',
-  createdAt: now.toDate(),
-  updatedAt: now.toDate(),
-};
+export const verifiedUserBuyerAAddress2: AddressModel =
+  SeedUtils.getUserAddress(
+    verifiedUserBuyerA,
+    '30ab9e6e-de46-4038-b6dd-49931eeee601',
+  );
 
-export const verifiedUserBuyerAAddress3: AddressModel = {
-  id: '0081b424-5178-4a8a-a09f-92d0a0bb00fb',
-  userId: verifiedUserBuyerA.id,
-  label: 'Parents house',
-  name: 'Ruth Doe',
-  lineTwo: 'n 97',
-  lineOne: 'Xihu Road',
-  city: 'Guangzhou',
-  region: 'Yuexiu District',
-  postalCode: '510030',
-  countryCode: 'CN',
-  phoneNumber: '1234567890',
-  createdAt: now.toDate(),
-  updatedAt: now.toDate(),
-};
+export const verifiedUserBuyerAAddress3: AddressModel =
+  SeedUtils.getUserAddress(
+    verifiedUserBuyerA,
+    '0081b424-5178-4a8a-a09f-92d0a0bb00fb',
+  );
 
 export const inactiveUserPassword: string = SeedUtils.getInactiveUserPassword();
 export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
