@@ -20,6 +20,7 @@ export const userData: UserModel = {
   role: UserRole.BUYER,
   firstName: 'John',
   lastName: 'Doe',
+  birthDate: moment('1990-01-01').toDate(),
   isActive: true,
   isEmailVerified: false,
   isDeleted: false,

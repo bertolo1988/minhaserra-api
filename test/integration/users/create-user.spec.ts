@@ -50,6 +50,7 @@ describe('POST /api/users', () => {
         role: UserRole.BUYER,
         firstName: 'John',
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password: 'password',
         termsVersion: 1,
       };
@@ -65,12 +66,37 @@ describe('POST /api/users', () => {
       expect(body.message).toBe(`must match format "email"`);
     });
 
+    test('when birthdate is invalid', async () => {
+      const userDto = {
+        email: 'when-role-is@mail.com',
+        role: UserRole.BUYER,
+        firstName: 'John',
+        lastName: 'Doe',
+        birthDate: 'Fri Mar 22 2024 00:18:14',
+        password: 'password',
+        termsVersion: 1,
+      };
+      const response = await fetch(getTestServerUrl('/api/users').href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userDto),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+      );
+    });
+
     test('when role is ADMIN', async () => {
       const userDto: UserDto = {
         email: 'when-role-is-invalid@mail.com',
         role: UserRole.ADMIN,
         firstName: 'John',
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password: 'password',
         termsVersion: 1,
       };
@@ -92,6 +118,7 @@ describe('POST /api/users', () => {
         role: UserRole.BUYER,
         firstName: 'John',
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password: 'password',
         termsVersion: 1,
         aaa: 'mansdlansdla',
@@ -114,6 +141,7 @@ describe('POST /api/users', () => {
         role: UserRole.BUYER,
         firstName: 'John',
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password: 'pbaskdjbakjsdbakjdsB1',
         termsVersion: 1,
       };
@@ -138,8 +166,8 @@ describe('POST /api/users', () => {
         email: userData.email,
         role: UserRole.BUYER,
         firstName: 'John',
-
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password:
           'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
         termsVersion: 1,
@@ -162,8 +190,8 @@ describe('POST /api/users', () => {
         email: userData.email.toUpperCase(),
         role: UserRole.BUYER,
         firstName: 'John',
-
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password:
           'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
         termsVersion: 1,
@@ -189,6 +217,7 @@ describe('POST /api/users', () => {
         role: UserRole.BUYER,
         firstName: 'John',
         lastName: 'Doe',
+        birthDate: '1990-01-01',
         password:
           'r9p6x2M9kR79oSycuxdi6CcHDXRnLkhQtUMr7ylhTyTPEC8ejEK65SuVugaMO1#C',
         termsVersion: 1,

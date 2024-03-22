@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { PasswordUtils } from '../../utils/password-utils';
 import {
   CreateUserModel,
@@ -15,6 +16,7 @@ export class UsersMapper {
       role: dto.role,
       firstName: dto.firstName,
       lastName: dto.lastName,
+      birthDate: moment(dto.birthDate).toDate(),
       passwordHash: hash,
       passwordSalt: salt,
       passwordIterations: iterations,

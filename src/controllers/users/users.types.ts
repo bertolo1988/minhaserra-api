@@ -18,8 +18,16 @@ export type UserDto = {
   role: UserRole;
   firstName: string;
   lastName: string;
+  birthDate: string;
   password: string;
   termsVersion: number;
+};
+
+export const BirthDateSchema = {
+  type: 'string',
+  nullable: true,
+  format: 'date',
+  errorMessage: `'birthDate' must be a valid date in format YYYY-MM-DD`,
 };
 
 export const PasswordSchema = {
@@ -43,6 +51,7 @@ export const UserDtoSchema = {
     },
     firstName: { type: 'string', nullable: false },
     lastName: { type: 'string', nullable: false },
+    birthDate: BirthDateSchema,
     password: PasswordSchema,
     termsVersion: { type: 'number', nullable: false },
   },
@@ -51,6 +60,7 @@ export const UserDtoSchema = {
     'role',
     'firstName',
     'lastName',
+    'birthDate',
     'password',
     'termsVersion',
   ],
@@ -63,6 +73,7 @@ export type UserModel = {
   role: UserRole;
   firstName: string;
   lastName?: string;
+  birthDate: Date;
   isEmailVerified: boolean;
   isActive: boolean;
   isDeleted: boolean;
@@ -116,6 +127,7 @@ export type PresentedUserModel = Omit<
 export type UpdateUserDto = {
   firstName?: string;
   lastName?: string;
+  birthDate?: string;
   termsVersion?: number;
   invoiceName?: string;
   invoiceTaxNumber?: string;
@@ -128,6 +140,7 @@ export const UpdateUserDtoSchema = {
   properties: {
     firstName: { type: 'string', nullable: true },
     lastName: { type: 'string', nullable: true },
+    birthDate: BirthDateSchema,
     termsVersion: { type: 'number', nullable: true },
     invoiceName: { type: 'string', nullable: true },
     invoiceTaxNumber: { type: 'string', nullable: true },

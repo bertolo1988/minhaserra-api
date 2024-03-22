@@ -19,6 +19,7 @@ export async function up(knex: Knex): Promise<void> {
     invoice_tax_number varchar(20) NULL,
     invoice_address_id uuid NULL,
     shipping_address_id uuid NULL,
+    birth_date DATE NOT NULL,
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT users_email_key UNIQUE (email),
