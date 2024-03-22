@@ -18,6 +18,7 @@ import { UsersMapper } from './users.mapper';
 import { UsersRepository } from './users.repository';
 import { UpdateUserDto, UserDto } from './users.types';
 import { isUpdateSuccessfull } from '../../knex-database';
+import { AddressesRepository } from '../addresses/addresses.repository';
 
 export class UsersController {
   static async createUser(ctx: Koa.Context, _next: Koa.Next) {
@@ -120,6 +121,30 @@ export class UsersController {
 
     if (!KoaUtils.isUserAdminOrModerator(ctx) && userId != ctx.state.user.id) {
       throw new ForbiddenError('You are not allowed to access this resource');
+    }
+
+    if (dto.invoiceAddressId) {
+      const invoiceAddress = await AddressesRepository.getUserAddressById(
+        dto.invoiceAddressId,
+        userId,
+      );
+      if (!invoiceAddress) {
+        ctx.status = 404;
+        ctx.body = { message: 'Invoice address not found' };
+        return;
+      }
+    }
+
+    if (dto.shippingAddressId) {
+      const shippingAddress = await AddressesRepository.getUserAddressById(
+        dto.shippingAddressId,
+        userId,
+      );
+      if (!shippingAddress) {
+        ctx.status = 404;
+        ctx.body = { message: 'Shipping address not found' };
+        return;
+      }
     }
 
     const updateResult = await UsersRepository.updateOneUserById(userId, dto);
