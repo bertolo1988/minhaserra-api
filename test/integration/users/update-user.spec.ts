@@ -48,6 +48,69 @@ describe('PUT /api/users/:id', () => {
       expect(body.message).toBe(`Invalid id: ${id}`);
     });
 
+    test('if attempts to update user with malformed birthdate', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            birthDate: '1991-01-01T00:00:00.000Z',
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+      );
+    });
+
+    test('if attempts to update user with malformed birthdate', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            birthDate: '1991-01-2',
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+      );
+    });
+
+    test('if attempts to update user with malformed birthdate', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedUserBuyer),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            birthDate: '01-01-1990',
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+      );
+    });
+
     test('if user tries to update his own id', async () => {
       const response = await fetch(
         getTestServerUrl(`/api/users/${verifiedUserBuyer.id}`).href,

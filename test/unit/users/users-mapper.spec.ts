@@ -16,6 +16,7 @@ describe('UsersMapper', () => {
         role: UserRole.BUYER,
         firstName: 'a',
         lastName: 'a',
+        birthDate: '1990-01-01',
         password: 'a',
         termsVersion: 1,
       };
