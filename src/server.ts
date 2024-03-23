@@ -1,8 +1,8 @@
-import { bodyParser } from '@koa/bodyparser';
 import http from 'http';
 import gracefulShutdown from 'http-graceful-shutdown';
 import { Knex } from 'knex';
 import Koa from 'koa';
+import { koaBody } from 'koa-body';
 import KoaLogger from 'koa-logger';
 import * as databaseConfig from '../knexfile';
 import CONFIG from './config';
@@ -33,7 +33,7 @@ export class ApiServer {
 
     this.app.use(ErrorsController.handleError);
     this.app.use(KoaLogger());
-    this.app.use(bodyParser());
+    this.app.use(koaBody());
 
     const router = configureKoaRouter();
     this.app.use(router.routes());
