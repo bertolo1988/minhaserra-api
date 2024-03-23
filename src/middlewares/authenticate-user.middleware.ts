@@ -12,7 +12,7 @@ export class AuthenticationUtils {
   public static async authenticateUserMiddleware(
     ctx: Koa.Context,
     next: Koa.Next,
-  ) {
+  ): Promise<void> {
     const authorizationHeader = ctx.request.headers.authorization;
     if (!authorizationHeader) {
       throw new UnauthorizedError();
