@@ -3,7 +3,6 @@ import http from 'http';
 import gracefulShutdown from 'http-graceful-shutdown';
 import { Knex } from 'knex';
 import Koa from 'koa';
-import json from 'koa-json';
 
 import KoaLogger from 'koa-logger';
 import * as databaseConfig from '../knexfile';
@@ -36,7 +35,7 @@ export class ApiServer {
     this.app.use(ErrorsController.handleError);
     this.app.use(KoaLogger());
     this.app.use(bodyParser());
-    this.app.use(json());
+    // this.app.use(json());
 
     const router = configureKoaRouter();
     this.app.use(router.routes());
