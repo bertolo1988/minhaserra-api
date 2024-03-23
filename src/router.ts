@@ -1,10 +1,11 @@
 import Router from 'koa-router';
 
+import { configureAddressesRouter } from './controllers/addresses/addresses.router';
 import { configureContactsVerificationRouter } from './controllers/contact-verifications/contact-verifications.router';
 import { configureHealthRouter } from './controllers/health/health.router';
 import { configurePasswordResetsRouter } from './controllers/password-resets/password-resets.router';
+import { configureProductsImagesRouter } from './controllers/products/products.router';
 import { configureUsersRouter } from './controllers/users/users.router';
-import { configureAddressesRouter } from './controllers/addresses/addresses.router';
 
 export function configureKoaRouter(): Router {
   const router = new Router({
@@ -16,6 +17,7 @@ export function configureKoaRouter(): Router {
   configureContactsVerificationRouter(router);
   configurePasswordResetsRouter(router);
   configureAddressesRouter(router);
+  configureProductsImagesRouter(router);
 
   return router;
 }

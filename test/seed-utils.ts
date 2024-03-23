@@ -10,8 +10,8 @@ export class SeedUtils {
   }
 
   static getVerifiedUser(
-    id = 'dbd2199f-fda4-42dc-b2d4-c73051abd786',
-    role = UserRole.BUYER,
+    id: string = 'dbd2199f-fda4-42dc-b2d4-c73051abd786',
+    role: UserRole = UserRole.BUYER,
   ): UserModel {
     return {
       id,
