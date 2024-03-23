@@ -1,5 +1,10 @@
 import moment from 'moment';
 import { AddressModel } from '../src/controllers/addresses/addresses.types';
+import {
+  ProductCategory,
+  ProductModel,
+  ProductSubCategory,
+} from '../src/controllers/products/products.types';
 import { UserModel, UserRole } from '../src/controllers/users/users.types';
 
 const now = moment();
@@ -128,6 +133,29 @@ export class SeedUtils {
       postalCode: '510030',
       countryCode: 'CN',
       phoneNumber: '1234567890',
+      createdAt: now.toDate(),
+      updatedAt: now.toDate(),
+    };
+  }
+
+  static getProduct(
+    userId: string,
+    id: string = '8a0e7b28-56f2-4926-ac20-804284c776c8',
+  ): ProductModel {
+    return {
+      id,
+      userId,
+      category: ProductCategory.FOOD,
+      subCategory: ProductSubCategory.FOOD_HONEY,
+      name: 'Product 1',
+      description: 'Description 1',
+      countryCode: 'PT',
+      region: 'Leiria',
+      avaliableQuantity: 5,
+      price: 1000, // price in cents
+      isOnSale: false,
+      isDeleted: false,
+      isApproved: true,
       createdAt: now.toDate(),
       updatedAt: now.toDate(),
     };

@@ -10,6 +10,7 @@ import { ErrorsController } from './controllers/errors';
 import { disconnectFromDatabase, getDatabaseInstance } from './knex-database';
 import { configureKoaRouter } from './router';
 import { sleep } from './utils/other-utils';
+import CONSTANTS from './constants';
 
 export type ApiServerOptions = {
   port: number;
@@ -33,7 +34,9 @@ export class ApiServer {
 
     this.app.use(ErrorsController.handleError);
     this.app.use(KoaLogger());
-    this.app.use(koaBody());
+    this.app.use(
+      koaBody({ multipart: true, jsonLimit: CONSTANTS.JSON_BODY_LIMIT }),
+    );
 
     const router = configureKoaRouter();
     this.app.use(router.routes());

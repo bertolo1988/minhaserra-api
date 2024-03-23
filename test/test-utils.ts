@@ -1,8 +1,8 @@
 import { Knex } from 'knex';
 import CONFIG from '../src/config';
+import { UserModel } from '../src/controllers/users/users.types';
 import { getDatabaseInstance } from '../src/knex-database';
 import { JwtUtils } from '../src/utils/jwt-utils';
-import { UserModel } from '../src/controllers/users/users.types';
 
 export function isProduction() {
   return (
