@@ -35,7 +35,10 @@ export class ApiServer {
     this.app.use(ErrorsController.handleError);
     this.app.use(KoaLogger());
     this.app.use(
-      koaBody({ multipart: true, jsonLimit: CONSTANTS.JSON_BODY_LIMIT }),
+      koaBody({
+        multipart: true,
+        jsonLimit: CONSTANTS.JSON_BODY_LIMIT,
+      }),
     );
 
     const router = configureKoaRouter();

@@ -49,7 +49,7 @@ describe('POST /api/products/:id/images', () => {
     });
 
     test('if image is too big to be accepted', async () => {
-      const fileName = `test/integration/products/example_image_3_2_MB.jpg`;
+      const fileName = `test/integration/products/8_5_MB.jpeg`;
       const data = {
         name: 'image',
         description: 'Image description',
@@ -71,16 +71,16 @@ describe('POST /api/products/:id/images', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'base64Image' must be a string with a maximum length of 4000000 characters, about 3 megabytes of original image size.`,
+        `'base64Image' must be a string with a maximum length of 8000000 characters, about 6 megabytes of original image size.`,
       );
     });
 
     test('if image name has characters like . (we dont want extensions in the image name)', async () => {
-      const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
       const data = {
         name: 'image.png',
         description: 'Image description',
-        base64Image: await ImageUtils.getFileImageInBase64(fileName),
+        base64Image:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAMUlEQVR4nGKp+rWHARtIyt2AVZwJqygeMKqBGMAo4CKGVUJygTJ1bBjVQAwABAAA//80iQUXEjcPMwAAAABJRU5ErkJggg==',
       };
 
       const response = await fetch(
@@ -103,11 +103,11 @@ describe('POST /api/products/:id/images', () => {
     });
 
     test('if image name has a question mark', async () => {
-      const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
       const data = {
         name: 'image?',
         description: 'Image description',
-        base64Image: await ImageUtils.getFileImageInBase64(fileName),
+        base64Image:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAMUlEQVR4nGKp+rWHARtIyt2AVZwJqygeMKqBGMAo4CKGVUJygTJ1bBjVQAwABAAA//80iQUXEjcPMwAAAABJRU5ErkJggg==',
       };
 
       const response = await fetch(
@@ -200,8 +200,8 @@ describe('POST /api/products/:id/images', () => {
       putObjectSpy.mockClear();
     });
 
-    test('if everything is correct and image is not over 3MB', async () => {
-      const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
+    test('if everything is correct and image is not over the limit', async () => {
+      const fileName = `test/integration/products/5_6_MB.jpg`;
       const data: CreateProductImageDto = {
         name: 'myimage_1',
         description: 'Image description',
