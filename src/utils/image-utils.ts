@@ -57,7 +57,7 @@ export class ImageUtils {
 
   static async getCompressedWebpImage(
     imageBuffer: Buffer,
-    options: sharp.WebpOptions = { quality: 70 },
+    options: sharp.WebpOptions = { quality: 75 },
   ): Promise<Buffer> {
     return await sharp(imageBuffer).webp(options).toBuffer();
   }
