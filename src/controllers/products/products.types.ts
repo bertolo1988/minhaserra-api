@@ -65,6 +65,21 @@ export type CreateProductImageDto = {
   base64Image: string;
 };
 
+export type CreateProductImageModel = Omit<
+  ProductImageModel,
+  'id' | 'createdAt' | 'updatedAt'
+>;
+
+export type ProductImageModel = {
+  id: string;
+  productId: string;
+  url: string;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export const CreateProductImageDtoSchema = {
   type: 'object',
   properties: {

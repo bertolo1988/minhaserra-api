@@ -2,6 +2,7 @@ import Koa from 'koa';
 import { ImageUploadService } from './image-upload-service';
 import { CreateProductImageDto } from './products.types';
 import { ProductsRepository } from './products.repository';
+import { ProductImagesRepository } from './product-images.repository';
 
 const imageUploadService = new ImageUploadService();
 
@@ -11,7 +12,10 @@ export class ProductsController {
     const productId = ctx.params.id;
     const body = ctx.request.body as CreateProductImageDto;
 
-    const product = await ProductsRepository.getProductById(productId, userId);
+    const product = await ProductsRepository.getProductByIdAndUserId(
+      productId,
+      userId,
+    );
     if (!product) {
       ctx.status = 404;
       ctx.body = { message: 'Product not found' };
