@@ -53,7 +53,7 @@ describe('POST /api/products/:id/images', () => {
       const data = {
         name: 'image',
         description: 'Image description',
-        base64Image: await ImageBase64Utils.getImageInBase64(fileName),
+        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
       };
 
       const response = await fetch(
@@ -75,7 +75,59 @@ describe('POST /api/products/:id/images', () => {
       );
     });
 
-    test.skip('if image name has characters like . (we dont want extensions in the image name)', async () => {});
+    test('if image name has characters like . (we dont want extensions in the image name)', async () => {
+      const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
+      const data = {
+        name: 'image.png',
+        description: 'Image description',
+        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+          .href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'name' can only contain letters, numbers, underscores, and dashes`,
+      );
+    });
+
+    test('if image name has a question mark', async () => {
+      const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
+      const data = {
+        name: 'image?',
+        description: 'Image description',
+        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+          .href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(
+        `'name' can only contain letters, numbers, underscores, and dashes`,
+      );
+    });
 
     test.skip('if base64Image is not valid base64 image', async () => {});
   });
@@ -101,9 +153,9 @@ describe('POST /api/products/:id/images', () => {
     test('if everything is correct', async () => {
       const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
       const data: CreateProductImageDto = {
-        name: 'myimage',
+        name: 'myimage_1',
         description: 'Image description',
-        base64Image: await ImageBase64Utils.getImageInBase64(fileName),
+        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
       };
 
       const response = await fetch(

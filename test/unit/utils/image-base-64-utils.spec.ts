@@ -78,6 +78,13 @@ describe('ImageBase64Utils', () => {
         const result = await ImageBase64Utils.isValidBase64Image(input);
         expect(result).toBe(true);
       });
+
+      test('if input is encoded webp', async () => {
+        const input =
+          'data:image/webp;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAiUlEQVR4nGJ5vFGAARsoWaaJVfw9qzFWcVEpfaziTFhFqQhGLRi1gHLA+FdoAVYJnVXYNRxR3Y5V/M2Gr1jFh34QjVowAixgubW+C6vEzzOPsIov5nyPVfx/3y2s4kM/iEYtGAEWMD4zFMYqcX03B1bxxQIlWMWtzV9gFR/6QTRqwQiwABAAAP//nl4ZZnQbEd0AAAAASUVORK5CYII=';
+        const result = await ImageBase64Utils.isValidBase64Image(input);
+        expect(result).toBe(true);
+      });
     });
   });
 });
