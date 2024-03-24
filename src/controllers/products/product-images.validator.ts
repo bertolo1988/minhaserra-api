@@ -10,7 +10,7 @@ import {
 const createProductImageDtoValidator: ValidateFunction =
   ajv.compile<CreateProductImageDto>(CreateProductImageDtoSchema);
 
-export class ProductsValidator {
+export class ProductImagesValidator {
   static async validateCreateProductImage(ctx: Koa.Context, next: Koa.Next) {
     const validBody = createProductImageDtoValidator(ctx.request.body);
     if (!validBody)

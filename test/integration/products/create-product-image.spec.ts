@@ -1,5 +1,9 @@
+import moment from 'moment';
 import tk from 'timekeeper';
 
+import CONFIG from '../../../src/config';
+import { ImageUploadService } from '../../../src/controllers/products/image-upload-service';
+import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
 import { ImageBase64Utils } from '../../../src/utils/image-base-64-utils';
 import {
   verifiedSeller,
@@ -12,7 +16,8 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
+
+const TARGET_DATE = moment('2021-01-01T00:00:00Z');
 
 describe('POST /api/products/:id/images', () => {
   beforeAll(async () => {
@@ -76,10 +81,27 @@ describe('POST /api/products/:id/images', () => {
   });
 
   describe('should return 201', () => {
-    test.only('if everything is correct', async () => {
+    var putObjectSpy: jest.SpyInstance;
+
+    beforeAll(() => {
+      tk.freeze(TARGET_DATE.toDate());
+      putObjectSpy = jest
+        .spyOn(ImageUploadService.prototype, 'putObjectS3')
+        .mockResolvedValue({
+          ETag: '"3d4389fbbc04cda7cc458f2234398d57"',
+          ServerSideEncryption: 'AES256',
+        });
+    });
+
+    afterAll(() => {
+      tk.reset();
+      putObjectSpy.mockClear();
+    });
+
+    test('if everything is correct', async () => {
       const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
       const data: CreateProductImageDto = {
-        name: 'image',
+        name: 'myimage',
         description: 'Image description',
         base64Image: await ImageBase64Utils.getImageInBase64(fileName),
       };
@@ -98,7 +120,12 @@ describe('POST /api/products/:id/images', () => {
       );
       expect(response.status).toBe(201);
       const body = await response.json();
-      console.log(111, body);
+      expect(body).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          url: `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/userId_${verifiedSeller.id}/productId_${verifiedSellerProduct1.id}/${TARGET_DATE.valueOf()}-${data.name}.jpg`,
+        }),
+      );
     });
   });
 });

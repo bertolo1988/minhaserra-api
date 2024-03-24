@@ -27,6 +27,6 @@ export class ImageBase64Utils {
   }
 
   static getBase64ImageExtension(base64Data: string): string {
-    return base64Data.split(';')[0].split('/')[1];
+    return base64Data.split(';')[0].split('/')[1].replace('.', '');
   }
 }

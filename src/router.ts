@@ -4,7 +4,7 @@ import { configureAddressesRouter } from './controllers/addresses/addresses.rout
 import { configureContactsVerificationRouter } from './controllers/contact-verifications/contact-verifications.router';
 import { configureHealthRouter } from './controllers/health/health.router';
 import { configurePasswordResetsRouter } from './controllers/password-resets/password-resets.router';
-import { configureProductsImagesRouter } from './controllers/products/products.router';
+import { configureProductsImagesRouter } from './controllers/products/product-images.router';
 import { configureUsersRouter } from './controllers/users/users.router';
 
 export function configureKoaRouter(): Router {

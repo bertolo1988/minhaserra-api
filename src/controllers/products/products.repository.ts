@@ -18,7 +18,7 @@ export class ProductsRepository {
       },
       _.isNil,
     );
-    const result = await knex<ProductModel>('users')
+    const result = await knex<ProductModel>('products')
       .where(CaseConverter.objectKeysCamelToSnake(where))
       .first();
     return CaseConverter.objectKeysSnakeToCamel(

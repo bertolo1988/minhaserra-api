@@ -6,7 +6,7 @@ import { ProductImagesRepository } from './product-images.repository';
 
 const imageUploadService = new ImageUploadService();
 
-export class ProductsController {
+export class ProductImagesController {
   static async createProductImage(ctx: Koa.Context, next: Koa.Next) {
     const userId = ctx.state.user.id;
     const productId = ctx.params.id;
@@ -38,7 +38,7 @@ export class ProductsController {
       throw new Error(`Failed to product image`);
     }
 
-    ctx.body = 201;
+    ctx.status = 201;
     ctx.body = { id: imageId, url: imageUrl };
   }
 }

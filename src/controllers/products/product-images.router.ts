@@ -1,8 +1,8 @@
 import Router from 'koa-router';
 import { AuthenticationUtils } from '../../middlewares/authenticate-user.middleware';
 import { validateIdValidUuid } from '../../middlewares/param-is-valid-uuid.middleware';
-import { ProductsValidator } from './products.validator';
-import { ProductsController } from './products.controller';
+import { ProductImagesValidator } from './product-images.validator';
+import { ProductImagesController } from './product-images.controller';
 
 export function configureProductsImagesRouter(router: Router) {
   router.get('/products', (ctx: any) => {
@@ -14,7 +14,7 @@ export function configureProductsImagesRouter(router: Router) {
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedUsers(),
     validateIdValidUuid,
-    ProductsValidator.validateCreateProductImage,
-    ProductsController.createProductImage,
+    ProductImagesValidator.validateCreateProductImage,
+    ProductImagesController.createProductImage,
   );
 }

@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import CONFIG from '../../config';
-import { CreateProductImageDto } from './products.types';
 import { ImageBase64Utils } from '../../utils/image-base-64-utils';
+import { CreateProductImageDto } from './products.types';
 
 export class ImageUploadService {
   s3: AWS.S3;
@@ -23,10 +23,7 @@ export class ImageUploadService {
     productId: string,
     data: CreateProductImageDto,
   ): Promise<string> {
-    const imageExtension = ImageBase64Utils.getBase64ImageExtension(
-      data.base64Image,
-    );
-    const imageName = `${Date.now()}-${data.name}.${imageExtension}`;
+    const imageName = this.getImageName(data);
     const imageBuffer = ImageBase64Utils.getBufferFromBase64Image(
       data.base64Image,
     );
@@ -37,6 +34,13 @@ export class ImageUploadService {
       imageBuffer,
       data.description,
     );
+  }
+
+  getImageName(data: CreateProductImageDto): string {
+    const imageExtension = ImageBase64Utils.getBase64ImageExtension(
+      data.base64Image,
+    );
+    return `${Date.now()}-${data.name}.${imageExtension}`;
   }
 
   getImageUrl(userId: string, productId: string, imageId: string): string {
@@ -68,7 +72,27 @@ export class ImageUploadService {
       metadata.description = description;
     }
     const imageRemoteName = this.getImageRemoteName(userId, productId, imageId);
-    const uploadResponse = await this.s3
+    const uploadResponse = await this.putObjectS3(
+      imageRemoteName,
+      metadata,
+      imageData,
+    );
+    if (!uploadResponse || !uploadResponse.ETag) {
+      throw new Error('Failed to upload image');
+    } else {
+      return this.getImageUrl(userId, productId, imageId);
+    }
+  }
+
+  async putObjectS3(
+    imageRemoteName: string,
+    metadata: AWS.S3.Metadata,
+    imageData: Buffer,
+  ): Promise<{
+    ETag: string;
+    ServerSideEncryption: string;
+  }> {
+    const putPromise: Promise<AWS.S3.PutObjectOutput> = this.s3
       .putObject({
         Bucket: this.bucketName,
         Body: imageData,
@@ -76,10 +100,9 @@ export class ImageUploadService {
         Metadata: metadata,
       })
       .promise();
-    if (!uploadResponse || !uploadResponse.ETag) {
-      throw new Error('Failed to upload image');
-    } else {
-      return this.getImageUrl(userId, productId, imageId);
-    }
+    return (await putPromise) as unknown as {
+      ETag: string;
+      ServerSideEncryption: string;
+    };
   }
 }
