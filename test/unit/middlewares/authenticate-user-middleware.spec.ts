@@ -2,18 +2,21 @@ import Koa from 'koa';
 import moment from 'moment';
 import tk from 'timekeeper';
 
-import CONFIG from '../../src/config';
-import { UsersRepository } from '../../src/controllers/users';
-import { UserRole, UserState } from '../../src/controllers/users/users.types';
-import { AuthenticationUtils } from '../../src/middlewares/authenticate-user.middleware';
-import { ForbiddenError, UnauthorizedError } from '../../src/types/errors';
+import CONFIG from '../../../src/config';
+import { UsersRepository } from '../../../src/controllers/users';
+import {
+  UserRole,
+  UserState,
+} from '../../../src/controllers/users/users.types';
+import { AuthenticationUtils } from '../../../src/middlewares/authenticate-user.middleware';
+import { ForbiddenError, UnauthorizedError } from '../../../src/types/errors';
 import {
   inactiveUser,
   softDeletedUser,
   unverifiedUser,
   verifiedUserBuyer,
-} from '../seeds/multiple-users.seed';
-import { getAuthorizationHeader } from '../test-utils';
+} from '../../seeds/multiple-users.seed';
+import { getAuthorizationHeader } from '../../test-utils';
 
 describe('AuthenticationUtils', () => {
   afterEach(() => {

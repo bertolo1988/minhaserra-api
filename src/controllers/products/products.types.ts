@@ -1,6 +1,6 @@
 import CONSTANTS from '../../constants';
 import { AjvCustomFormats } from '../../utils/ajv';
-import { ImageBase64Utils } from '../../utils/image-base-64-utils';
+import { ImageUtils } from '../../utils/image-utils';
 
 export enum ProductCategory {
   OTHER = 'other',
@@ -100,7 +100,7 @@ export const CreateProductImageDtoSchema = {
       type: 'string',
       nullable: false,
       maxLength: CONSTANTS.MAX_BASE64_IMAGE_SIZE,
-      errorMessage: `'base64Image' must be a string with a maximum length of ${CONSTANTS.MAX_BASE64_IMAGE_SIZE} characters, about ${ImageBase64Utils.reverseEstimateBase64Size(CONSTANTS.MAX_BASE64_IMAGE_SIZE) / 1000000} megabytes of original image size.`,
+      errorMessage: `'base64Image' must be a string with a maximum length of ${CONSTANTS.MAX_BASE64_IMAGE_SIZE} characters, about ${ImageUtils.reverseEstimateBase64Size(CONSTANTS.MAX_BASE64_IMAGE_SIZE) / 1000000} megabytes of original image size.`,
     },
   },
   required: ['name', 'base64Image'],

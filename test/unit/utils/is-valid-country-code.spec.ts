@@ -1,4 +1,4 @@
-import { isValidIso3166Alpha2Code } from '../../src/utils/other-utils';
+import { isValidIso3166Alpha2Code } from '../../../src/utils/other-utils';
 
 describe('isValidIso3166Alpha2Code', () => {
   describe('returns false', () => {

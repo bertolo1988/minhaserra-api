@@ -1,4 +1,4 @@
-import { PasswordUtils } from '../../src/utils/password-utils';
+import { PasswordUtils } from '../../../src/utils/password-utils';
 
 describe('PasswordUtils', () => {
   test('matchPassword should return true if password is correct', () => {

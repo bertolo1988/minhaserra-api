@@ -3,7 +3,7 @@ import _ from 'lodash';
 import path from 'path';
 import sharp from 'sharp';
 
-export class ImageBase64Utils {
+export class ImageUtils {
   /**
    * @param base64StringLength
    * @returns estimation of original image size in bytes before encoding to base64
@@ -37,7 +37,7 @@ export class ImageBase64Utils {
       if (!base64Data || !_.isString(base64Data)) {
         return false;
       }
-      const buffer = ImageBase64Utils.getBufferFromBase64Image(base64Data);
+      const buffer = ImageUtils.getBufferFromBase64Image(base64Data);
       const image = sharp(buffer);
       const metadata: sharp.Metadata = await image.metadata();
       if (

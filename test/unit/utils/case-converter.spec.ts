@@ -1,4 +1,4 @@
-import { CaseConverter } from '../../src/utils/case-converter';
+import { CaseConverter } from '../../../src/utils/case-converter';
 
 describe('CaseConverter', () => {
   describe('camelToSnake', () => {

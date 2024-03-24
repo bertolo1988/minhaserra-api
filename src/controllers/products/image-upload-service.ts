@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 import CONFIG from '../../config';
-import { ImageBase64Utils } from '../../utils/image-base-64-utils';
+import { ImageUtils } from '../../utils/image-utils';
 import { CreateProductImageDto } from './products.types';
 
 export class ImageUploadService {
@@ -22,11 +22,15 @@ export class ImageUploadService {
     userId: string,
     productId: string,
     data: CreateProductImageDto,
+    compress = false,
   ): Promise<string> {
     const imageName = this.getImageName(data);
-    const imageBuffer = ImageBase64Utils.getBufferFromBase64Image(
-      data.base64Image,
-    );
+    let imageBuffer = ImageUtils.getBufferFromBase64Image(data.base64Image);
+
+    if (compress) {
+      // imageBuffer = ImageUtils.compressImage(imageBuffer);
+    }
+
     return await this.uploadBufferImage(
       userId,
       productId,
@@ -37,9 +41,7 @@ export class ImageUploadService {
   }
 
   getImageName(data: CreateProductImageDto): string {
-    const imageExtension = ImageBase64Utils.getBase64ImageExtension(
-      data.base64Image,
-    );
+    const imageExtension = ImageUtils.getBase64ImageExtension(data.base64Image);
     return `${Date.now()}-${data.name}.${imageExtension}`;
   }
 

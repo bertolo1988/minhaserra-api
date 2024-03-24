@@ -4,7 +4,7 @@ import tk from 'timekeeper';
 import CONFIG from '../../../src/config';
 import { ImageUploadService } from '../../../src/controllers/products/image-upload-service';
 import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
-import { ImageBase64Utils } from '../../../src/utils/image-base-64-utils';
+import { ImageUtils } from '../../../src/utils/image-utils';
 import {
   verifiedSeller,
   verifiedSellerProduct1,
@@ -53,7 +53,7 @@ describe('POST /api/products/:id/images', () => {
       const data = {
         name: 'image',
         description: 'Image description',
-        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
+        base64Image: await ImageUtils.getFileImageInBase64(fileName),
       };
 
       const response = await fetch(
@@ -80,7 +80,7 @@ describe('POST /api/products/:id/images', () => {
       const data = {
         name: 'image.png',
         description: 'Image description',
-        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
+        base64Image: await ImageUtils.getFileImageInBase64(fileName),
       };
 
       const response = await fetch(
@@ -107,7 +107,7 @@ describe('POST /api/products/:id/images', () => {
       const data = {
         name: 'image?',
         description: 'Image description',
-        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
+        base64Image: await ImageUtils.getFileImageInBase64(fileName),
       };
 
       const response = await fetch(
@@ -205,7 +205,7 @@ describe('POST /api/products/:id/images', () => {
       const data: CreateProductImageDto = {
         name: 'myimage_1',
         description: 'Image description',
-        base64Image: await ImageBase64Utils.getFileImageInBase64(fileName),
+        base64Image: await ImageUtils.getFileImageInBase64(fileName),
       };
 
       const response = await fetch(

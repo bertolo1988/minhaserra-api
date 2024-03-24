@@ -1,12 +1,12 @@
 import tk from 'timekeeper';
 
-import { UserRole } from '../../src/controllers/users/users.types';
+import moment from 'moment';
+import { UserRole } from '../../../src/controllers/users/users.types';
 import {
   CustomJwtPayload,
   JwtUtils,
   RawJwtPayload,
-} from '../../src/utils/jwt-utils';
-import moment from 'moment';
+} from '../../../src/utils/jwt-utils';
 
 const TARGET_DATE = moment('2021-01-01T00:00:00Z');
 
