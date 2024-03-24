@@ -18,4 +18,15 @@ export class ImageBase64Utils {
     });
     return `data:image/${imageType};base64,${base64Image}`;
   }
+
+  static getBufferFromBase64Image(base64Data: string): Buffer {
+    return Buffer.from(
+      base64Data.replace(/^data:image\/\w+;base64,/, ''),
+      'base64',
+    );
+  }
+
+  static getBase64ImageExtension(base64Data: string): string {
+    return base64Data.split(';')[0].split('/')[1];
+  }
 }

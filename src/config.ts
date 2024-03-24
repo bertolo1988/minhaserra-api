@@ -20,6 +20,7 @@ const CONFIG = {
     region: process.env.AWS_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    productImagesBucketName: process.env.AWS_PRODUCT_IMAGES_BUCKET_NAME,
   },
   database: {
     host: process.env.POSTGRES_HOST,

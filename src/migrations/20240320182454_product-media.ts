@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
       .primary();
     table.uuid('product_id').notNullable();
     table.text('url').notNullable();
+    table.text('name').notNullable();
     table.text('description').nullable();
     table.foreign('product_id').references('products.id').onDelete('CASCADE');
     table.timestamps(true, true);

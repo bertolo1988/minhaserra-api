@@ -12,9 +12,7 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-
-const EXAMPLE_IMAGE_PATH =
-  '/home/tiago/code/minhaserra-api/test/integration/products/create-product-image.spec.ts';
+import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
 
 describe('POST /api/products/:id/images', () => {
   beforeAll(async () => {
@@ -71,12 +69,16 @@ describe('POST /api/products/:id/images', () => {
         `'base64Image' must be a string with a maximum length of 4000000 characters, about 3 megabytes of original image size.`,
       );
     });
+
+    test.skip('if image name has characters like . (we dont want extensions in the image name)', async () => {});
+
+    test.skip('if base64Image is not valid base64 image', async () => {});
   });
 
   describe('should return 201', () => {
     test.only('if everything is correct', async () => {
       const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
-      const data = {
+      const data: CreateProductImageDto = {
         name: 'image',
         description: 'Image description',
         base64Image: await ImageBase64Utils.getImageInBase64(fileName),
