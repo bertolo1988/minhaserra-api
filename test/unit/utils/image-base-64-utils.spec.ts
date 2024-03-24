@@ -1,6 +1,29 @@
 import { ImageBase64Utils } from '../../../src/utils/image-base-64-utils';
 
 describe('ImageBase64Utils', () => {
+  describe('getBase64ImageExtension', () => {
+    test('should return png', () => {
+      const input =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGJxOyTJAAN3WibA2ffOHoCzW74IwdlMDCQC2mtgvCrHC+fYXhCGs7eazYSzN0/SoKOTSPfD/HXhcM6tjfvgbP08LTjb+OceOjqJdD9IGbPCOezpy+Bswws2cPaN77/p6CSSNQACAAD//4jtGEB2ph6JAAAAAElFTkSuQmCC';
+      const result = ImageBase64Utils.getBase64ImageExtension(input);
+      expect(result).toBe('png');
+    });
+
+    test('should return jpeg', () => {
+      const input =
+        'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGJxOyTJAAN3WibA2ffOHoCzW74IwdlMDCQC2mtgvCrHC+fYXhCGs7eazYSzN0/SoKOTSPfD/HXhcM6tjfvgbP08LTjb+OceOjqJdD9IGbPCOezpy+Bswws2cPaN77/p6CSSNQACAAD//4jtGEB2ph6JAAAAAElFTkSuQmCC';
+      const result = ImageBase64Utils.getBase64ImageExtension(input);
+      expect(result).toBe('jpeg');
+    });
+
+    test('should return png even if in the image it is .png', () => {
+      const input =
+        'data:image/.png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGJxOyTJAAN3WibA2ffOHoCzW74IwdlMDCQC2mtgvCrHC+fYXhCGs7eazYSzN0/SoKOTSPfD/HXhcM6tjfvgbP08LTjb+OceOjqJdD9IGbPCOezpy+Bswws2cPaN77/p6CSSNQACAAD//4jtGEB2ph6JAAAAAElFTkSuQmCC';
+      const result = ImageBase64Utils.getBase64ImageExtension(input);
+      expect(result).toBe('png');
+    });
+  });
+
   describe('isValidBase64Image', () => {
     describe('should return false', () => {
       test('if input is a number', async () => {
@@ -17,6 +40,19 @@ describe('ImageBase64Utils', () => {
 
       test('if input is undefined', async () => {
         const input = undefined;
+        const result = await ImageBase64Utils.isValidBase64Image(input);
+        expect(result).toBe(false);
+      });
+
+      test('if input is an empty string', async () => {
+        const input = '';
+        const result = await ImageBase64Utils.isValidBase64Image(input);
+        expect(result).toBe(false);
+      });
+
+      test('if input is invalid base64 image', async () => {
+        const input =
+          'data:imagiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAjElEQVR4nGI5GbeLARsoeXcZq3hZmR5W8bTEC1jFmbCKUhGMWjBqAeWAUbBEAKtE1F9hrOJrDwthFdcp7ccqPvSDaNSCEWABy4nXCdht3nYIq/h1n19Yxe2mfcJuDlnOIgGMWjBqAeWA0fUzP1YJtSc9WMVf8eRiFc8QmYFVfOgH0agFI8ACQAAAAP//RvQYf4MnINYAAAAASUVORK5CY';
         const result = await ImageBase64Utils.isValidBase64Image(input);
         expect(result).toBe(false);
       });
