@@ -15,10 +15,7 @@ export class ImageUploadService {
       sslEnabled: true,
       region: CONFIG.aws.region,
     });
-    if (!CONFIG.aws.productImagesBucketName) {
-      throw new Error('Product images bucket name is not set');
-    }
-    this.bucketName = CONFIG.aws.productImagesBucketName;
+    this.bucketName = CONFIG.aws.productImagesBucketName as string;
   }
 
   async uploadImage(

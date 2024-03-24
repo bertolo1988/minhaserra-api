@@ -2,8 +2,8 @@ import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.raw(`CREATE TABLE users (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    email varchar(100) COLLATE "case_insensitive" NOT NULL,
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+    email varchar(100) UNIQUE COLLATE "case_insensitive" NOT NULL,
     "role" public."user_role" DEFAULT 'buyer'::user_role NOT NULL,
     first_name varchar(100) NOT NULL,
     last_name varchar(100) NULL,
@@ -21,9 +21,7 @@ export async function up(knex: Knex): Promise<void> {
     shipping_address_id uuid NULL,
     birth_date DATE NOT NULL,
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    CONSTRAINT users_email_key UNIQUE (email),
-    CONSTRAINT users_pkey PRIMARY KEY (id)
+    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL
   );`);
 }
 
