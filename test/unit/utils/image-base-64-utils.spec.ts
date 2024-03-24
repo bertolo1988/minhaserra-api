@@ -2,21 +2,21 @@ import { ImageUtils } from '../../../src/utils/image-utils';
 
 describe('ImageUtils', () => {
   describe('getBase64ImageExtension', () => {
-    test('should return png', () => {
+    test('should return png', async () => {
       const input =
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGJxOyTJAAN3WibA2ffOHoCzW74IwdlMDCQC2mtgvCrHC+fYXhCGs7eazYSzN0/SoKOTSPfD/HXhcM6tjfvgbP08LTjb+OceOjqJdD9IGbPCOezpy+Bswws2cPaN77/p6CSSNQACAAD//4jtGEB2ph6JAAAAAElFTkSuQmCC';
       const result = ImageUtils.getBase64ImageExtension(input);
       expect(result).toBe('png');
     });
 
-    test('should return jpeg', () => {
+    test('should return jpeg', async () => {
       const input =
-        'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGJxOyTJAAN3WibA2ffOHoCzW74IwdlMDCQC2mtgvCrHC+fYXhCGs7eazYSzN0/SoKOTSPfD/HXhcM6tjfvgbP08LTjb+OceOjqJdD9IGbPCOezpy+Bswws2cPaN77/p6CSSNQACAAD//4jtGEB2ph6JAAAAAElFTkSuQmCC';
+        'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAMUlEQVR4nGLZGS7IgA202p3EKs6EVRQPGNVADGCM3K2CVcKpJIo6NoxqIAYAAgAA//+kZAUXQ5051QAAAABJRU5ErkJggg==';
       const result = ImageUtils.getBase64ImageExtension(input);
       expect(result).toBe('jpeg');
     });
 
-    test('should return png even if in the image it is .png', () => {
+    test('should return png even if in the image it is .png', async () => {
       const input =
         'data:image/.png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGJxOyTJAAN3WibA2ffOHoCzW74IwdlMDCQC2mtgvCrHC+fYXhCGs7eazYSzN0/SoKOTSPfD/HXhcM6tjfvgbP08LTjb+OceOjqJdD9IGbPCOezpy+Bswws2cPaN77/p6CSSNQACAAD//4jtGEB2ph6JAAAAAElFTkSuQmCC';
       const result = ImageUtils.getBase64ImageExtension(input);

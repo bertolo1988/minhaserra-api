@@ -22,13 +22,13 @@ export class ImageUploadService {
     userId: string,
     productId: string,
     data: CreateProductImageDto,
-    compress = false,
+    compress = true,
   ): Promise<string> {
     const imageName = this.getImageName(data);
     let imageBuffer = ImageUtils.getBufferFromBase64Image(data.base64Image);
 
     if (compress) {
-      // imageBuffer = ImageUtils.compressImage(imageBuffer);
+      imageBuffer = await ImageUtils.getCompressedWebpImage(imageBuffer);
     }
 
     return await this.uploadBufferImage(
@@ -41,8 +41,7 @@ export class ImageUploadService {
   }
 
   getImageName(data: CreateProductImageDto): string {
-    const imageExtension = ImageUtils.getBase64ImageExtension(data.base64Image);
-    return `${Date.now()}-${data.name}.${imageExtension}`;
+    return `${Date.now()}-${data.name}.webp`;
   }
 
   getImageUrl(userId: string, productId: string, imageId: string): string {

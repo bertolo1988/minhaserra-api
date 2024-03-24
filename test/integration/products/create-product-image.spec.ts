@@ -225,7 +225,7 @@ describe('POST /api/products/:id/images', () => {
       expect(body).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          url: `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/userId_${verifiedSeller.id}/productId_${verifiedSellerProduct1.id}/${TARGET_DATE.valueOf()}-${data.name}.jpg`,
+          url: `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/userId_${verifiedSeller.id}/productId_${verifiedSellerProduct1.id}/${TARGET_DATE.valueOf()}-${data.name}.webp`,
         }),
       );
     });
