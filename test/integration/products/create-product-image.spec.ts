@@ -129,7 +129,57 @@ describe('POST /api/products/:id/images', () => {
       );
     });
 
-    test.skip('if base64Image is not valid base64 image', async () => {});
+    test('if image is not valid base64 image', async () => {
+      const data = {
+        name: 'myimage',
+        description: 'Image description',
+        base64Image:
+          'data:imagiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAjElEQVR4nGI5GbeLARsoeXcZq3hZmR5W8bTEC1jFmbCKUhGMWjBqAeWAUbBEAKtE1F9hrOJrDwthFdcp7ccqPvSDaNSCEWABy4nXCdht3nYIq/h1n19Yxe2mfcJuDlnOIgGMWjBqAeWA0fUzP1YJtSc9WMVf8eRiFc8QmYFVfOgH0agFI8ACQAAAAP//RvQYf4MnINYAAAAASUVORK5CY',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+          .href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(`'base64Image' is not a valid base64 image`);
+    });
+
+    test('if the image does not have an expected extension', async () => {
+      const data: CreateProductImageDto = {
+        name: 'myimage_2',
+        description: 'Image description',
+        base64Image:
+          'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABy0lEQVR4nOzay4tSYRjH8ZQjBAc3JUgQkSAkdrMI0wg5gULkIihcWCsXRVhEmwpcqIE7wW5CtjCKolUQXXDhIgRr0VIQxrmgCA6zcoaZgZnR2cw/8N0/vPB8l593OMOPF+Qwo3Xk971DVLd2B714O4Xed3Lo9ucEeusE/7yTj6DvvnuG7kY1KB0gnQ6QTgdI56rEVvDAnd1DP5/KoDevtdCPr4bQh2c30J9uLaO/OexBN/4GdIB0OkA6HSCdNa8G8aCR5vf4L+2r6NH7m+gfqjvo8aGDni3X0O2hjW78DegA6XSAdDpAOsv/toQH4flXdE/pCXpx9A+9/C3Az7EX0ROFK+jd7R668TegA6TTAdLpAOms3GX+3D19qoNe/38S3TtdQz/WuIuen11A/xHg57dfxtCNvwEdIJ0OkE4HSGf9Wuf/+37v8Xt81O9HH/gu8m+InEOuPu+jJyv8nOSLn+jG34AOkE4HSKcDpHMNphM8ePXxE/qlOP+d/npwjB4a3UJ//MdBn50JoxceNNGNvwEdIJ0OkE4HSOd69JC/pzl5z5/HS5m/6LVOGX18w0H3+o6iv04voO/frKMbfwM6QDodIJ0OkO4gAAD//9jOWSJuW0xTAAAAAElFTkSuQmCC',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+          .href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toEqual(
+        `'base64Image' extension is not allowed. Allowed extensions are: jpg, jpeg, png, gif, webp`,
+      );
+    });
   });
 
   describe('should return 201', () => {
@@ -150,7 +200,7 @@ describe('POST /api/products/:id/images', () => {
       putObjectSpy.mockClear();
     });
 
-    test('if everything is correct', async () => {
+    test('if everything is correct and image is not over 3MB', async () => {
       const fileName = `test/integration/products/example_image_2_5_MB.jpg`;
       const data: CreateProductImageDto = {
         name: 'myimage_1',

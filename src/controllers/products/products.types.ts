@@ -1,4 +1,5 @@
 import CONSTANTS from '../../constants';
+import { AjvCustomFormats } from '../../utils/ajv';
 import { ImageBase64Utils } from '../../utils/image-base-64-utils';
 
 export enum ProductCategory {
@@ -83,8 +84,18 @@ export type ProductImageModel = {
 export const CreateProductImageDtoSchema = {
   type: 'object',
   properties: {
-    name: { type: 'string', nullable: false },
-    description: { type: 'string', nullable: true },
+    name: {
+      type: 'string',
+      nullable: false,
+      format: AjvCustomFormats.NUMBERS_LETTERS_UNDERSCORE_DASH,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+      errorMessage: `'name' can only contain letters, numbers, underscores, and dashes`,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+    },
     base64Image: {
       type: 'string',
       nullable: false,

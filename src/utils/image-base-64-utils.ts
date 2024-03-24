@@ -13,7 +13,7 @@ export class ImageBase64Utils {
   }
 
   static async getFileImageInBase64(fileName: string): Promise<string> {
-    const imageType = path.extname(fileName);
+    const imageType = path.extname(fileName).replace('.', '');
     const imagePath = path.resolve(fileName);
     const base64Image = await fs.readFile(imagePath, {
       encoding: 'base64',

@@ -1,4 +1,5 @@
 import { Schema } from 'ajv';
+import { AjvCustomFormats } from '../../utils/ajv';
 
 export type AddressModel = {
   id: string;
@@ -44,7 +45,7 @@ export const CreateAddressDtoSchema: Schema = {
     },
     countryCode: {
       type: 'string',
-      format: 'country-code',
+      format: AjvCustomFormats.COUNTRY_CODE,
       nullable: false,
       maxLength: 2,
       errorMessage: `'countryCode' must have two characters and be valid according to ISO 3166-1 alpha-2`,

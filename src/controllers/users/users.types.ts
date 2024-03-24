@@ -1,3 +1,5 @@
+import { AjvCustomFormats } from '../../utils/ajv';
+
 export enum UserState {
   UNVERIFIED = 'unverified',
   VERIFIED = 'verified',
@@ -35,7 +37,7 @@ export const PasswordSchema = {
   nullable: false,
   minLength: 8,
   maxLength: 64,
-  format: 'password',
+  format: AjvCustomFormats.PASSWORD,
   errorMessage: `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
 };
 
