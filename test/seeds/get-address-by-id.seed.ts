@@ -18,13 +18,13 @@ export const nonVerifiedUser: UserModel = SeedUtils.getNonVerifiedUser();
 export const softDeletedUser: UserModel = SeedUtils.getSoftDeletedUser();
 
 export const inactiveUserAddress: AddressModel = SeedUtils.getUserAddress(
-  inactiveUser,
   'c60f6824-1dd2-4eb9-b168-f8936b776185',
+  inactiveUser,
 );
 
 export const verifiedUserBuyerAddress: AddressModel = SeedUtils.getUserAddress(
-  verifiedUserBuyer,
   '2858f2c9-3b25-47c2-a344-11996ec750e1',
+  verifiedUserBuyer,
 );
 
 export async function seed(knex: Knex): Promise<void> {

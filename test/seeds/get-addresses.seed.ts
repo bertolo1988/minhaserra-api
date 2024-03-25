@@ -42,20 +42,20 @@ export const verifiedUserBuyerB: UserModel = {
 
 export const verifiedUserBuyerAAddress1: AddressModel =
   SeedUtils.getUserAddress(
-    verifiedUserBuyerA,
     '2858f2c9-3b25-47c2-a344-11996ec750e1',
+    verifiedUserBuyerA,
   );
 
 export const verifiedUserBuyerAAddress2: AddressModel =
   SeedUtils.getUserAddress(
-    verifiedUserBuyerA,
     '30ab9e6e-de46-4038-b6dd-49931eeee601',
+    verifiedUserBuyerA,
   );
 
 export const verifiedUserBuyerAAddress3: AddressModel =
   SeedUtils.getUserAddress(
-    verifiedUserBuyerA,
     '0081b424-5178-4a8a-a09f-92d0a0bb00fb',
+    verifiedUserBuyerA,
   );
 
 export const inactiveUserPassword: string = SeedUtils.getInactiveUserPassword();

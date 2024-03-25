@@ -56,8 +56,8 @@ export const verifiedUserBuyer: UserModel = {
 };
 
 export const verifiedUserBuyerAddress1: AddressModel = SeedUtils.getUserAddress(
-  verifiedUserBuyer,
   verifiedUserBuyerAddress1Id,
+  verifiedUserBuyer,
 );
 
 export const verifiedUserSellerPassword: string =

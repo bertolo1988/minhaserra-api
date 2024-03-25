@@ -118,12 +118,9 @@ export class SeedUtils {
     };
   }
 
-  static getUserAddress(
-    user: UserModel,
-    addressId = '2858f2c9-3b25-47c2-a344-11996ec750e1',
-  ): AddressModel {
+  static getUserAddress(id: string, user: UserModel): AddressModel {
     return {
-      id: addressId,
+      id,
       userId: user.id,
       label: 'My first home',
       name: 'John Doe',
