@@ -32,6 +32,32 @@ describe('POST /api/products/:id/images', () => {
     tk.reset();
   });
 
+  describe('should return 404', () => {
+    test('if user tries to upload image to a product that he doesnt own', async () => {
+      const data = {
+        name: 'image2',
+        description: 'Image description',
+        base64Image:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAMUlEQVR4nGKp+rWHARtIyt2AVZwJqygeMKqBGMAo4CKGVUJygTJ1bBjVQAwABAAA//80iQUXEjcPMwAAAABJRU5ErkJggg==',
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
+          .href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller2),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe(`Product not found`);
+    });
+  });
+
   describe('should return 400', () => {
     test('if product id is not a valid uuid', async () => {
       const productId = 'not-valid-uuid';
