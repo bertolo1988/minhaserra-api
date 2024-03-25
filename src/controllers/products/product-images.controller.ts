@@ -9,6 +9,10 @@ import { CreateProductImageDto } from './products.types';
 const imageUploadService = new ImageUploadService();
 
 export class ProductImagesController {
+  static async getProductImagesByProductId(ctx: Koa.Context, next: Koa.Next) {
+    // TODO: Implement this method
+  }
+
   static async createProductImage(ctx: Koa.Context, next: Koa.Next) {
     const userId = ctx.state.user.id;
     const productId = ctx.params.id;

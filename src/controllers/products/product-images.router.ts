@@ -5,10 +5,11 @@ import { ProductImagesValidator } from './product-images.validator';
 import { ProductImagesController } from './product-images.controller';
 
 export function configureProductsImagesRouter(router: Router) {
-  router.get('/products', (ctx: any) => {
-    ctx.status = 200;
-    ctx.body = { message: 'hi' };
-  });
+  router.get(
+    '/products/:id/images',
+    validateIdValidUuid,
+    ProductImagesController.getProductImagesByProductId,
+  );
   router.post(
     '/products/:id/images',
     AuthenticationUtils.authenticateUserMiddleware,
