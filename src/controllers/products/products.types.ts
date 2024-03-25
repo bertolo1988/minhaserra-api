@@ -81,6 +81,11 @@ export type ProductImageModel = {
   updatedAt: Date;
 };
 
+export type PublicProductImageModel = Omit<
+  ProductImageModel,
+  'id' | 'productId' | 'name' | 'createdAt' | 'updatedAt'
+>;
+
 export const CreateProductImageDtoSchema = {
   type: 'object',
   properties: {

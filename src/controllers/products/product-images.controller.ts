@@ -5,12 +5,25 @@ import { ImageUploadService } from './image-upload-service';
 import { ProductImagesRepository } from './product-images.repository';
 import { ProductsRepository } from './products.repository';
 import { CreateProductImageDto } from './products.types';
+import { ProductImagesMapper } from './product-images.mapper';
 
 const imageUploadService = new ImageUploadService();
 
 export class ProductImagesController {
   static async getProductImagesByProductId(ctx: Koa.Context, next: Koa.Next) {
-    // TODO: Implement this method
+    const productId = ctx.params.id;
+
+    const product = await ProductsRepository.getProductById(productId);
+    if (!product) {
+      ctx.status = 404;
+      ctx.body = { message: 'Product not found' };
+      return;
+    }
+    const productImages =
+      await ProductImagesRepository.getProductImagesByProductId(productId);
+
+    ctx.status = 200;
+    ctx.body = productImages;
   }
 
   static async createProductImage(ctx: Koa.Context, next: Koa.Next) {

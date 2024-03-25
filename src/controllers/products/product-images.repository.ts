@@ -1,7 +1,10 @@
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { ProductImagesMapper } from './product-images.mapper';
-import { CreateProductImageModel } from './products.types';
+import {
+  CreateProductImageModel,
+  PublicProductImageModel,
+} from './products.types';
 
 const TABLE_NAME = 'product_images';
 
@@ -36,5 +39,18 @@ export class ProductImagesRepository {
       .where(CaseConverter.objectKeysCamelToSnake({ productId }))
       .first()) as { count: string };
     return parseInt(result.count);
+  }
+
+  static async getProductImagesByProductId(
+    productId: string,
+  ): Promise<PublicProductImageModel[]> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<PublicProductImageModel>(TABLE_NAME)
+      .select(['id', 'url', 'description'])
+      .where(CaseConverter.objectKeysCamelToSnake({ productId }));
+    if (!result) return [];
+    return result.map(
+      (r) => CaseConverter.objectKeysSnakeToCamel(r) as PublicProductImageModel,
+    );
   }
 }
