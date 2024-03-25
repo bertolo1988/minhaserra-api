@@ -1,8 +1,10 @@
 import Koa from 'koa';
+import CONSTANTS from '../../constants';
+import { ValidationError } from '../../types/errors';
 import { ImageUploadService } from './image-upload-service';
-import { CreateProductImageDto } from './products.types';
-import { ProductsRepository } from './products.repository';
 import { ProductImagesRepository } from './product-images.repository';
+import { ProductsRepository } from './products.repository';
+import { CreateProductImageDto } from './products.types';
 
 const imageUploadService = new ImageUploadService();
 
@@ -20,6 +22,12 @@ export class ProductImagesController {
       ctx.status = 404;
       ctx.body = { message: 'Product not found' };
       return;
+    }
+
+    const imagesPerProductCount =
+      await ProductImagesRepository.countImagesByProductId(productId);
+    if (imagesPerProductCount >= CONSTANTS.MAX_IMAGES_PER_PRODUCT) {
+      throw new ValidationError('Too many pictures for this product');
     }
 
     const imageUrl = await imageUploadService.uploadImage(

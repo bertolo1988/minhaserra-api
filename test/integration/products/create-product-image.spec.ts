@@ -6,8 +6,10 @@ import { ImageUploadService } from '../../../src/controllers/products/image-uplo
 import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
 import { ImageUtils } from '../../../src/utils/image-utils';
 import {
-  verifiedSeller,
-  verifiedSellerProduct1,
+  verifiedSeller1,
+  verifiedSeller1Product1,
+  verifiedSeller2,
+  verifiedSeller2Product1,
 } from '../../seeds/product-images.seed';
 import {
   DatabaseSeedNames,
@@ -38,7 +40,7 @@ describe('POST /api/products/:id/images', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
         },
@@ -57,12 +59,12 @@ describe('POST /api/products/:id/images', () => {
       };
 
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
           .href,
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -84,12 +86,12 @@ describe('POST /api/products/:id/images', () => {
       };
 
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
           .href,
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -102,6 +104,31 @@ describe('POST /api/products/:id/images', () => {
       );
     });
 
+    test('if the seller reached the maximum amount of images for the same product', async () => {
+      const data = {
+        name: 'image',
+        description: 'Image description',
+        base64Image:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAMUlEQVR4nGKp+rWHARtIyt2AVZwJqygeMKqBGMAo4CKGVUJygTJ1bBjVQAwABAAA//80iQUXEjcPMwAAAABJRU5ErkJggg==',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSeller2Product1.id}/images`)
+          .href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller2),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.message).toBe(`Too many pictures for this product`);
+    });
+
     test('if image name has a question mark', async () => {
       const data = {
         name: 'image?',
@@ -111,12 +138,12 @@ describe('POST /api/products/:id/images', () => {
       };
 
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
           .href,
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -138,12 +165,12 @@ describe('POST /api/products/:id/images', () => {
       };
 
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
           .href,
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -163,12 +190,12 @@ describe('POST /api/products/:id/images', () => {
       };
 
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
           .href,
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -209,12 +236,12 @@ describe('POST /api/products/:id/images', () => {
       };
 
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}/images`)
+        getTestServerUrl(`/api/products/${verifiedSeller1Product1.id}/images`)
           .href,
         {
           method: 'POST',
           headers: {
-            Authorization: getAuthorizationHeader(verifiedSeller),
+            Authorization: getAuthorizationHeader(verifiedSeller1),
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
@@ -225,7 +252,7 @@ describe('POST /api/products/:id/images', () => {
       expect(body).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          url: `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/userId_${verifiedSeller.id}/productId_${verifiedSellerProduct1.id}/${TARGET_DATE.valueOf()}-${data.name}.webp`,
+          url: `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/userId_${verifiedSeller1.id}/productId_${verifiedSeller1Product1.id}/${TARGET_DATE.valueOf()}-${data.name}.webp`,
         }),
       );
     });

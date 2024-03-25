@@ -2,6 +2,7 @@ import moment from 'moment';
 import { AddressModel } from '../src/controllers/addresses/addresses.types';
 import {
   ProductCategory,
+  ProductImageModel,
   ProductModel,
   ProductSubCategory,
 } from '../src/controllers/products/products.types';
@@ -138,10 +139,7 @@ export class SeedUtils {
     };
   }
 
-  static getProduct(
-    userId: string,
-    id: string = '8a0e7b28-56f2-4926-ac20-804284c776c8',
-  ): ProductModel {
+  static getProduct(id: string, userId: string): ProductModel {
     return {
       id,
       userId,
@@ -156,6 +154,18 @@ export class SeedUtils {
       isOnSale: false,
       isDeleted: false,
       isApproved: true,
+      createdAt: now.toDate(),
+      updatedAt: now.toDate(),
+    };
+  }
+
+  static getProductImage(id: string, productId: string): ProductImageModel {
+    return {
+      id,
+      productId,
+      url: `https://example.com/${id}.webp`,
+      name: 'image_1',
+      description: 'Some description',
       createdAt: now.toDate(),
       updatedAt: now.toDate(),
     };
