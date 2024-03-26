@@ -61,6 +61,10 @@ export const verifiedSeller2Product1Images = [
   ),
 ];
 
+export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
+export const softDeletedUser: UserModel = SeedUtils.getSoftDeletedUser();
+export const unverifiedUser: UserModel = SeedUtils.getNonVerifiedUser();
+
 export async function seed(knex: Knex): Promise<void> {
   await knex('users').del();
   await knex('products').del();
@@ -69,6 +73,9 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller2),
+    CaseConverter.objectKeysCamelToSnake(inactiveUser),
+    CaseConverter.objectKeysCamelToSnake(softDeletedUser),
+    CaseConverter.objectKeysCamelToSnake(unverifiedUser),
   ]);
   await knex('products').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product1),

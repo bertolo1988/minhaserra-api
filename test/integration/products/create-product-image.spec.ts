@@ -6,6 +6,9 @@ import { ImageUploadService } from '../../../src/controllers/products/image-uplo
 import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
 import { ImageUtils } from '../../../src/utils/image-utils';
 import {
+  inactiveUser,
+  softDeletedUser,
+  unverifiedUser,
   verifiedSeller1,
   verifiedSeller1Product1,
   verifiedSeller2,
@@ -30,6 +33,77 @@ describe('POST /api/products/:id/images', () => {
   afterEach(() => {
     jest.clearAllMocks();
     tk.reset();
+  });
+
+  describe('should return 401', () => {
+    test('if user is not authenticated', async () => {
+      const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${addressId}/images`).href,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body.message).toBe('Unauthorized');
+    });
+
+    test('if user is soft deleted', async () => {
+      const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${addressId}/images`).href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(softDeletedUser),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body.message).toBe('Unauthorized');
+    });
+  });
+
+  describe('should return 403', () => {
+    test('if user is inactive', async () => {
+      const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${addressId}/images`).href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(inactiveUser),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
+    });
+
+    test('if user is not verified', async () => {
+      const addressId = 'b7604309-ba09-4057-8b76-2d4ff121dcb2';
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${addressId}/images`).href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(unverifiedUser),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
+    });
   });
 
   describe('should return 404', () => {
