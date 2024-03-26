@@ -25,5 +25,5 @@ describe('Integration tests', () => {
   require('./addresses/delete-address.spec');
   require('./products/create-product-image.spec');
   require('./products/get-product-images.spec');
-  require('./products/delete-product-images.spec');
+  require('./products/delete-product-image.spec');
 });
