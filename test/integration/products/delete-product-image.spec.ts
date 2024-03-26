@@ -134,4 +134,10 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       );
     });
   });
+
+  describe('should return 200', () => {
+    test('when everything is correct', async () => {
+      // TODO: Implement test
+    });
+  });
 });
