@@ -126,9 +126,9 @@ describe('POST /api/products/:id/images', () => {
           body: JSON.stringify(data),
         },
       );
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(403);
       const body = await response.json();
-      expect(body.message).toBe(`Product not found`);
+      expect(body.message).toBe(`Forbidden`);
     });
   });
 

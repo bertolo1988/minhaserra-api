@@ -67,13 +67,16 @@ export class ProductImagesController {
     const productId = ctx.params.id;
     const body = ctx.request.body as CreateProductImageDto;
 
-    const product = await ProductsRepository.getProductByIdAndUserId(
-      productId,
-      userId,
-    );
+    const product = await ProductsRepository.getProductById(productId);
     if (!product) {
       ctx.status = 404;
       ctx.body = { message: 'Product not found' };
+      return;
+    }
+
+    if (product.userId !== userId) {
+      ctx.status = 403;
+      ctx.body = { message: 'Forbidden' };
       return;
     }
 
