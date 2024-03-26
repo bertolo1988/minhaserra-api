@@ -3,12 +3,25 @@ import { CaseConverter } from '../../utils/case-converter';
 import { ProductImagesMapper } from './product-images.mapper';
 import {
   CreateProductImageModel,
+  ProductImageModel,
   PublicProductImageModel,
 } from './products.types';
 
 const TABLE_NAME = 'product_images';
 
 export class ProductImagesRepository {
+  static async getProductImageByProductIdAndImageId(
+    productId: string,
+    imageId: string,
+  ): Promise<ProductImageModel | null> {
+    const knex = await getDatabaseInstance();
+    const result = await knex<PublicProductImageModel>(TABLE_NAME)
+      .where(CaseConverter.objectKeysCamelToSnake({ productId, id: imageId }))
+      .first();
+    if (!result) return null;
+    return CaseConverter.objectKeysSnakeToCamel(result) as ProductImageModel;
+  }
+
   static async createProductImage(
     productId: string,
     imageUrl: string,

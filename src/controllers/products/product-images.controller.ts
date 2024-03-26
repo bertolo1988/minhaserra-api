@@ -10,6 +10,38 @@ const imageUploadService = new ImageUploadService();
 
 export class ProductImagesController {
   static async deleteProductImageById(ctx: Koa.Context, next: Koa.Next) {
+    const userId = ctx.state.user.id;
+    const { id: productId, imageId } = ctx.params;
+
+    const product = await ProductsRepository.getProductById(productId);
+    if (!product) {
+      ctx.status = 404;
+      ctx.body = { message: 'Product not found' };
+      return;
+    }
+
+    if (product.userId !== userId) {
+      ctx.status = 403;
+      ctx.body = { message: 'Forbidden' };
+      return;
+    }
+
+    const productImage =
+      await ProductImagesRepository.getProductImageByProductIdAndImageId(
+        productId,
+        imageId,
+      );
+
+    if (!productImage) {
+      ctx.status = 404;
+      ctx.body = { message: 'Image not found' };
+      return;
+    }
+
+    // TODO: delete from s3 and db
+    // delete from s3
+    // delete from db
+
     ctx.status = 200;
     ctx.body = { message: 'Image deleted' };
   }

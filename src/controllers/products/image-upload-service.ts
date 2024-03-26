@@ -18,6 +18,19 @@ export class ImageUploadService {
     this.bucketName = CONFIG.aws.productImagesBucketName as string;
   }
 
+  async deleteImage(imageUrl: string) {
+    // strip out url to get key
+    const imageKey = '';
+    const result = await this.s3
+      .deleteObject({
+        Bucket: this.bucketName,
+        Key: imageKey,
+      })
+      .promise();
+    // TODO: evaluate result
+    return result;
+  }
+
   async uploadImage(
     userId: string,
     productId: string,
