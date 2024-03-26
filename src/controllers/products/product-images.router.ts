@@ -1,8 +1,11 @@
 import Router from 'koa-router';
 import { AuthenticationUtils } from '../../middlewares/authenticate-user.middleware';
-import { validateIdValidUuid } from '../../middlewares/param-is-valid-uuid.middleware';
-import { ProductImagesValidator } from './product-images.validator';
+import {
+  getUuidValidatorMiddleware,
+  validateIdValidUuid,
+} from '../../middlewares/param-is-valid-uuid.middleware';
 import { ProductImagesController } from './product-images.controller';
+import { ProductImagesValidator } from './product-images.validator';
 
 export function configureProductsImagesRouter(router: Router) {
   router.get(
@@ -10,6 +13,15 @@ export function configureProductsImagesRouter(router: Router) {
     validateIdValidUuid,
     ProductImagesController.getProductImagesByProductId,
   );
+  router.delete(
+    '/products/:id/images/:imageId',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    validateIdValidUuid,
+    getUuidValidatorMiddleware('imageId'),
+    ProductImagesController.deleteProductImageById,
+  );
+
   router.post(
     '/products/:id/images',
     AuthenticationUtils.authenticateUserMiddleware,

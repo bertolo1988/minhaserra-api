@@ -9,3 +9,13 @@ export async function validateIdValidUuid(ctx: Koa.Context, next: Koa.Next) {
   }
   await next();
 }
+
+export function getUuidValidatorMiddleware(field: string): Koa.Middleware {
+  return async (ctx: Koa.Context, next: Koa.Next) => {
+    const param = ctx.params[field];
+    if (!isValidUUID(param)) {
+      throw new ValidationError(`Invalid '${field}': ${param}`);
+    }
+    await next();
+  };
+}

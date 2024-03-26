@@ -5,11 +5,15 @@ import { ImageUploadService } from './image-upload-service';
 import { ProductImagesRepository } from './product-images.repository';
 import { ProductsRepository } from './products.repository';
 import { CreateProductImageDto } from './products.types';
-import { ProductImagesMapper } from './product-images.mapper';
 
 const imageUploadService = new ImageUploadService();
 
 export class ProductImagesController {
+  static async deleteProductImageById(ctx: Koa.Context, next: Koa.Next) {
+    ctx.status = 200;
+    ctx.body = { message: 'Image deleted' };
+  }
+
   static async getProductImagesByProductId(ctx: Koa.Context, next: Koa.Next) {
     const productId = ctx.params.id;
 
