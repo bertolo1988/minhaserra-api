@@ -110,7 +110,7 @@ describe('GET /api/addresses/:id', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`Invalid id: ${addressId}`);
+      expect(body.message).toBe(`Invalid url parameter 'id': 1111`);
     });
   });
 

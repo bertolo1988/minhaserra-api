@@ -56,7 +56,7 @@ describe('GET /products/:id/images', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe('Invalid id: malformed-uuid');
+      expect(body.message).toBe(`Invalid url parameter 'id': malformed-uuid`);
     });
   });
 

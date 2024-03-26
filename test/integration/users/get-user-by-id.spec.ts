@@ -41,7 +41,7 @@ describe('GET /api/users/:id', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`Invalid id: ${id}`);
+      expect(body.message).toBe(`Invalid url parameter 'id': not-valid-uuid`);
     });
   });
 

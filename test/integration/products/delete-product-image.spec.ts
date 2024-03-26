@@ -111,7 +111,7 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`Invalid id: malformed-uuid`);
+      expect(body.message).toBe("Invalid url parameter 'id': malformed-uuid");
     });
 
     test('if product image id is malformed uuid', async () => {
@@ -129,7 +129,9 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`Invalid 'imageId': malformed-uuid`);
+      expect(body.message).toBe(
+        `Invalid url parameter 'imageId': malformed-uuid`,
+      );
     });
   });
 });

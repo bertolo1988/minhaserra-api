@@ -153,7 +153,7 @@ describe('PUT /api/password-resets/:id', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`Invalid id: ${invalidId}`);
+      expect(body.message).toBe(`Invalid url parameter 'id': invalid-uuid`);
     });
   });
 
