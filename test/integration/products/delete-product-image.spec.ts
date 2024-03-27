@@ -1,3 +1,4 @@
+import { ImageUploadService } from '../../../src/controllers/products/image-upload-service';
 import {
   inactiveUser,
   softDeletedUser,
@@ -97,7 +98,23 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       expect(body.message).toBe('Forbidden');
     });
 
-    test.skip('if user tries to delete an image from a product that he doesnt own', async () => {});
+    test('if user tries to delete an image from a product that he doesnt own', async () => {
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${verifiedSeller2Product1.id}/images/${verifiedSeller2Product1Images[0].id}`,
+        ).href,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller1),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body.message).toBe('Forbidden');
+    });
   });
 
   describe('should return 400', () => {
@@ -141,16 +158,57 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
   });
 
   describe('should return 404', () => {
-    test.skip('when product does not exist', async () => {
-      // TODO: Implement test
+    test('when product does not exist', async () => {
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${VALID_UUID}/images/${verifiedSeller2Product1Images[0].id}`,
+        ).href,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller1),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe('Product not found');
     });
-    test.skip('when product image does not exist', async () => {
-      // TODO: Implement test
+
+    test('when product image does not exist', async () => {
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${verifiedSeller2Product1.id}/images/${VALID_UUID}`,
+        ).href,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller2),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe('Image not found');
     });
   });
 
   describe('should return 200', () => {
-    test.only('when everything is correct', async () => {
+    let deleteProductImageSpy: jest.SpyInstance;
+
+    beforeAll(async () => {
+      deleteProductImageSpy = jest
+        .spyOn(ImageUploadService.prototype, 'deleteImage')
+        .mockResolvedValue(true);
+    });
+
+    afterAll(() => {
+      deleteProductImageSpy.mockClear();
+    });
+
+    test('when everything is correct', async () => {
       const response = await fetch(
         getTestServerUrl(
           `/api/products/${verifiedSeller2Product1.id}/images/${verifiedSeller2Product1Images[0].id}`,
@@ -166,6 +224,7 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       expect(response.status).toBe(200);
       const body = await response.json();
       expect(body.message).toBe('Image deleted');
+      expect(deleteProductImageSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
