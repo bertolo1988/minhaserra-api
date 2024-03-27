@@ -69,7 +69,7 @@ export type CreateProductImageDto = {
 export type CreateProductImageModel = Omit<
   ProductImageModel,
   'createdAt' | 'updatedAt'
->;
+> & { id?: string };
 
 export type ProductImageModel = {
   id: string;

@@ -352,9 +352,15 @@ describe('POST /api/products/:id/images', () => {
       expect(body).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          url: `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/userId_${verifiedSeller1.id}/productId_${verifiedSeller1Product1.id}/${TARGET_DATE.valueOf()}-${data.name}.webp`,
+          url: expect.any(String),
         }),
       );
+      expect(
+        body.url.startsWith(
+          `https://${CONFIG.aws.productImagesBucketName}.s3.${CONFIG.aws.region}.amazonaws.com/productId_${verifiedSeller1Product1.id}/`,
+        ),
+      ).toBe(true);
+      expect(body.url.endsWith(`.webp`)).toBe(true);
     });
   });
 });
