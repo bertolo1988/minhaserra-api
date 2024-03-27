@@ -1,3 +1,4 @@
+// TODO: Add tests for the create product endpoint
 describe('POST /api/products', () => {
   describe('should return 400', () => {});
 

@@ -42,24 +42,6 @@ export enum ProductSubCategory {
   TOYS_BABY = 'toys_baby',
 }
 
-export type ProductModel = {
-  id: string;
-  userId: string;
-  category: ProductCategory;
-  subCategory: ProductSubCategory;
-  name: string;
-  description?: string;
-  countryCode: string;
-  region?: string;
-  avaliableQuantity: number;
-  price: number;
-  isOnSale: boolean;
-  isDeleted: boolean;
-  isApproved: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 export type CreateProductImageDto = {
   name: string;
   description?: string;
@@ -112,6 +94,35 @@ export const CreateProductImageDtoSchema = {
   additionalProperties: false,
 };
 
-export type CreateProductDto = {};
+export type ProductModel = {
+  id: string;
+  userId: string;
+  category: ProductCategory;
+  subCategory: ProductSubCategory;
+  name: string;
+  description?: string;
+  countryCode: string;
+  region?: string;
+  avaliableQuantity: number;
+  price: number;
+  isOnSale: boolean;
+  isDeleted: boolean;
+  isApproved: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-export const CreateProductDtoSchema = {};
+export type CreateProductDto = {
+  category: ProductCategory;
+  subCategory: ProductSubCategory;
+  name: string;
+  description?: string;
+  countryCode: string;
+  region?: string;
+  avaliableQuantity: number;
+  price: number;
+};
+
+export const CreateProductDtoSchema = {
+  // TODO: Implement the schema for the CreateProductDto
+};
