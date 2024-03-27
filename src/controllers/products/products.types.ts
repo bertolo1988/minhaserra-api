@@ -111,3 +111,7 @@ export const CreateProductImageDtoSchema = {
   required: ['name', 'base64Image'],
   additionalProperties: false,
 };
+
+export type CreateProductDto = {};
+
+export const CreateProductDtoSchema = {};
