@@ -1,10 +1,15 @@
 import Koa from 'koa';
 import CONSTANTS from '../../constants';
+import { v4 as uuidv4 } from 'uuid';
 import { ValidationError } from '../../types/errors';
 import { ImageUploadService } from './image-upload-service';
 import { ProductImagesRepository } from './product-images.repository';
 import { ProductsRepository } from './products.repository';
-import { CreateProductImageDto } from './products.types';
+import {
+  CreateProductImageDto,
+  ProductImageModel,
+  ProductModel,
+} from './products.types';
 
 const imageUploadService = new ImageUploadService();
 
@@ -13,7 +18,8 @@ export class ProductImagesController {
     const userId = ctx.state.user.id;
     const { id: productId, imageId } = ctx.params;
 
-    const product = await ProductsRepository.getProductById(productId);
+    const product: ProductModel | null =
+      await ProductsRepository.getProductById(productId);
     if (!product) {
       ctx.status = 404;
       ctx.body = { message: 'Product not found' };
@@ -26,7 +32,7 @@ export class ProductImagesController {
       return;
     }
 
-    const productImage =
+    const productImage: ProductImageModel | null =
       await ProductImagesRepository.getProductImageByProductIdAndImageId(
         productId,
         imageId,
@@ -38,9 +44,18 @@ export class ProductImagesController {
       return;
     }
 
-    // TODO: delete from s3 and db
-    // delete from s3
-    // delete from db
+    const isDeletedFromS3: boolean =
+      await imageUploadService.deleteImage(productImage);
+    if (!isDeletedFromS3) {
+      throw new Error(`Failed to delete image: ${imageId}`);
+    }
+
+    const isDeleted =
+      await ProductImagesRepository.deleteProductImageById(imageId);
+
+    if (!isDeleted) {
+      throw new Error(`Failed to delete image: ${imageId}`);
+    }
 
     ctx.status = 200;
     ctx.body = { message: 'Image deleted' };
@@ -86,18 +101,22 @@ export class ProductImagesController {
       throw new ValidationError('Too many pictures for this product');
     }
 
+    const productImageId = uuidv4();
     const imageUrl = await imageUploadService.uploadImage(
+      productImageId,
       userId,
       productId,
       body,
     );
 
-    const { id: imageId } = await ProductImagesRepository.createProductImage(
-      productId,
-      imageUrl,
-      body.name,
-      body.description,
-    );
+    const { id: imageId } =
+      await ProductImagesRepository.createProductImageWithId(
+        productImageId,
+        productId,
+        imageUrl,
+        body,
+      );
+
     if (!imageId) {
       throw new Error(`Failed to product image`);
     }

@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import CONFIG from '../../config';
 import { ImageUtils } from '../../utils/image-utils';
-import { CreateProductImageDto } from './products.types';
+import { CreateProductImageDto, ProductImageModel } from './products.types';
 
 export class ImageUploadService {
   s3: AWS.S3;
@@ -18,26 +18,31 @@ export class ImageUploadService {
     this.bucketName = CONFIG.aws.productImagesBucketName as string;
   }
 
-  async deleteImage(imageUrl: string) {
-    // strip out url to get key
-    const imageKey = '';
+  async deleteImage(image: ProductImageModel) {
+    const imageKey = this.getImageRemoteNameFromModel(image);
     const result = await this.s3
       .deleteObject({
         Bucket: this.bucketName,
         Key: imageKey,
       })
       .promise();
-    // TODO: evaluate result
-    return result;
+    if (
+      result.$response.httpResponse.statusCode >= 200 &&
+      result.$response.httpResponse.statusCode < 300
+    ) {
+      return true;
+    } else {
+      throw new Error(`Failed to delete image from S3 with id: ${image.id}`);
+    }
   }
 
   async uploadImage(
+    productImageId: string,
     userId: string,
     productId: string,
     data: CreateProductImageDto,
     compress = true,
   ): Promise<string> {
-    const imageName = this.getImageName(data);
     let imageBuffer = ImageUtils.getBufferFromBase64Image(data.base64Image);
 
     if (compress) {
@@ -45,47 +50,50 @@ export class ImageUploadService {
     }
 
     return await this.uploadBufferImage(
+      productImageId,
       userId,
       productId,
-      imageName,
       imageBuffer,
-      data.description,
+      data,
     );
   }
 
-  getImageName(data: CreateProductImageDto): string {
-    return `${Date.now()}-${data.name}.webp`;
+  getImageName(id: string): string {
+    return `${id}.webp`;
   }
 
-  getImageUrl(userId: string, productId: string, imageId: string): string {
-    const imageRemoteName = this.getImageRemoteName(userId, productId, imageId);
+  getImageRemoteNameFromModel(data: ProductImageModel): string {
+    return this.getImageRemoteName(data.productId, this.getImageName(data.id));
+  }
+
+  getImageRemoteName(productId: string, imageName: string): string {
+    return `productId_${productId}/${imageName}`;
+  }
+
+  getImageUrl(productId: string, imageName: string): string {
+    const imageRemoteName = this.getImageRemoteName(productId, imageName);
     return `https://${this.bucketName}.s3.${CONFIG.aws.region}.amazonaws.com/${imageRemoteName}`;
   }
 
-  getImageRemoteName(
-    userId: string,
-    productId: string,
-    imageId: string,
-  ): string {
-    return `userId_${userId}/productId_${productId}/${imageId}`;
-  }
-
   private async uploadBufferImage(
+    productImageId: string,
     userId: string,
     productId: string,
-    imageId: string,
     imageData: Buffer,
-    description?: string,
+    data: CreateProductImageDto,
   ): Promise<string> {
+    const imageName = this.getImageName(productImageId);
+    const imageRemoteName = this.getImageRemoteName(productId, imageName);
+
     const metadata: AWS.S3.Metadata = {
       userId,
       productId,
-      imageId,
+      name: data.name,
     };
-    if (description != null) {
-      metadata.description = description;
+    if (data.description != null) {
+      metadata.description = data.description;
     }
-    const imageRemoteName = this.getImageRemoteName(userId, productId, imageId);
+
     const uploadResponse = await this.putObjectS3(
       imageRemoteName,
       metadata,
@@ -94,7 +102,7 @@ export class ImageUploadService {
     if (!uploadResponse || !uploadResponse.ETag) {
       throw new Error('Failed to upload image');
     } else {
-      return this.getImageUrl(userId, productId, imageId);
+      return this.getImageUrl(productId, imageName);
     }
   }
 

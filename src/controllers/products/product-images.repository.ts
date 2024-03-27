@@ -2,6 +2,7 @@ import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { ProductImagesMapper } from './product-images.mapper';
 import {
+  CreateProductImageDto,
   CreateProductImageModel,
   ProductImageModel,
   PublicProductImageModel,
@@ -10,6 +11,12 @@ import {
 const TABLE_NAME = 'product_images';
 
 export class ProductImagesRepository {
+  static async deleteProductImageById(id: string): Promise<boolean> {
+    const knex = await getDatabaseInstance();
+    const result = await knex(TABLE_NAME).where({ id }).delete();
+    return result > 0;
+  }
+
   static async getProductImageByProductIdAndImageId(
     productId: string,
     imageId: string,
@@ -22,19 +29,19 @@ export class ProductImagesRepository {
     return CaseConverter.objectKeysSnakeToCamel(result) as ProductImageModel;
   }
 
-  static async createProductImage(
+  static async createProductImageWithId(
+    id: string,
     productId: string,
     imageUrl: string,
-    name: string,
-    description?: string,
+    dto: CreateProductImageDto,
   ): Promise<{ id: string }> {
     const knex = await getDatabaseInstance();
     const data: CreateProductImageModel =
       ProductImagesMapper.mapCreateProductImageDtoToProductImageModel(
+        id,
         productId,
         imageUrl,
-        name,
-        description,
+        dto,
       );
     const result = (await knex(TABLE_NAME).insert(
       CaseConverter.objectKeysCamelToSnake(data),

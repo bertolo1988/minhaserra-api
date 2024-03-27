@@ -3,6 +3,9 @@ import {
   softDeletedUser,
   unverifiedUser,
   verifiedSeller1,
+  verifiedSeller2,
+  verifiedSeller2Product1,
+  verifiedSeller2Product1Images,
 } from '../../seeds/product-images.seed';
 import {
   DatabaseSeedNames,
@@ -93,6 +96,8 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       const body = await response.json();
       expect(body.message).toBe('Forbidden');
     });
+
+    test.skip('if user tries to delete an image from a product that he doesnt own', async () => {});
   });
 
   describe('should return 400', () => {
@@ -135,9 +140,32 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
     });
   });
 
-  describe('should return 200', () => {
-    test('when everything is correct', async () => {
+  describe('should return 404', () => {
+    test.skip('when product does not exist', async () => {
       // TODO: Implement test
+    });
+    test.skip('when product image does not exist', async () => {
+      // TODO: Implement test
+    });
+  });
+
+  describe('should return 200', () => {
+    test.only('when everything is correct', async () => {
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${verifiedSeller2Product1.id}/images/${verifiedSeller2Product1Images[0].id}`,
+        ).href,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller2),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.message).toBe('Image deleted');
     });
   });
 });

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   CreateProductImageDto,
   CreateProductImageModel,
@@ -5,16 +6,18 @@ import {
 
 export class ProductImagesMapper {
   static mapCreateProductImageDtoToProductImageModel(
+    id: string,
     productId: string,
     imageUrl: string,
-    name: string,
-    description?: string,
+    dto: CreateProductImageDto,
   ): CreateProductImageModel {
-    return {
+    const result = {
+      id,
       productId,
       url: imageUrl,
-      name,
-      description,
+      name: dto.name,
+      description: dto.description,
     };
+    return _.omitBy(result, _.isNil) as CreateProductImageModel;
   }
 }
