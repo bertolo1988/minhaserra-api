@@ -1,9 +1,6 @@
 import type { Knex } from 'knex';
 
-const CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'CNY', 'CAD', 'AUD'];
-
 export async function up(knex: Knex): Promise<void> {
-  await knex.raw(`CREATE TYPE currency AS ENUM ('${CURRENCIES.join("','")}');`);
   await knex.schema.createTable('products', function (table) {
     table.uuid('id').defaultTo(knex.raw('gen_random_uuid()')).primary();
     table.uuid('user_id').notNullable();
@@ -25,5 +22,4 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTable('products');
-  await knex.raw(`DROP TYPE IF EXISTS currency;`);
 }
