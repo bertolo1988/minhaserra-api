@@ -1,5 +1,5 @@
 import { Schema } from 'ajv';
-import { AjvCustomFormats } from '../../utils/ajv';
+import { CountryCodeSchema } from '../../schemas/shared-schemas';
 
 export type AddressModel = {
   id: string;
@@ -43,13 +43,7 @@ export const CreateAddressDtoSchema: Schema = {
       maxLength: 100,
       errorMessage: `'label' must be a string with a maximum length of 100 characters`,
     },
-    countryCode: {
-      type: 'string',
-      format: AjvCustomFormats.COUNTRY_CODE,
-      nullable: false,
-      maxLength: 2,
-      errorMessage: `'countryCode' must have two characters and be valid according to ISO 3166-1 alpha-2`,
-    },
+    countryCode: CountryCodeSchema,
     name: {
       type: 'string',
       nullable: false,

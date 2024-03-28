@@ -1,4 +1,4 @@
-import { AjvCustomFormats } from '../../utils/ajv';
+import { BirthDateSchema, PasswordSchema } from '../../schemas/shared-schemas';
 
 export enum UserState {
   UNVERIFIED = 'unverified',
@@ -23,22 +23,6 @@ export type UserDto = {
   birthDate: string;
   password: string;
   termsVersion: number;
-};
-
-export const BirthDateSchema = {
-  type: 'string',
-  nullable: true,
-  format: 'date',
-  errorMessage: `'birthDate' must be a valid date in format YYYY-MM-DD`,
-};
-
-export const PasswordSchema = {
-  type: 'string',
-  nullable: false,
-  minLength: 8,
-  maxLength: 64,
-  format: AjvCustomFormats.PASSWORD,
-  errorMessage: `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
 };
 
 export const UserDtoSchema = {

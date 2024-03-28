@@ -1,4 +1,6 @@
 import CONSTANTS from '../../constants';
+import { CountryCodeSchema } from '../../schemas/shared-schemas';
+import { Currency } from '../../types';
 import { AjvCustomFormats } from '../../utils/ajv';
 import { ImageUtils } from '../../utils/image-utils';
 
@@ -121,8 +123,67 @@ export type CreateProductDto = {
   region?: string;
   avaliableQuantity: number;
   price: number;
+  currency: Currency;
+  isOnSale: boolean;
 };
 
 export const CreateProductDtoSchema = {
-  // TODO: Implement the schema for the CreateProductDto
+  type: 'object',
+  properties: {
+    category: {
+      nullable: false,
+      enum: [Object.values(ProductCategory)],
+    },
+    subCategory: {
+      nullable: false,
+      enum: [Object.values(ProductSubCategory)],
+    },
+    name: {
+      type: 'string',
+      nullable: false,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DESCRIPTION_MAX_STRING_SIZE,
+    },
+    countryCode: CountryCodeSchema,
+    region: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+    },
+    availableQuantity: {
+      type: 'integer',
+      nullable: false,
+      min: 0,
+      max: CONSTANTS.MAX_AVAILABLE_QUANTITY,
+    },
+    price: {
+      type: 'integer',
+      nullable: false,
+      min: 1,
+      max: CONSTANTS.MAX_PRICE_IN_CENTS,
+    },
+    currency: {
+      enum: [Object.values(Currency)],
+      nullable: false,
+    },
+    isOnSale: {
+      type: 'boolean',
+      nullable: false,
+    },
+  },
+  required: [
+    'category',
+    'subCategory',
+    'name',
+    'countryCode',
+    'availableQuantity',
+    'price',
+    'currency',
+    'isOnSale',
+  ],
+  additionalProperties: false,
 };
