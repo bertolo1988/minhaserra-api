@@ -1,3 +1,5 @@
+// numeric limits in postgres https://www.postgresql.org/docs/current/datatype-numeric.html
+
 const CONSTANTS = {
   PASSWORD_RESET_TOKEN_LENGTH: 32,
   PASSWORD_RESET_EXPIRY_HOURS: 2,
@@ -10,7 +12,10 @@ const CONSTANTS = {
   JSON_BODY_LIMIT: '11mb',
   MAX_BASE64_IMAGE_SIZE: 8000000,
   DEFAULT_MAX_STRING_SIZE: 100,
+  DESCRIPTION_MAX_STRING_SIZE: 1000,
   MAX_IMAGES_PER_PRODUCT: 7,
+  MAX_AVAILABLE_QUANTITY: 2147483647,
+  MAX_PRICE_IN_CENTS: Number.MAX_SAFE_INTEGER,
 };
 
 export default CONSTANTS;
