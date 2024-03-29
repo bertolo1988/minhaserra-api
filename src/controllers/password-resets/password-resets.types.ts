@@ -1,4 +1,4 @@
-import { PasswordSchema } from '../users/users.types';
+import { PasswordSchema } from '../../schemas/shared-schemas';
 
 export type PasswordResetDto = {
   email: string;

@@ -21,7 +21,6 @@ export function configureProductsRouter(router: Router) {
     '/products',
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedUsers(),
-    validateIdValidUuid,
     ProductsValidator.validateCreateProduct,
     ProductsController.createProduct,
   );

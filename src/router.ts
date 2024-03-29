@@ -5,6 +5,7 @@ import { configureContactsVerificationRouter } from './controllers/contact-verif
 import { configureHealthRouter } from './controllers/health/health.router';
 import { configurePasswordResetsRouter } from './controllers/password-resets/password-resets.router';
 import { configureProductsImagesRouter } from './controllers/products/product-images.router';
+import { configureProductsRouter } from './controllers/products/products.router';
 import { configureUsersRouter } from './controllers/users/users.router';
 
 export function configureKoaRouter(): Router {
@@ -18,6 +19,7 @@ export function configureKoaRouter(): Router {
   configurePasswordResetsRouter(router);
   configureAddressesRouter(router);
   configureProductsImagesRouter(router);
+  configureProductsRouter(router);
 
   return router;
 }

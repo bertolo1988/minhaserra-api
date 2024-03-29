@@ -132,10 +132,12 @@ export const CreateProductDtoSchema = {
   properties: {
     category: {
       nullable: false,
+      type: 'string',
       enum: [Object.values(ProductCategory)],
     },
     subCategory: {
       nullable: false,
+      type: 'string',
       enum: [Object.values(ProductSubCategory)],
     },
     name: {
@@ -157,16 +159,17 @@ export const CreateProductDtoSchema = {
     availableQuantity: {
       type: 'integer',
       nullable: false,
-      min: 0,
-      max: CONSTANTS.MAX_AVAILABLE_QUANTITY,
+      minimum: 0,
+      maximum: CONSTANTS.MAX_AVAILABLE_QUANTITY,
     },
     price: {
       type: 'integer',
       nullable: false,
-      min: 1,
-      max: CONSTANTS.MAX_PRICE_IN_CENTS,
+      minimum: 1,
+      maximum: CONSTANTS.MAX_PRICE_IN_CENTS,
     },
     currency: {
+      type: 'string',
       enum: [Object.values(Currency)],
       nullable: false,
     },

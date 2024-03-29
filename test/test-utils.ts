@@ -36,6 +36,7 @@ export enum DatabaseSeedNames {
   CREATE_PASSWORD_RESET = 'create-password-reset.seed.ts',
   UPDATE_PASSWORD_UNAUTHENTICATED = 'update-password-unauthenticated.seed.ts',
   PRODUCTS_IMAGES = 'product-images.seed.ts',
+  PRODUCTS = 'products.seed.ts',
 }
 
 export async function runSeedByName(
