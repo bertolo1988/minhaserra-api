@@ -1,11 +1,11 @@
 import { Knex, knex } from 'knex';
 
 let database: Knex | null;
-let config: Knex.Config | null;
+let _config: Knex.Config | null;
 
 async function connectDatabase(inputConfig: Knex.Config): Promise<Knex> {
   try {
-    config = inputConfig;
+    _config = inputConfig;
     const database = knex(inputConfig);
     return database;
   } catch (err) {
@@ -34,7 +34,7 @@ export async function getDatabaseInstance(
 
   database = await connectDatabase(inputConfig);
   await runMigrations();
-  config = inputConfig;
+  _config = inputConfig;
 
   return database;
 }
@@ -43,7 +43,7 @@ export async function disconnectFromDatabase(): Promise<void> {
   if (!database) throw new Error('No database connection');
   await database.destroy();
   database = null;
-  config = null;
+  _config = null;
 }
 
 export function isUpdateSuccessfull(

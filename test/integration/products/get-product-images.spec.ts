@@ -1,17 +1,11 @@
 import _ from 'lodash';
 
 import {
-  verifiedSeller1,
   verifiedSeller1Product1,
-  verifiedSeller2,
   verifiedSeller2Product1,
   verifiedSeller2Product1Images,
 } from '../../seeds/product-images.seed';
-import {
-  DatabaseSeedNames,
-  getAuthorizationHeader,
-  runSeedByName,
-} from '../../test-utils';
+import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 

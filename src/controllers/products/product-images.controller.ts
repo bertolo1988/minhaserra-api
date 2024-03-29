@@ -15,7 +15,7 @@ import {
 const imageUploadService = new ImageUploadService();
 
 export class ProductImagesController {
-  static async deleteProductImageById(ctx: Koa.Context, next: Koa.Next) {
+  static async deleteProductImageById(ctx: Koa.Context, _next: Koa.Next) {
     const userId = ctx.state.user.id;
     const { id: productId, imageId } = ctx.params;
 
@@ -62,7 +62,7 @@ export class ProductImagesController {
     ctx.body = { message: 'Image deleted' };
   }
 
-  static async getProductImagesByProductId(ctx: Koa.Context, next: Koa.Next) {
+  static async getProductImagesByProductId(ctx: Koa.Context, _next: Koa.Next) {
     const productId = ctx.params.id;
 
     const product = await ProductsRepository.getProductById(productId);
@@ -78,7 +78,7 @@ export class ProductImagesController {
     ctx.body = productImages;
   }
 
-  static async createProductImage(ctx: Koa.Context, next: Koa.Next) {
+  static async createProductImage(ctx: Koa.Context, _next: Koa.Next) {
     const userId = ctx.state.user.id;
     const productId = ctx.params.id;
     const body = ctx.request.body as CreateProductImageDto;

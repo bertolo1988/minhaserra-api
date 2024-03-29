@@ -5,7 +5,6 @@ import {
   johnContactVerification,
   johnContactVerificationInvalidEmail,
   johnData,
-  manuelData,
   manuelUsedContactVerification,
 } from '../../seeds/verify-user-email.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';

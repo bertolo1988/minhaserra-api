@@ -1,5 +1,3 @@
-import exp from 'constants';
-
 import EmailService from '../../../src/controllers/emails/email-service';
 import { userData } from '../../seeds/create-password-reset.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';

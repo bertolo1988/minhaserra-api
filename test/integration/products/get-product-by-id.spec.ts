@@ -1,27 +1,9 @@
 import tk from 'timekeeper';
 
-import {
-  CreateProductDto,
-  ProductCategory,
-  ProductSubCategory,
-} from '../../../src/controllers/products/products.types';
-import { Currency } from '../../../src/types';
 import { verifiedSellerProduct1 } from '../../seeds/products.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-
-const validBodyExample: CreateProductDto = {
-  name: 'Product 1',
-  description: 'Product 1 description',
-  price: 100,
-  availableQuantity: 1,
-  category: ProductCategory.FOOD,
-  subCategory: ProductSubCategory.FOOD_HONEY,
-  countryCode: 'PT',
-  currency: Currency.EUR,
-  isOnSale: false,
-};
 
 describe('GET /api/products/:id', () => {
   beforeAll(async () => {
