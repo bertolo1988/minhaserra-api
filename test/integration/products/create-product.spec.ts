@@ -4,6 +4,13 @@ import {
   ProductCategory,
   ProductSubCategory,
 } from '../../../src/controllers/products/products.types';
+import { Currency } from '../../../src/types';
+import {
+  inactiveUser,
+  softDeletedUser,
+  unverifiedUser,
+  verifiedSeller,
+} from '../../seeds/products.seed';
 import {
   DatabaseSeedNames,
   getAuthorizationHeader,
@@ -11,8 +18,18 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-import { verifiedSeller } from '../../seeds/products.seed';
-import { Currency } from '../../../src/types';
+
+const validBodyExample: CreateProductDto = {
+  name: 'Product 1',
+  description: 'Product 1 description',
+  price: 100,
+  availableQuantity: 1,
+  category: ProductCategory.FOOD,
+  subCategory: ProductSubCategory.FOOD_HONEY,
+  countryCode: 'PT',
+  currency: Currency.EUR,
+  isOnSale: false,
+};
 
 describe('POST /api/products', () => {
   beforeAll(async () => {
@@ -102,17 +119,72 @@ describe('POST /api/products', () => {
   });
 
   describe('should return 401', () => {
-    test.skip('when user is not authenticated', async () => {});
+    test('when user is not authenticated', async () => {
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(validBodyExample),
+      });
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Unauthorized`,
+      });
+    });
 
-    test.skip('when user is soft deleted', async () => {});
+    test('when user is soft deleted', async () => {
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(softDeletedUser),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(validBodyExample),
+      });
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Unauthorized`,
+      });
+    });
   });
 
   describe('should return 403', () => {
     test.skip('when user is a buyer', async () => {});
 
-    test.skip('when the user is inactive', async () => {});
+    test('when the user is inactive', async () => {
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(inactiveUser),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(validBodyExample),
+      });
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Forbidden`,
+      });
+    });
 
-    test.skip('when the user is not verified', async () => {});
+    test('when the user is not verified', async () => {
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(unverifiedUser),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(validBodyExample),
+      });
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Forbidden`,
+      });
+    });
   });
 
   describe('should return 404', () => {});
