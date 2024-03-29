@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import {
   verifiedSeller1Product1,
+  verifiedSeller1SoftDeleteProduct2,
   verifiedSeller2Product1,
   verifiedSeller2Product1Images,
 } from '../../seeds/product-images.seed';
@@ -24,6 +25,23 @@ describe('GET /products/:id/images', () => {
       const nonExistingProductId = '13fdc915-c0ed-4bc2-908b-ccbabe54f75a';
       const response = await fetch(
         getTestServerUrl(`/api/products/${nonExistingProductId}/images`).href,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe('Product not found');
+    });
+
+    test('if product is soft deleted', async () => {
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${verifiedSeller1SoftDeleteProduct2.id}/images`,
+        ).href,
         {
           method: 'GET',
           headers: {
