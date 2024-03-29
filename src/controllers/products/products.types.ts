@@ -114,7 +114,7 @@ export type ProductModel = {
   updatedAt: Date;
 };
 
-export type PublicProductModel = Omit<ProductModel, 'isDeleted' | 'isApproved'>;
+export type PublicProductModel = ProductModel;
 
 export type CreateProductModel = Omit<
   ProductModel,

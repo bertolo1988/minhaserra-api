@@ -27,4 +27,5 @@ describe('Integration tests', () => {
   require('./products/get-product-images.spec');
   require('./products/delete-product-image.spec');
   require('./products/create-product.spec');
+  require('./products/get-product-by-id.spec');
 });

@@ -20,6 +20,8 @@ export class ProductsMapper {
       region: product.region,
       avaliableQuantity: product.avaliableQuantity,
       price: parseInt(product.price.toString()),
+      isApproved: product.isApproved,
+      isDeleted: product.isDeleted,
       isOnSale: product.isOnSale,
       updatedAt: product.updatedAt,
       createdAt: product.createdAt,

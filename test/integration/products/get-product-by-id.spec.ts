@@ -6,19 +6,8 @@ import {
   ProductSubCategory,
 } from '../../../src/controllers/products/products.types';
 import { Currency } from '../../../src/types';
-import {
-  inactiveUser,
-  softDeletedUser,
-  unverifiedUser,
-  verifiedBuyer,
-  verifiedSeller,
-  verifiedSellerProduct1,
-} from '../../seeds/products.seed';
-import {
-  DatabaseSeedNames,
-  getAuthorizationHeader,
-  runSeedByName,
-} from '../../test-utils';
+import { verifiedSellerProduct1 } from '../../seeds/products.seed';
+import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 
@@ -90,8 +79,7 @@ describe('GET /api/products/:id', () => {
       );
       expect(response.status).toBe(200);
       const body = await response.json();
-      expect(body.isDeleted).toBeUndefined();
-      expect(body.isApproved).toBeUndefined();
+
       expect(body).toEqual({
         id: verifiedSellerProduct1.id,
         userId: verifiedSellerProduct1.userId,
@@ -104,6 +92,8 @@ describe('GET /api/products/:id', () => {
         avaliableQuantity: verifiedSellerProduct1.avaliableQuantity,
         price: verifiedSellerProduct1.price,
         isOnSale: verifiedSellerProduct1.isOnSale,
+        isApproved: verifiedSellerProduct1.isApproved,
+        isDeleted: verifiedSellerProduct1.isDeleted,
         createdAt: verifiedSellerProduct1.createdAt.toISOString(),
         updatedAt: verifiedSellerProduct1.updatedAt.toISOString(),
       });
