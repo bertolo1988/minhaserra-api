@@ -27,6 +27,13 @@ export const verifiedSellerProduct1: ProductModel = SeedUtils.getProduct(
   verifiedSeller.id,
 );
 
+export const verifiedSellerSoftDeletedProduct: ProductModel =
+  SeedUtils.getProduct(
+    '7f11e4f9-3f93-48bc-b27f-2e192af7748c',
+    verifiedSeller.id,
+    true,
+  );
+
 export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
 export const softDeletedUser: UserModel = SeedUtils.getSoftDeletedUser();
 export const unverifiedUser: UserModel = SeedUtils.getNonVerifiedUser();
@@ -44,5 +51,6 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
   await knex('products').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSellerSoftDeletedProduct),
   ]);
 }

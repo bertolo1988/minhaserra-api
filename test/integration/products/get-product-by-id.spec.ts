@@ -1,6 +1,9 @@
 import tk from 'timekeeper';
 
-import { verifiedSellerProduct1 } from '../../seeds/products.seed';
+import {
+  verifiedSellerProduct1,
+  verifiedSellerSoftDeletedProduct,
+} from '../../seeds/products.seed';
 import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
@@ -38,6 +41,20 @@ describe('GET /api/products/:id', () => {
     test('if does not exist product with provided id', async () => {
       const response = await fetch(
         getTestServerUrl(`/api/products/ffd9593e-62f7-4372-b363-a2aeb5cfba4d`)
+          .href,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body).toEqual({ message: 'Product not found' });
+    });
+
+    test('if product is soft deleted', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerSoftDeletedProduct.id}`)
           .href,
         {
           method: 'GET',

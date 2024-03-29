@@ -137,7 +137,11 @@ export class SeedUtils {
     };
   }
 
-  static getProduct(id: string, userId: string): ProductModel {
+  static getProduct(
+    id: string,
+    userId: string,
+    softDeleted = false,
+  ): ProductModel {
     return {
       id,
       userId,
@@ -150,7 +154,7 @@ export class SeedUtils {
       avaliableQuantity: 5,
       price: 1000, // price in cents
       isOnSale: false,
-      isDeleted: false,
+      isDeleted: softDeleted,
       isApproved: true,
       createdAt: now.toDate(),
       updatedAt: now.toDate(),
