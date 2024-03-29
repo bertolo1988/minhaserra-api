@@ -4,6 +4,7 @@ import {
   softDeletedUser,
   unverifiedUser,
   verifiedSeller1,
+  verifiedSeller1SoftDeleteProduct2,
   verifiedSeller2,
   verifiedSeller2Product1,
   verifiedSeller2Product1Images,
@@ -192,6 +193,24 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
       expect(response.status).toBe(404);
       const body = await response.json();
       expect(body.message).toBe('Image not found');
+    });
+
+    test('if product is soft deleted', async () => {
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${verifiedSeller1SoftDeleteProduct2.id}/images/${VALID_UUID}`,
+        ).href,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller1),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe('Product not found');
     });
   });
 
