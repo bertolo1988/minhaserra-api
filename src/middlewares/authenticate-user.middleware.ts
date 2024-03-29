@@ -50,6 +50,16 @@ export class AuthenticationUtils {
     );
   }
 
+  public static authorizeActiveVerifiedSellers(): (
+    ctx: Koa.Context,
+    next: Koa.Next,
+  ) => Promise<void> {
+    return AuthenticationUtils.authorizeUserMiddleware(
+      [UserRole.SELLER],
+      [UserState.DELETED, UserState.INACTIVE, UserState.UNVERIFIED],
+    );
+  }
+
   public static authorizeAdmins(): (
     ctx: Koa.Context,
     next: Koa.Next,

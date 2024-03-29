@@ -20,7 +20,7 @@ export function configureProductsRouter(router: Router) {
   router.post(
     '/products',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    AuthenticationUtils.authorizeActiveVerifiedSellers(),
     ProductsValidator.validateCreateProduct,
     ProductsController.createProduct,
   );

@@ -9,6 +9,7 @@ import {
   inactiveUser,
   softDeletedUser,
   unverifiedUser,
+  verifiedBuyer,
   verifiedSeller,
 } from '../../seeds/products.seed';
 import {
@@ -152,7 +153,21 @@ describe('POST /api/products', () => {
   });
 
   describe('should return 403', () => {
-    test.skip('when user is a buyer', async () => {});
+    test('when user is a buyer', async () => {
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedBuyer),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(validBodyExample),
+      });
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Forbidden`,
+      });
+    });
 
     test('when the user is inactive', async () => {
       const response = await fetch(getTestServerUrl(`/api/products`).href, {
