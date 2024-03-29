@@ -115,8 +115,6 @@ describe('POST /api/products', () => {
         message: `'${data.subCategory}' is not a valid sub category of category '${data.category}'`,
       });
     });
-
-    test.skip('when user reached maximum number of products', async () => {});
   });
 
   describe('should return 401', () => {
@@ -205,6 +203,33 @@ describe('POST /api/products', () => {
   describe('should return 404', () => {});
 
   describe('should return 201', () => {
-    test.skip('should successfully create a product for our seller', async () => {});
+    test.only('should successfully create a product for our seller', async () => {
+      const data: CreateProductDto = {
+        name: 'Mel do Carlos',
+        description: 'Mel biológico da Serra de Aire e Candeeiros',
+        price: 1000,
+        availableQuantity: 10,
+        category: ProductCategory.FOOD,
+        subCategory: ProductSubCategory.FOOD_HONEY,
+        countryCode: 'PT',
+        region: 'Leiria',
+        currency: Currency.EUR,
+        isOnSale: true,
+      };
+
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedSeller),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(201);
+      const body = await response.json();
+      expect(body).toEqual({
+        id: expect.any(String),
+      });
+    });
   });
 });

@@ -114,6 +114,11 @@ export type ProductModel = {
   updatedAt: Date;
 };
 
+export type CreateProductModel = Omit<
+  ProductModel,
+  'id' | 'isDeleted' | 'isApproved' | 'createdAt' | 'updatedAt'
+>;
+
 export type CreateProductDto = {
   category: ProductCategory;
   subCategory: ProductSubCategory;

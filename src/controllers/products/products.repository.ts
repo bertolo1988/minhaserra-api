@@ -1,9 +1,30 @@
 import _ from 'lodash';
 import { getDatabaseInstance } from '../../knex-database';
-import { ProductModel } from './products.types';
+import {
+  CreateProductDto,
+  CreateProductModel,
+  ProductModel,
+} from './products.types';
 import { CaseConverter } from '../../utils/case-converter';
+import { ProductsMapper } from './products.mapper';
 
 export class ProductsRepository {
+  static async createOne(
+    userId: string,
+    dto: CreateProductDto,
+  ): Promise<{ id: string }> {
+    const knex = await getDatabaseInstance();
+    const data: CreateProductModel =
+      ProductsMapper.mapCreateProductDtoToCreateProductModel(userId, dto);
+    const result = (await knex('products').insert(
+      CaseConverter.objectKeysCamelToSnake(data),
+      ['id'],
+    )) as {
+      id: string;
+    }[];
+    return result[0];
+  }
+
   static async getProductById(
     id: string,
     isDeleted = false,
