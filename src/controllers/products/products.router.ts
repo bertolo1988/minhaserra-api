@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+
 import { AuthenticationUtils } from '../../middlewares/authenticate-user.middleware';
 import { validateIdValidUuid } from '../../middlewares/param-is-valid-uuid.middleware';
 import { ProductsController } from './products.controller';

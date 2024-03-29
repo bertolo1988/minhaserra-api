@@ -1,4 +1,5 @@
 import type { Knex } from 'knex';
+
 import CONFIG from './src/config';
 
 if (

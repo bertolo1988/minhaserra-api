@@ -1,4 +1,5 @@
 import { Schema } from 'ajv';
+
 import { AjvCustomFormats } from '../utils/ajv';
 
 export const BirthDateSchema: Schema = {

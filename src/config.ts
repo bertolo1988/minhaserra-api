@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { Algorithm } from 'jsonwebtoken';
+
 import CONSTANTS from './constants';
 
 dotenv.config();

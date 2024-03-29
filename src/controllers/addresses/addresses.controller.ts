@@ -1,4 +1,5 @@
 import Koa from 'koa';
+
 import CONSTANTS from '../../constants';
 import { ValidationError } from '../../types/errors';
 import { AddressesRepository } from './addresses.repository';

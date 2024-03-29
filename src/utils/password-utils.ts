@@ -1,4 +1,5 @@
 import { scryptSync, randomBytes } from 'node:crypto';
+
 import CONSTANTS from '../constants';
 
 export type CyphredPassword = {

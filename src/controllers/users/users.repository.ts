@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
-
 import _ from 'lodash';
+
 import { getDatabaseInstance } from '../../knex-database';
 import { CaseConverter } from '../../utils/case-converter';
 import { PasswordUtils } from '../../utils/password-utils';

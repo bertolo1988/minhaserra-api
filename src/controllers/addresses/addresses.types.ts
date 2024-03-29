@@ -1,4 +1,5 @@
 import { Schema } from 'ajv';
+
 import { CountryCodeSchema } from '../../schemas/shared-schemas';
 
 export type AddressModel = {

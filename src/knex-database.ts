@@ -5,6 +5,7 @@ let config: Knex.Config | null;
 
 async function connectDatabase(inputConfig: Knex.Config): Promise<Knex> {
   try {
+    config = inputConfig;
     const database = knex(inputConfig);
     return database;
   } catch (err) {

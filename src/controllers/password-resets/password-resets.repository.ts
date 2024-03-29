@@ -1,4 +1,5 @@
 import { Knex } from 'knex';
+
 import { getDatabaseInstance, isUpdateSuccessfull } from '../../knex-database';
 import { NotFoundError } from '../../types/errors';
 import { CaseConverter } from '../../utils/case-converter';

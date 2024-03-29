@@ -1,4 +1,5 @@
 import Koa from 'koa';
+
 import { UsersRepository } from '../controllers/users';
 import {
   UserModel,

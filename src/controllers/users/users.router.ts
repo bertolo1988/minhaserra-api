@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+
 import { AuthenticationUtils } from '../../middlewares/authenticate-user.middleware';
 import { UsersController } from './users.controller';
 import { UsersValidator } from './users.validator';

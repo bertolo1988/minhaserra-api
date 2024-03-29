@@ -1,12 +1,13 @@
 import _ from 'lodash';
+
 import { getDatabaseInstance } from '../../knex-database';
+import { CaseConverter } from '../../utils/case-converter';
+import { ProductsMapper } from './products.mapper';
 import {
   CreateProductDto,
   CreateProductModel,
   ProductModel,
 } from './products.types';
-import { CaseConverter } from '../../utils/case-converter';
-import { ProductsMapper } from './products.mapper';
 
 export class ProductsRepository {
   static async createOne(

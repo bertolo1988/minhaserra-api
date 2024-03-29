@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 import { UsersMapper } from '../../../src/controllers/users/users.mapper';
 import {
   PresentedUserModel,

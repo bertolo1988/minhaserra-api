@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
 import { Knex } from 'knex';
+
 import { AddressModel } from '../../src/controllers/addresses/addresses.types';
 import { UserModel } from '../../src/controllers/users/users.types';
 import { CaseConverter } from '../../src/utils/case-converter';

@@ -1,6 +1,6 @@
+import moment from 'moment';
 import tk from 'timekeeper';
 
-import moment from 'moment';
 import { UserRole } from '../../../src/controllers/users/users.types';
 import {
   CustomJwtPayload,

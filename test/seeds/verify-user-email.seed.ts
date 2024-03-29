@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
 import { Knex } from 'knex';
 import moment from 'moment';
+
 import CONSTANTS from '../../src/constants';
 import {
   ContactVerifiationType,

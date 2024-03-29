@@ -1,4 +1,5 @@
 import Koa from 'koa';
+
 import { UserRole } from '../controllers/users/users.types';
 
 export class KoaUtils {

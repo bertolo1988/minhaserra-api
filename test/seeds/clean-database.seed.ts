@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
 import { Knex } from 'knex';
+
 import { isProduction } from '../test-utils';
 
 if (isProduction()) {

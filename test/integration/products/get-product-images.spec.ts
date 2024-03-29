@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 import {
   verifiedSeller1,
   verifiedSeller1Product1,
@@ -76,7 +77,7 @@ describe('GET /products/:id/images', () => {
       const body = await response.json();
       expect(_.isArray(body)).toBe(true);
       expect(body).toHaveLength(verifiedSeller2Product1Images.length);
-      for (let image of body) {
+      for (const image of body) {
         expect(image).toMatchObject({
           id: expect.any(String),
           url: expect.any(String),

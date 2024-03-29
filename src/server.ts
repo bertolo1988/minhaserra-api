@@ -1,9 +1,11 @@
 import http from 'http';
+
 import gracefulShutdown from 'http-graceful-shutdown';
 import { Knex } from 'knex';
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
 import KoaLogger from 'koa-logger';
+
 import * as databaseConfig from '../knexfile';
 import CONFIG from './config';
 import { ErrorsController } from './controllers/errors';

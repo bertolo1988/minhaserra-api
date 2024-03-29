@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
-import _ from 'lodash';
 import path from 'path';
+
+import _ from 'lodash';
 import sharp from 'sharp';
 
 export class ImageUtils {

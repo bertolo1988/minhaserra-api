@@ -1,6 +1,7 @@
 import Koa from 'koa';
-import CONSTANTS from '../../constants';
 import { v4 as uuidv4 } from 'uuid';
+
+import CONSTANTS from '../../constants';
 import { ValidationError } from '../../types/errors';
 import { ImageUploadService } from './image-upload-service';
 import { ProductImagesRepository } from './product-images.repository';

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import tk from 'timekeeper';
+
 import CONFIG from '../../../src/config';
 import { UsersMapper } from '../../../src/controllers/users/users.mapper';
 import {

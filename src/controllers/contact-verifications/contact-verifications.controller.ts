@@ -1,4 +1,5 @@
 import Koa from 'koa';
+
 import { ContactVerificationsRepository } from './contact-verifications.repository';
 
 export class ContactVerificationsController {

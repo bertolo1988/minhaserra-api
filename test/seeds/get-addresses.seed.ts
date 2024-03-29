@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import { Knex } from 'knex';
 import moment from 'moment';
+dotenv.config();
+
 import { AddressModel } from '../../src/controllers/addresses/addresses.types';
 import { UserModel, UserRole } from '../../src/controllers/users/users.types';
 import { CaseConverter } from '../../src/utils/case-converter';
-import { isProduction } from '../test-utils';
 import { SeedUtils } from '../seed-utils';
+import { isProduction } from '../test-utils';
 
 if (isProduction()) {
   throw new Error('Cannot truncate tables in production environment!');

@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+
 import CONFIG from '../../config';
 import { ImageUtils } from '../../utils/image-utils';
 import { CreateProductImageDto, ProductImageModel } from './products.types';

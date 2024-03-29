@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+
 import { ApiServer, defaultServerOptions } from './server';
 
 dotenv.config();

@@ -310,7 +310,7 @@ describe('POST /api/products/:id/images', () => {
   });
 
   describe('should return 201', () => {
-    var putObjectSpy: jest.SpyInstance;
+    let putObjectSpy: jest.SpyInstance;
 
     beforeAll(() => {
       tk.freeze(TARGET_DATE.toDate());
