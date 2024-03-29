@@ -64,3 +64,10 @@ export function getAuthorizationHeader(user: UserModel): string {
     email: user.email,
   })}`;
 }
+
+export function getRequestHeaders(user: UserModel): Record<string, string> {
+  return {
+    Authorization: getAuthorizationHeader(user),
+    'Content-Type': 'application/json',
+  };
+}

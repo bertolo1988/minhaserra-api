@@ -114,6 +114,8 @@ export type ProductModel = {
   updatedAt: Date;
 };
 
+export type PublicProductModel = Omit<ProductModel, 'isDeleted' | 'isApproved'>;
+
 export type CreateProductModel = Omit<
   ProductModel,
   'id' | 'isDeleted' | 'isApproved' | 'createdAt' | 'updatedAt'

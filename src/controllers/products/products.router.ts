@@ -6,11 +6,11 @@ import { ProductsController } from './products.controller';
 import { ProductsValidator } from './products.validator';
 
 export function configureProductsRouter(router: Router) {
-  /* router.get(
+  router.get(
     '/products/:id',
     validateIdValidUuid,
     ProductsController.getProductById,
-  ); */
+  );
   /*   router.delete(
     '/products/:id',
     AuthenticationUtils.authenticateUserMiddleware,

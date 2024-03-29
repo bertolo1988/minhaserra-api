@@ -1,6 +1,31 @@
-import { CreateProductDto, CreateProductModel } from './products.types';
+import {
+  CreateProductDto,
+  CreateProductModel,
+  ProductModel,
+  PublicProductModel,
+} from './products.types';
 
 export class ProductsMapper {
+  static mapProductModeltoPublicProductModel(
+    product: ProductModel,
+  ): PublicProductModel {
+    return {
+      id: product.id,
+      userId: product.userId,
+      category: product.category,
+      subCategory: product.subCategory,
+      name: product.name,
+      description: product.description,
+      countryCode: product.countryCode,
+      region: product.region,
+      avaliableQuantity: product.avaliableQuantity,
+      price: parseInt(product.price.toString()),
+      isOnSale: product.isOnSale,
+      updatedAt: product.updatedAt,
+      createdAt: product.createdAt,
+    };
+  }
+
   static mapCreateProductDtoToCreateProductModel(
     userId: string,
     dto: CreateProductDto,
