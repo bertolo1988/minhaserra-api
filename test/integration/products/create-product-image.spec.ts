@@ -11,6 +11,7 @@ import {
   unverifiedUser,
   verifiedSeller1,
   verifiedSeller1Product1,
+  verifiedSeller1SoftDeleteProduct2,
   verifiedSeller2,
   verifiedSeller2Product1,
 } from '../../seeds/product-images.seed';
@@ -104,9 +105,7 @@ describe('POST /api/products/:id/images', () => {
       const body = await response.json();
       expect(body.message).toBe('Forbidden');
     });
-  });
 
-  describe('should return 404', () => {
     test('if user tries to upload image to a product that he doesnt own', async () => {
       const data = {
         name: 'image2',
@@ -129,6 +128,33 @@ describe('POST /api/products/:id/images', () => {
       expect(response.status).toBe(403);
       const body = await response.json();
       expect(body.message).toBe(`Forbidden`);
+    });
+  });
+
+  describe('should return 404', () => {
+    test('if user tries to upload image to a product that is soft deleted', async () => {
+      const data = {
+        name: 'image2',
+        description: 'Image description',
+        base64Image:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAMUlEQVR4nGKp+rWHARtIyt2AVZwJqygeMKqBGMAo4CKGVUJygTJ1bBjVQAwABAAA//80iQUXEjcPMwAAAABJRU5ErkJggg==',
+      };
+      const response = await fetch(
+        getTestServerUrl(
+          `/api/products/${verifiedSeller1SoftDeleteProduct2.id}/images`,
+        ).href,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: getAuthorizationHeader(verifiedSeller2),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body.message).toBe(`Product not found`);
     });
   });
 
