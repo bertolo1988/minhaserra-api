@@ -121,7 +121,7 @@ export type CreateProductDto = {
   description?: string;
   countryCode: string;
   region?: string;
-  avaliableQuantity: number;
+  availableQuantity: number;
   price: number;
   currency: Currency;
   isOnSale: boolean;
@@ -133,12 +133,12 @@ export const CreateProductDtoSchema = {
     category: {
       nullable: false,
       type: 'string',
-      enum: [Object.values(ProductCategory)],
+      enum: Object.values(ProductCategory),
     },
     subCategory: {
       nullable: false,
       type: 'string',
-      enum: [Object.values(ProductSubCategory)],
+      enum: Object.values(ProductSubCategory),
     },
     name: {
       type: 'string',
@@ -170,7 +170,7 @@ export const CreateProductDtoSchema = {
     },
     currency: {
       type: 'string',
-      enum: [Object.values(Currency)],
+      enum: Object.values(Currency),
       nullable: false,
     },
     isOnSale: {
