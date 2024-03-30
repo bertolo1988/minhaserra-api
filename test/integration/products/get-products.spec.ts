@@ -95,9 +95,7 @@ describe('GET /api/products', () => {
   });
 
   describe('should return 200', () => {
-    test.skip('soft deleted products must not be shown in the response', async () => {});
-
-    test('and an empty list of products', async () => {
+    test('and an empty list of products, soft delete products are not showing either', async () => {
       const response = await fetch(getTestServerUrl(`/api/products`).href, {
         method: 'GET',
         headers: getRequestHeaders(verifiedSellerNoProducts),

@@ -37,6 +37,13 @@ export const verifiedSellerProduct2: ProductModel = SeedUtils.getProduct(
   verifiedSeller.id,
 );
 
+export const verifiedSellerNoProductsProduct1: ProductModel =
+  SeedUtils.getProduct(
+    '53bad12c-99fa-4f9f-992d-1c91db0002d8',
+    verifiedSellerNoProducts.id,
+    true,
+  );
+
 export const verifiedSellerSoftDeletedProduct: ProductModel =
   SeedUtils.getProduct(
     '7f11e4f9-3f93-48bc-b27f-2e192af7748c',
@@ -64,5 +71,6 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct1),
     CaseConverter.objectKeysCamelToSnake(verifiedSellerSoftDeletedProduct),
     CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct2),
+    CaseConverter.objectKeysCamelToSnake(verifiedSellerNoProductsProduct1),
   ]);
 }
