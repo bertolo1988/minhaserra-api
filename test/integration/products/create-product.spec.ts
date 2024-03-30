@@ -61,6 +61,14 @@ describe('POST /api/products', () => {
       });
     });
 
+    test.skip('when sub category is invalid value', async () => {
+      // TODO: Add test for invalid sub category
+    });
+
+    test.skip('when category is invalid value', async () => {
+      // TODO: Add test for invalid sub category
+    });
+
     test('when category does not exist', async () => {
       const data: CreateProductDto = {
         name: 'Product 1',
