@@ -60,6 +60,10 @@ describe('DELETE /api/products/:id', () => {
         message: `Product not found`,
       });
     });
+
+    test.skip('if user tries to delete product that he does not own', async () => {
+      // TODO: Implement this test
+    });
   });
 
   describe('should return 403', () => {
