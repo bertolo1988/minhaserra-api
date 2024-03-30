@@ -28,5 +28,12 @@ export function configureProductsRouter(router: Router) {
     ProductsController.createProduct,
   );
 
+  router.get(
+    '/products',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedSellers(),
+    ProductsController.getProductsForUser,
+  );
+
   // TODO: implement PUT /products/:id, make sure it only change what is needed
 }

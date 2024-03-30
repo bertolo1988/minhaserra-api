@@ -10,6 +10,27 @@ import {
 } from './products.types';
 
 export class ProductsRepository {
+  static async getProductsByUserId(
+    userId: string,
+    isDeleted = false,
+  ): Promise<ProductModel[]> {
+    const knex = await getDatabaseInstance();
+    const where = {
+      userId,
+      isDeleted,
+    };
+
+    const result: Record<string, unknown>[] = await knex<ProductModel>(
+      'products',
+    )
+      .where(CaseConverter.objectKeysCamelToSnake(where))
+      .select();
+
+    return result.map(
+      (r) => CaseConverter.objectKeysSnakeToCamel(r) as ProductModel,
+    );
+  }
+
   static async softDeleteProductByIdAndUserId(
     userId: string,
     id: string,

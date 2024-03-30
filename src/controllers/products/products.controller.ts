@@ -1,11 +1,21 @@
 import Koa from 'koa';
 
 import { ProductsRepository } from './products.repository';
-import { CreateProductDto } from './products.types';
+import { CreateProductDto, ProductModel } from './products.types';
 import { ProductsMapper } from './products.mapper';
 import { isUpdateSuccessfull } from '../../knex-database';
 
 export class ProductsController {
+  static async getProductsForUser(ctx: Koa.Context, _next: Koa.Next) {
+    const userId = ctx.state.user.id;
+
+    const products: ProductModel[] =
+      await ProductsRepository.getProductsByUserId(userId);
+
+    ctx.status = 200;
+    ctx.body = products.map(ProductsMapper.mapProductModeltoPublicProductModel);
+  }
+
   static async deleteProductById(ctx: Koa.Context, _next: Koa.Next) {
     const { id } = ctx.params;
     const userId = ctx.state.user.id;

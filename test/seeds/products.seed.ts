@@ -17,6 +17,11 @@ export const verifiedSeller: UserModel = SeedUtils.getVerifiedUser(
   UserRole.SELLER,
 );
 
+export const verifiedSellerNoProducts: UserModel = SeedUtils.getVerifiedUser(
+  '2e3cdbcb-5231-441c-9a6b-760eb504f500',
+  UserRole.SELLER,
+);
+
 export const verifiedBuyer: UserModel = SeedUtils.getVerifiedUser(
   'a9ef0273-3a5d-40a0-ae63-0c075a18c10c',
   UserRole.BUYER,
@@ -24,6 +29,11 @@ export const verifiedBuyer: UserModel = SeedUtils.getVerifiedUser(
 
 export const verifiedSellerProduct1: ProductModel = SeedUtils.getProduct(
   '537fd072-890b-46e2-88f6-21231acf65e0',
+  verifiedSeller.id,
+);
+
+export const verifiedSellerProduct2: ProductModel = SeedUtils.getProduct(
+  '99065d5f-4e9f-4d14-9462-3eb90ec0f1c7',
   verifiedSeller.id,
 );
 
@@ -48,9 +58,11 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(inactiveUser),
     CaseConverter.objectKeysCamelToSnake(softDeletedUser),
     CaseConverter.objectKeysCamelToSnake(unverifiedUser),
+    CaseConverter.objectKeysCamelToSnake(verifiedSellerNoProducts),
   ]);
   await knex('products').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct1),
     CaseConverter.objectKeysCamelToSnake(verifiedSellerSoftDeletedProduct),
+    CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct2),
   ]);
 }
