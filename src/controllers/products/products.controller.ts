@@ -45,6 +45,20 @@ export class ProductsController {
     const productId: string = ctx.params.id;
     const userId: string = ctx.state.user.id;
 
+    const product = await ProductsRepository.getProductById(productId);
+
+    if (!product) {
+      ctx.status = 404;
+      ctx.body = { message: 'Product not found' };
+      return;
+    }
+
+    if (product.userId !== userId) {
+      ctx.status = 403;
+      ctx.body = { message: 'Forbidden' };
+      return;
+    }
+
     const deleteResult: { id: string; is_deleted: boolean }[] =
       await ProductsRepository.softDeleteProductByIdAndUserId(
         userId,

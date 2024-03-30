@@ -74,7 +74,7 @@ export class ProductsRepository {
           isDeleted: true,
           updatedAt: new Date(),
         }),
-        ['id', 'is_deleted'],
+        ['id', 'is_deleted', 'updated_at'],
       );
     return updateResult;
   }

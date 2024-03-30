@@ -6,6 +6,7 @@ import {
   unverifiedUser,
   verifiedBuyer,
   verifiedSeller,
+  verifiedSellerNoProducts,
   verifiedSellerProduct1,
   verifiedSellerSoftDeletedProduct,
 } from '../../seeds/products.seed';
@@ -16,6 +17,8 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
+import { ProductsRepository } from '../../../src/controllers/products/products.repository';
+import moment from 'moment';
 
 describe('DELETE /api/products/:id', () => {
   beforeAll(async () => {
@@ -60,13 +63,24 @@ describe('DELETE /api/products/:id', () => {
         message: `Product not found`,
       });
     });
-
-    test.skip('if user tries to delete product that he does not own', async () => {
-      // TODO: Implement this test
-    });
   });
 
   describe('should return 403', () => {
+    test('if user tries to delete product that he does not own', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'DELETE',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'Forbidden',
+      });
+    });
+
     test('if user is a buyer', async () => {
       const response = await fetch(
         getTestServerUrl(`/api/products/934f0b29-b4bb-458b-80f6-76c530209281`)
@@ -169,7 +183,14 @@ describe('DELETE /api/products/:id', () => {
   });
 
   describe('should return 200', () => {
-    test('if everything is ok', async () => {
+    test('if everything is ok, updateAt must change', async () => {
+      const previousUpdatedAt = verifiedSellerProduct1.updatedAt;
+
+      const softDeleteSpy = jest.spyOn(
+        ProductsRepository,
+        'softDeleteProductByIdAndUserId',
+      );
+
       const response = await fetch(
         getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
         {
@@ -182,6 +203,13 @@ describe('DELETE /api/products/:id', () => {
       expect(body).toEqual({
         message: 'Product deleted',
       });
+
+      expect(softDeleteSpy).toHaveBeenCalledTimes(1);
+      const deleteReturnResult = await softDeleteSpy.mock.results[0].value;
+      expect(
+        moment(deleteReturnResult[0].updated_at).isAfter(previousUpdatedAt),
+      ).toBe(true);
+      softDeleteSpy.mockRestore();
     });
   });
 });
