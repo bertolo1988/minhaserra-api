@@ -47,14 +47,14 @@ export async function disconnectFromDatabase(): Promise<void> {
 }
 
 export function isUpdateSuccessfull(
-  updateResult: any[],
+  updateResult: unknown[],
   expectedRowUpdtes = 1,
 ): boolean {
   return updateResult && updateResult.length === expectedRowUpdtes;
 }
 
 export function isDeleteSuccessfull(
-  deleteResult: any[],
+  deleteResult: unknown[],
   expectedRowDeletes = 1,
 ): boolean {
   return deleteResult && deleteResult.length === expectedRowDeletes;

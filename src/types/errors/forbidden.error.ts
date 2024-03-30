@@ -7,6 +7,6 @@ export class ForbiddenError extends HttpError {
   }
 
   static isForbiddenError(err: unknown): boolean {
-    return (err as any).constructor.name === ForbiddenError.name;
+    return (err as Error).constructor.name === ForbiddenError.name;
   }
 }

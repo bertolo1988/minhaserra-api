@@ -70,7 +70,10 @@ export class ProductImagesRepository {
       .where(CaseConverter.objectKeysCamelToSnake({ productId }));
     if (!result) return [];
     return result.map(
-      (r) => CaseConverter.objectKeysSnakeToCamel(r) as PublicProductImageModel,
+      (r) =>
+        CaseConverter.objectKeysSnakeToCamel(
+          r as unknown as Record<string, unknown>,
+        ) as PublicProductImageModel,
     );
   }
 }

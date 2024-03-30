@@ -2,6 +2,7 @@ import { EmailTemplateType } from './email.types';
 
 export interface EmailTemplate {
   getSubject: () => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getBody: (data: any) => string;
 }
 

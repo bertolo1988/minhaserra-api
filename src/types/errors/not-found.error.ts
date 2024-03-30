@@ -7,6 +7,6 @@ export class NotFoundError extends HttpError {
   }
 
   static isNotFoundError(err: unknown): boolean {
-    return (err as any).constructor.name === NotFoundError.name;
+    return (err as Error).constructor.name === NotFoundError.name;
   }
 }

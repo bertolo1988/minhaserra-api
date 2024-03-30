@@ -7,6 +7,6 @@ export class UnauthorizedError extends HttpError {
   }
 
   static isUnauthorizedError(err: unknown): boolean {
-    return (err as any).constructor.name === UnauthorizedError.name;
+    return (err as Error).constructor.name === UnauthorizedError.name;
   }
 }

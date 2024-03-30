@@ -7,11 +7,11 @@ import {
   ValidationError,
 } from '../../types/errors';
 
-function safeSerialize(input: unknown | Error | any): string {
+function safeSerialize(input: unknown | Error): string {
   try {
     return JSON.stringify(input, null, 2);
-  } catch (err: any) {
-    return `Failed error serialization! message:"${err.message}" stack:"${err.stack}"`;
+  } catch (err: unknown) {
+    return `Failed error serialization! message:"${(err as Error).message}" stack:"${(err as Error).stack}"`;
   }
 }
 

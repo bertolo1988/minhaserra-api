@@ -49,6 +49,7 @@ export default class EmailService {
     return EmailTemplates[template].getSubject();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getBody(template: EmailTemplateType, data: any): string {
     return EmailTemplates[template].getBody(data);
   }
@@ -56,6 +57,7 @@ export default class EmailService {
   async sendEmail(
     to: string,
     template: EmailTemplateType,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: Record<string, any>,
   ): Promise<AWS.SES.SendEmailResponse> {
     const subject = this.getSubject(template);

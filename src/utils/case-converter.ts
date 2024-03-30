@@ -9,18 +9,22 @@ export class CaseConverter {
     );
   }
 
-  static objectKeysCamelToSnake(obj: Record<string, any>): Record<string, any> {
+  static objectKeysCamelToSnake(
+    obj: Record<string, unknown>,
+  ): Record<string, unknown> {
     if (!obj) return obj;
-    const newObj: Record<string, any> = {};
+    const newObj: Record<string, unknown> = {};
     Object.keys(obj).forEach((key) => {
       newObj[CaseConverter.camelToSnake(key)] = obj[key];
     });
     return newObj;
   }
 
-  static objectKeysSnakeToCamel(obj: Record<string, any>): Record<string, any> {
+  static objectKeysSnakeToCamel(
+    obj: Record<string, unknown>,
+  ): Record<string, unknown> {
     if (!obj) return obj;
-    const newObj: Record<string, any> = {};
+    const newObj: Record<string, unknown> = {};
     Object.keys(obj).forEach((key) => {
       newObj[CaseConverter.snakeToCamel(key)] = obj[key];
     });

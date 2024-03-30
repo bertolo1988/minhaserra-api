@@ -25,6 +25,6 @@ export class ValidationError extends HttpError {
   }
 
   static isValidationError(err: unknown): boolean {
-    return (err as any).constructor.name === ValidationError.name;
+    return (err as Error).constructor.name === ValidationError.name;
   }
 }
