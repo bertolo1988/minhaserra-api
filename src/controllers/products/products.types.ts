@@ -219,13 +219,11 @@ export const UpdateProductDtoSchema = {
       nullable: true,
       type: 'string',
       enum: Object.values(ProductCategory),
-      errorMessage: `'category' value is not valid`,
     },
     subCategory: {
       nullable: true,
       type: 'string',
       enum: Object.values(ProductSubCategory),
-      errorMessage: `'subCategory' value is not valid`,
     },
     name: {
       type: 'string',
@@ -259,7 +257,6 @@ export const UpdateProductDtoSchema = {
       type: 'string',
       enum: Object.values(Currency),
       nullable: true,
-      errorMessage: `'currency' value is not valid`,
     },
     isOnSale: {
       type: 'boolean',

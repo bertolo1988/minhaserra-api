@@ -30,7 +30,7 @@ export class ProductsRepository {
           ...dto,
           updatedAt: new Date(),
         }),
-        ['id'],
+        ['id', 'updated_at'],
       );
     return updateResult;
   }

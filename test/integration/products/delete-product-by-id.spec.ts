@@ -206,6 +206,7 @@ describe('DELETE /api/products/:id', () => {
 
       expect(softDeleteSpy).toHaveBeenCalledTimes(1);
       const deleteReturnResult = await softDeleteSpy.mock.results[0].value;
+      expect(deleteReturnResult[0].updated_at).toBeDefined();
       expect(
         moment(deleteReturnResult[0].updated_at).isAfter(previousUpdatedAt),
       ).toBe(true);

@@ -8,6 +8,7 @@ import {
   ProductModel,
   UpdateProductDto,
 } from './products.types';
+import { ProductsValidator } from './products.validator';
 
 export class ProductsController {
   static async updateProductById(ctx: Koa.Context, _next: Koa.Next) {
@@ -27,6 +28,25 @@ export class ProductsController {
       ctx.status = 403;
       ctx.body = { message: 'Forbidden' };
       return;
+    }
+
+    if (dto.subCategory != null || dto.category != null) {
+      const eligibleCategory =
+        dto.category != null ? dto.category : product.category;
+      const eligibleSubCategory =
+        dto.subCategory != null ? dto.subCategory : product.subCategory;
+      if (
+        !ProductsValidator.isSubCategoryValidForCategory(
+          eligibleCategory,
+          eligibleSubCategory,
+        )
+      ) {
+        ctx.status = 400;
+        ctx.body = {
+          message: `'${eligibleSubCategory}' is not a valid sub category of category '${eligibleCategory}'`,
+        };
+        return;
+      }
     }
 
     const updateResult = await ProductsRepository.updateProductByIdAndUserId(

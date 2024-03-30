@@ -1,5 +1,13 @@
+import moment from 'moment';
 import tk from 'timekeeper';
 
+import CONSTANTS from '../../../src/constants';
+import { ProductsRepository } from '../../../src/controllers/products/products.repository';
+import {
+  ProductCategory,
+  ProductSubCategory,
+  UpdateProductDto,
+} from '../../../src/controllers/products/products.types';
 import {
   inactiveUser,
   softDeletedUser,
@@ -7,6 +15,7 @@ import {
   verifiedBuyer,
   verifiedSeller,
   verifiedSellerNoProducts,
+  verifiedSellerNoProductsProduct1,
   verifiedSellerProduct1,
 } from '../../seeds/products.seed';
 import {
@@ -16,7 +25,6 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-import { UpdateProductDto } from '../../../src/controllers/products/products.types';
 
 const VALID_UUID = '69163cd6-a2b1-4bc4-916a-7f1643d893ed';
 
@@ -68,17 +76,154 @@ describe('PUT /api/products/:id', () => {
       });
     });
 
-    test.skip('if user attempts to update updateAt', async () => {});
+    test('if user attempts to update updateAt', async () => {
+      const data: UpdateProductDto = {
+        updateAt: new Date().toISOString(),
+      } as unknown as UpdateProductDto;
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'must NOT have additional properties',
+      });
+    });
 
-    test.skip('if sub category does not match the category', async () => {});
+    test('if both category and sub category get replaced by an invalid pair', async () => {
+      const data: UpdateProductDto = {
+        category: ProductCategory.TOYS,
+        subCategory: ProductSubCategory.CLOTHING_TSHIRTS,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `'${data.subCategory}' is not a valid sub category of category '${data.category}'`,
+      });
+    });
 
-    test.skip('if category is not valid', async () => {});
+    test('if sub category is updated to a value that is invalid with already existing category', async () => {
+      const data: UpdateProductDto = {
+        subCategory: ProductSubCategory.CLOTHING_TSHIRTS,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `'${data.subCategory}' is not a valid sub category of category 'food'`,
+      });
+    });
 
-    test.skip('if sub category is not valid', async () => {});
+    test('if category is updated to a value that is invalid with already existing subCategory', async () => {
+      const data: UpdateProductDto = {
+        category: ProductCategory.HOME,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `'food_honey' is not a valid sub category of category '${data.category}'`,
+      });
+    });
 
-    test.skip('if max price is exceeded', async () => {});
+    test('if category is not valid', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify({
+            category: 'aaa',
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `category must be equal to one of the allowed values`,
+      });
+    });
 
-    test.skip('if isOnSale is a string', async () => {});
+    test('if sub category is not valid', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify({
+            subCategory: 'aaa',
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `subCategory must be equal to one of the allowed values`,
+      });
+    });
+
+    test('if max price is exceeded', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify({
+            price: CONSTANTS.MAX_PRICE_IN_CENTS + 1,
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `price must be <= 9007199254740991`,
+      });
+    });
+
+    test('if isOnSale is a string', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify({
+            isOnSale: 'true',
+          }),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `isOnSale must be boolean`,
+      });
+    });
   });
 
   describe('should return 401', () => {
@@ -159,7 +304,7 @@ describe('PUT /api/products/:id', () => {
       });
     });
 
-    test.skip('if user tries to update product that he doesnt own', async () => {
+    test('if user tries to update product that he doesnt own', async () => {
       const data: UpdateProductDto = {
         region: 'Lisboa',
       };
@@ -180,7 +325,25 @@ describe('PUT /api/products/:id', () => {
   });
 
   describe('should return 404', () => {
-    test.skip('if product is soft deleted', async () => {});
+    test('if product is soft deleted', async () => {
+      const data: UpdateProductDto = {
+        region: 'Lisboa',
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerNoProductsProduct1.id}`)
+          .href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(404);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'Product not found',
+      });
+    });
 
     test('if product does not exist', async () => {
       const data: UpdateProductDto = {
@@ -204,8 +367,43 @@ describe('PUT /api/products/:id', () => {
   });
 
   describe('should return 200', () => {
-    test.skip('and successfully udpate record', async () => {
-      // updateAt must change!
+    test('and successfully update record', async () => {
+      const updateRepositorySpy = jest.spyOn(
+        ProductsRepository,
+        'updateProductByIdAndUserId',
+      );
+
+      const data: UpdateProductDto = {
+        region: 'Lisboa',
+        price: 10050,
+        subCategory: ProductSubCategory.FOOD_OLIVE_OIL,
+      };
+
+      const productId = verifiedSellerProduct1.id;
+      const previousUpdatedAt = verifiedSellerProduct1.updatedAt;
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${productId}`).href,
+        {
+          method: 'PUT',
+          headers: getRequestHeaders(verifiedSeller),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'Product updated',
+      });
+
+      expect(updateRepositorySpy).toHaveBeenCalledTimes(1);
+      const updateResult = await updateRepositorySpy.mock.results[0].value;
+      expect(updateResult).toHaveLength(1);
+      expect(updateResult[0].id).toBe(productId);
+      expect(updateResult[0].updated_at).toBeDefined();
+      expect(
+        moment(updateResult[0].updated_at).isAfter(previousUpdatedAt),
+      ).toBe(true);
+      updateRepositorySpy.mockRestore();
     });
   });
 });
