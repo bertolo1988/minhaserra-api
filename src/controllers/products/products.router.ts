@@ -8,6 +8,8 @@ import { ProductsValidator } from './products.validator';
 export function configureProductsRouter(router: Router) {
   router.get(
     '/products/:id',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedSellers(),
     validateIdValidUuid,
     ProductsController.getProductById,
   );
@@ -42,7 +44,6 @@ export function configureProductsRouter(router: Router) {
     AuthenticationUtils.authorizeActiveVerifiedSellers(),
     validateIdValidUuid,
     ProductsValidator.validateUpdateProduct,
-    ProductsValidator.validateSubCategoryMatchesCategory,
     ProductsController.updateProductById,
   );
 }
