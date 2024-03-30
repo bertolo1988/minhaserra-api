@@ -201,10 +201,16 @@ export const CreateProductDtoSchema = {
   additionalProperties: false,
 };
 
-export type UpdateProductDto = Omit<
-  ProductModel,
-  'id' | 'userId' | 'isDeleted' | 'isApproved' | 'createdAt' | 'updatedAt'
->;
+export type UpdateProductDto = {
+  category?: ProductCategory;
+  subCategory?: ProductSubCategory;
+  name?: string;
+  description?: string;
+  countryCode?: string;
+  region?: string;
+  avaliableQuantity?: number;
+  price?: number;
+};
 
 export const UpdateProductDtoSchema = {
   type: 'object',
