@@ -25,6 +25,7 @@ export function configureProductsRouter(router: Router) {
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedSellers(),
     ProductsValidator.validateCreateProduct,
+    ProductsValidator.validateSubCategoryMatchesCategory,
     ProductsController.createProduct,
   );
 
@@ -35,5 +36,13 @@ export function configureProductsRouter(router: Router) {
     ProductsController.getProductsForUser,
   );
 
-  // TODO: implement PUT /products/:id, make sure it only change what is needed
+  router.put(
+    '/products/:id',
+    AuthenticationUtils.authenticateUserMiddleware,
+    AuthenticationUtils.authorizeActiveVerifiedSellers(),
+    validateIdValidUuid,
+    ProductsValidator.validateUpdateProduct,
+    ProductsValidator.validateSubCategoryMatchesCategory,
+    ProductsController.updateProductById,
+  );
 }

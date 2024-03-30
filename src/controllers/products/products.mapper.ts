@@ -33,7 +33,7 @@ export class ProductsMapper {
     dto: CreateProductDto,
   ): CreateProductModel {
     return {
-      userId: userId,
+      userId,
       category: dto.category,
       subCategory: dto.subCategory,
       name: dto.name,

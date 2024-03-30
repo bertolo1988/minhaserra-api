@@ -7,9 +7,34 @@ import {
   CreateProductDto,
   CreateProductModel,
   ProductModel,
+  UpdateProductDto,
 } from './products.types';
 
 export class ProductsRepository {
+  static async updateProductByIdAndUserId(
+    userId: string,
+    id: string,
+    dto: UpdateProductDto,
+  ): Promise<{ id: string }[]> {
+    const knex = await getDatabaseInstance();
+    const updateResult = await knex('products')
+      .where(
+        CaseConverter.objectKeysCamelToSnake({
+          id,
+          userId,
+          isDeleted: false,
+        }),
+      )
+      .update(
+        CaseConverter.objectKeysCamelToSnake({
+          ...dto,
+          updatedAt: new Date(),
+        }),
+        ['id'],
+      );
+    return updateResult;
+  }
+
   static async getProductsByUserId(
     userId: string,
     isDeleted = false,
@@ -61,12 +86,14 @@ export class ProductsRepository {
     const knex = await getDatabaseInstance();
     const data: CreateProductModel =
       ProductsMapper.mapCreateProductDtoToCreateProductModel(userId, dto);
+
     const result = (await knex('products').insert(
       CaseConverter.objectKeysCamelToSnake(data),
       ['id'],
     )) as {
       id: string;
     }[];
+
     return result[0];
   }
 

@@ -8,12 +8,26 @@ import {
   CreateProductDtoSchema,
   ProductCategory,
   ProductSubCategory,
+  UpdateProductDto,
+  UpdateProductDtoSchema,
 } from './products.types';
 
 const createProductDtoValidator: ValidateFunction =
   ajv.compile<CreateProductDto>(CreateProductDtoSchema);
 
+const updateProductDtoValidator: ValidateFunction =
+  ajv.compile<UpdateProductDto>(UpdateProductDtoSchema);
+
 export class ProductsValidator {
+  static async validateUpdateProduct(ctx: Koa.Context, next: Koa.Next) {
+    const isBodyValid = updateProductDtoValidator(ctx.request.body);
+    if (!isBodyValid)
+      throw new ValidationError(
+        updateProductDtoValidator.errors as ErrorObject[],
+      );
+    await next();
+  }
+
   static isSubCategoryValidForCategory(
     category: string | ProductCategory,
     subCategory: string | ProductSubCategory,
@@ -21,13 +35,10 @@ export class ProductsValidator {
     return subCategory.split('_')[0] === category;
   }
 
-  static async validateCreateProduct(ctx: Koa.Context, next: Koa.Next) {
-    const isBodyValid = createProductDtoValidator(ctx.request.body);
-    if (!isBodyValid)
-      throw new ValidationError(
-        createProductDtoValidator.errors as ErrorObject[],
-      );
-
+  static async validateSubCategoryMatchesCategory(
+    ctx: Koa.Context,
+    next: Koa.Next,
+  ) {
     const body: CreateProductDto = ctx.request.body;
 
     if (
@@ -38,6 +49,16 @@ export class ProductsValidator {
     )
       throw new ValidationError(
         `'${body.subCategory}' is not a valid sub category of category '${body.category}'`,
+      );
+
+    await next();
+  }
+
+  static async validateCreateProduct(ctx: Koa.Context, next: Koa.Next) {
+    const isBodyValid = createProductDtoValidator(ctx.request.body);
+    if (!isBodyValid)
+      throw new ValidationError(
+        createProductDtoValidator.errors as ErrorObject[],
       );
 
     await next();

@@ -200,3 +200,66 @@ export const CreateProductDtoSchema = {
   ],
   additionalProperties: false,
 };
+
+export type UpdateProductDto = Omit<
+  ProductModel,
+  'id' | 'userId' | 'isDeleted' | 'isApproved' | 'createdAt' | 'updatedAt'
+>;
+
+export const UpdateProductDtoSchema = {
+  type: 'object',
+  properties: {
+    category: {
+      nullable: true,
+      type: 'string',
+      enum: Object.values(ProductCategory),
+      errorMessage: `'category' value is not valid`,
+    },
+    subCategory: {
+      nullable: true,
+      type: 'string',
+      enum: Object.values(ProductSubCategory),
+      errorMessage: `'subCategory' value is not valid`,
+    },
+    name: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DESCRIPTION_MAX_STRING_SIZE,
+    },
+    countryCode: CountryCodeSchema,
+    region: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+    },
+    availableQuantity: {
+      type: 'integer',
+      nullable: true,
+      minimum: 0,
+      maximum: CONSTANTS.MAX_AVAILABLE_QUANTITY,
+    },
+    price: {
+      type: 'integer',
+      nullable: true,
+      minimum: 1,
+      maximum: CONSTANTS.MAX_PRICE_IN_CENTS,
+    },
+    currency: {
+      type: 'string',
+      enum: Object.values(Currency),
+      nullable: true,
+      errorMessage: `'currency' value is not valid`,
+    },
+    isOnSale: {
+      type: 'boolean',
+      nullable: true,
+    },
+  },
+  required: [],
+  additionalProperties: false,
+};
