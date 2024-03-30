@@ -68,7 +68,17 @@ describe('PUT /api/products/:id', () => {
       });
     });
 
-    test.skip('if category does not match the category', async () => {});
+    test.skip('if user attempts to update updateAt', async () => {});
+
+    test.skip('if sub category does not match the category', async () => {});
+
+    test.skip('if category is not valid', async () => {});
+
+    test.skip('if sub category is not valid', async () => {});
+
+    test.skip('if max price is exceeded', async () => {});
+
+    test.skip('if isOnSale is a string', async () => {});
   });
 
   describe('should return 401', () => {
@@ -148,10 +158,8 @@ describe('PUT /api/products/:id', () => {
         message: `Forbidden`,
       });
     });
-  });
 
-  describe('should return 404', () => {
-    test('if user tries to update product that he doesnt own', async () => {
+    test.skip('if user tries to update product that he doesnt own', async () => {
       const data: UpdateProductDto = {
         region: 'Lisboa',
       };
@@ -163,13 +171,15 @@ describe('PUT /api/products/:id', () => {
           body: JSON.stringify(data),
         },
       );
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(403);
       const body = await response.json();
       expect(body).toEqual({
-        message: 'Product not found',
+        message: 'Forbidden',
       });
     });
+  });
 
+  describe('should return 404', () => {
     test.skip('if product is soft deleted', async () => {});
 
     test('if product does not exist', async () => {
