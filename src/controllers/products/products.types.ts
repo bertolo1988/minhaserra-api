@@ -181,6 +181,7 @@ export const CreateProductDtoSchema = {
       type: 'string',
       enum: Object.values(Currency),
       nullable: false,
+      errorMessage: `'currency' value is not valid`,
     },
     isOnSale: {
       type: 'boolean',
