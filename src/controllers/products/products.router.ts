@@ -11,6 +11,7 @@ export function configureProductsRouter(router: Router) {
     validateIdValidUuid,
     ProductsController.getProductById,
   );
+
   router.delete(
     '/products/:id',
     AuthenticationUtils.authenticateUserMiddleware,
@@ -18,6 +19,7 @@ export function configureProductsRouter(router: Router) {
     validateIdValidUuid,
     ProductsController.deleteProductById,
   );
+
   router.post(
     '/products',
     AuthenticationUtils.authenticateUserMiddleware,
@@ -25,4 +27,6 @@ export function configureProductsRouter(router: Router) {
     ProductsValidator.validateCreateProduct,
     ProductsController.createProduct,
   );
+
+  // TODO: implement PUT /products/:id, make sure it only change what is needed
 }
