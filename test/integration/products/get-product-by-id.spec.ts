@@ -1,10 +1,20 @@
 import tk from 'timekeeper';
 
 import {
+  inactiveUser,
+  softDeletedUser,
+  unverifiedUser,
+  verifiedBuyer,
+  verifiedSeller,
+  verifiedSellerNoProducts,
   verifiedSellerProduct1,
   verifiedSellerSoftDeletedProduct,
 } from '../../seeds/products.seed';
-import { DatabaseSeedNames, runSeedByName } from '../../test-utils';
+import {
+  DatabaseSeedNames,
+  getRequestHeaders,
+  runSeedByName,
+} from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 
@@ -26,13 +36,112 @@ describe('GET /api/products/:id', () => {
         getTestServerUrl(`/api/products/${invalidId}`).href,
         {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getRequestHeaders(verifiedSeller),
         },
       );
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body).toEqual({
         message: `Invalid url parameter 'id': ${invalidId}`,
+      });
+    });
+  });
+
+  describe('should return 401', () => {
+    test('if user is not authenticated', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/934f0b29-b4bb-458b-80f6-76c530209281`)
+          .href,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Unauthorized`,
+      });
+    });
+
+    test('if user is soft deleted', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/934f0b29-b4bb-458b-80f6-76c530209281`)
+          .href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(softDeletedUser),
+        },
+      );
+      expect(response.status).toBe(401);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Unauthorized`,
+      });
+    });
+  });
+
+  describe('should return 403', () => {
+    test('if user tries to delete product that he does not own', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'Forbidden',
+      });
+    });
+
+    test('if user is a buyer', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/934f0b29-b4bb-458b-80f6-76c530209281`)
+          .href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedBuyer),
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Forbidden`,
+      });
+    });
+
+    test('if user is inactive', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/934f0b29-b4bb-458b-80f6-76c530209281`)
+          .href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(inactiveUser),
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Forbidden`,
+      });
+    });
+
+    test('if user is not verified', async () => {
+      const response = await fetch(
+        getTestServerUrl(`/api/products/934f0b29-b4bb-458b-80f6-76c530209281`)
+          .href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(unverifiedUser),
+        },
+      );
+      expect(response.status).toBe(403);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Forbidden`,
       });
     });
   });
@@ -44,7 +153,7 @@ describe('GET /api/products/:id', () => {
           .href,
         {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getRequestHeaders(verifiedSeller),
         },
       );
       expect(response.status).toBe(404);
@@ -58,7 +167,7 @@ describe('GET /api/products/:id', () => {
           .href,
         {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getRequestHeaders(verifiedSeller),
         },
       );
       expect(response.status).toBe(404);
@@ -73,7 +182,7 @@ describe('GET /api/products/:id', () => {
         getTestServerUrl(`/api/products/${verifiedSellerProduct1.id}`).href,
         {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getRequestHeaders(verifiedSeller),
         },
       );
       expect(response.status).toBe(200);

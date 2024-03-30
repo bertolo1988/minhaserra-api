@@ -15,6 +15,20 @@ export class ProductsController {
     const productId: string = ctx.params.id;
     const dto: UpdateProductDto = ctx.request.body as UpdateProductDto;
 
+    const product = await ProductsRepository.getProductById(productId);
+
+    if (!product) {
+      ctx.status = 404;
+      ctx.body = { message: 'Product not found' };
+      return;
+    }
+
+    if (product.userId !== userId) {
+      ctx.status = 403;
+      ctx.body = { message: 'Forbidden' };
+      return;
+    }
+
     const updateResult = await ProductsRepository.updateProductByIdAndUserId(
       userId,
       productId,
@@ -76,18 +90,25 @@ export class ProductsController {
   }
 
   static async getProductById(ctx: Koa.Context, _next: Koa.Next) {
-    const { id } = ctx.params;
+    const productId: string = ctx.params.id;
+    const userId: string = ctx.state.user.id;
 
-    const product = await ProductsRepository.getProductById(id);
+    const product = await ProductsRepository.getProductById(productId);
 
     if (!product) {
       ctx.status = 404;
       ctx.body = { message: 'Product not found' };
       return;
-    } else {
-      ctx.status = 200;
-      ctx.body = ProductsMapper.mapProductModeltoPublicProductModel(product);
     }
+
+    if (product.userId !== userId) {
+      ctx.status = 403;
+      ctx.body = { message: 'Forbidden' };
+      return;
+    }
+
+    ctx.status = 200;
+    ctx.body = ProductsMapper.mapProductModeltoPublicProductModel(product);
   }
 
   static async createProduct(ctx: Koa.Context, _next: Koa.Next) {
