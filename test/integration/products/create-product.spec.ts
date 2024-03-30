@@ -61,12 +61,62 @@ describe('POST /api/products', () => {
       });
     });
 
-    test.skip('when sub category is invalid value', async () => {
-      // TODO: Add test for invalid sub category
+    test('when sub category is invalid value', async () => {
+      const data: CreateProductDto = {
+        name: 'Mel do Carlos',
+        description: 'Mel biológico da Serra de Aire e Candeeiros',
+        price: 1000,
+        availableQuantity: 10,
+        category: ProductCategory.FOOD,
+        subCategory: 'aaaa' as ProductSubCategory,
+        countryCode: 'PT',
+        region: 'Leiria',
+        currency: Currency.EUR,
+        isOnSale: true,
+      };
+
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedSeller),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `'subCategory' value is not valid`,
+      });
     });
 
-    test.skip('when category is invalid value', async () => {
-      // TODO: Add test for invalid sub category
+    test('when category is invalid value', async () => {
+      const data: CreateProductDto = {
+        name: 'Mel do Carlos',
+        description: 'Mel biológico da Serra de Aire e Candeeiros',
+        price: 1000,
+        availableQuantity: 10,
+        category: 'aaa' as ProductCategory,
+        subCategory: ProductSubCategory.FOOD_DRINKS,
+        countryCode: 'PT',
+        region: 'Leiria',
+        currency: Currency.EUR,
+        isOnSale: true,
+      };
+
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedSeller),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `'category' value is not valid`,
+      });
     });
 
     test('when category does not exist', async () => {

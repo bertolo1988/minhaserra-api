@@ -141,11 +141,13 @@ export const CreateProductDtoSchema = {
       nullable: false,
       type: 'string',
       enum: Object.values(ProductCategory),
+      errorMessage: `'category' value is not valid`,
     },
     subCategory: {
       nullable: false,
       type: 'string',
       enum: Object.values(ProductSubCategory),
+      errorMessage: `'subCategory' value is not valid`,
     },
     name: {
       type: 'string',
