@@ -2,13 +2,13 @@ import {
   CreateProductDto,
   CreateProductModel,
   ProductModel,
-  PublicProductModel,
+  OwnerProductModel,
 } from './products.types';
 
 export class ProductsMapper {
-  static mapProductModeltoPublicProductModel(
+  static mapProductModeltoOwnerProductModel(
     product: ProductModel,
-  ): PublicProductModel {
+  ): OwnerProductModel {
     return {
       id: product.id,
       userId: product.userId,

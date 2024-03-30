@@ -114,7 +114,7 @@ export type ProductModel = {
   updatedAt: Date;
 };
 
-export type PublicProductModel = ProductModel;
+export type OwnerProductModel = ProductModel;
 
 export type CreateProductModel = Omit<
   ProductModel,
