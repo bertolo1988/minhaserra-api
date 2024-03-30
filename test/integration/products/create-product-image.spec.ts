@@ -2,6 +2,7 @@ import moment from 'moment';
 import tk from 'timekeeper';
 
 import CONFIG from '../../../src/config';
+import CONSTANTS from '../../../src/constants';
 import { ImageUploadService } from '../../../src/controllers/products/image-upload-service';
 import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
 import { ImageUtils } from '../../../src/utils/image-utils';
@@ -199,7 +200,7 @@ describe('POST /api/products/:id/images', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'base64Image' must be a string with a maximum length of 8000000 characters, about 6 megabytes of original image size.`,
+        `base64Image must be a string with a maximum length of 8000000 characters, about 6 megabytes of original image size.`,
       );
     });
 
@@ -226,7 +227,7 @@ describe('POST /api/products/:id/images', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'name' can only contain letters, numbers, underscores, and dashes`,
+        `name can only contain letters, numbers, underscores, and dashes and have a maximum length of ${CONSTANTS.DEFAULT_MAX_STRING_SIZE}`,
       );
     });
 
@@ -278,7 +279,7 @@ describe('POST /api/products/:id/images', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'name' can only contain letters, numbers, underscores, and dashes`,
+        `name can only contain letters, numbers, underscores, and dashes and have a maximum length of ${CONSTANTS.DEFAULT_MAX_STRING_SIZE}`,
       );
     });
 

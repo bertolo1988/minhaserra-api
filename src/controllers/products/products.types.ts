@@ -78,7 +78,7 @@ export const CreateProductImageDtoSchema = {
       nullable: false,
       format: AjvCustomFormats.NUMBERS_LETTERS_UNDERSCORE_DASH,
       maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
-      errorMessage: `'name' can only contain letters, numbers, underscores, and dashes`,
+      errorMessage: `can only contain letters, numbers, underscores, and dashes and have a maximum length of ${CONSTANTS.DEFAULT_MAX_STRING_SIZE}`,
     },
     description: {
       type: 'string',
@@ -89,7 +89,7 @@ export const CreateProductImageDtoSchema = {
       type: 'string',
       nullable: false,
       maxLength: CONSTANTS.MAX_BASE64_IMAGE_SIZE,
-      errorMessage: `'base64Image' must be a string with a maximum length of ${CONSTANTS.MAX_BASE64_IMAGE_SIZE} characters, about ${ImageUtils.reverseEstimateBase64Size(CONSTANTS.MAX_BASE64_IMAGE_SIZE) / 1000000} megabytes of original image size.`,
+      errorMessage: `must be a string with a maximum length of ${CONSTANTS.MAX_BASE64_IMAGE_SIZE} characters, about ${ImageUtils.reverseEstimateBase64Size(CONSTANTS.MAX_BASE64_IMAGE_SIZE) / 1000000} megabytes of original image size.`,
     },
   },
   required: ['name', 'base64Image'],
@@ -141,13 +141,11 @@ export const CreateProductDtoSchema = {
       nullable: false,
       type: 'string',
       enum: Object.values(ProductCategory),
-      errorMessage: `'category' value is not valid`,
     },
     subCategory: {
       nullable: false,
       type: 'string',
       enum: Object.values(ProductSubCategory),
-      errorMessage: `'subCategory' value is not valid`,
     },
     name: {
       type: 'string',
@@ -181,7 +179,6 @@ export const CreateProductDtoSchema = {
       type: 'string',
       enum: Object.values(Currency),
       nullable: false,
-      errorMessage: `'currency' value is not valid`,
     },
     isOnSale: {
       type: 'boolean',

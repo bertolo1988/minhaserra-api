@@ -63,7 +63,7 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`must match format "email"`);
+      expect(body.message).toBe(`email must match format "email"`);
     });
 
     test('when birthdate is invalid', async () => {
@@ -86,7 +86,7 @@ describe('POST /api/users', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+        `birthDate must be a valid date in format YYYY-MM-DD`,
       );
     });
 
@@ -109,7 +109,9 @@ describe('POST /api/users', () => {
       });
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`'role' must be either "buyer" or "seller"`);
+      expect(body.message).toBe(
+        `role must be equal to one of the allowed values`,
+      );
     });
 
     test('when a not allowed extra property exists', async () => {
@@ -155,7 +157,7 @@ describe('POST /api/users', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
+        `password must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
       );
     });
   });

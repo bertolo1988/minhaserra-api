@@ -65,7 +65,7 @@ describe('PUT /api/users/:id', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+        `birthDate must be a valid date in format YYYY-MM-DD`,
       );
     });
 
@@ -86,7 +86,7 @@ describe('PUT /api/users/:id', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+        `birthDate must be a valid date in format YYYY-MM-DD`,
       );
     });
 
@@ -107,7 +107,7 @@ describe('PUT /api/users/:id', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'birthDate' must be a valid date in format YYYY-MM-DD`,
+        `birthDate must be a valid date in format YYYY-MM-DD`,
       );
     });
 
@@ -318,7 +318,7 @@ describe('PUT /api/users/:id', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`'invoiceAddressId' must be a valid UUID`);
+      expect(body.message).toBe(`invoiceAddressId must match format "uuid"`);
     });
 
     test('if user tries to update his shipping address id with a malformed uuid', async () => {
@@ -338,7 +338,7 @@ describe('PUT /api/users/:id', () => {
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.message).toBe(`'shippingAddressId' must be a valid UUID`);
+      expect(body.message).toBe(`shippingAddressId must match format "uuid"`);
     });
   });
 

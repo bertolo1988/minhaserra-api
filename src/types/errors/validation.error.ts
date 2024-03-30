@@ -1,7 +1,6 @@
 import { ErrorObject } from 'ajv';
-import { isString } from 'lodash';
-
 import _ from 'lodash';
+
 import { HttpError } from './http-error.error';
 
 export class ValidationError extends HttpError {
@@ -25,9 +24,9 @@ export class ValidationError extends HttpError {
   }
 
   getFirstErrorMessage(): string | undefined {
-    if (isString(this.validationErrors)) {
+    if (_.isString(this.validationErrors)) {
       return this.validationErrors;
-    } else if (isString(this.validationErrors[0])) {
+    } else if (_.isString(this.validationErrors[0])) {
       return this.validationErrors[0];
     } else {
       return this.buildComplexErrorMessage(

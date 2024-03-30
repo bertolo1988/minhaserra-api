@@ -114,7 +114,7 @@ describe('PUT /api/password-resets/:id', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'password' must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
+        `password must be have at least 8 characters and at most 64 characters, and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character`,
       );
     });
 

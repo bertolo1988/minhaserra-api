@@ -1,5 +1,7 @@
+import moment from 'moment';
 import tk from 'timekeeper';
 
+import { ProductsRepository } from '../../../src/controllers/products/products.repository';
 import {
   inactiveUser,
   softDeletedUser,
@@ -17,8 +19,6 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-import { ProductsRepository } from '../../../src/controllers/products/products.repository';
-import moment from 'moment';
 
 describe('DELETE /api/products/:id', () => {
   beforeAll(async () => {

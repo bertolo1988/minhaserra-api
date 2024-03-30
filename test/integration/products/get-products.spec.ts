@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import tk from 'timekeeper';
 
-import _ from 'lodash';
 import {
   inactiveUser,
   softDeletedUser,

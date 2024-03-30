@@ -86,7 +86,7 @@ describe('POST /api/products', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body).toEqual({
-        message: `'subCategory' value is not valid`,
+        message: `subCategory must be equal to one of the allowed values`,
       });
     });
 
@@ -115,7 +115,7 @@ describe('POST /api/products', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body).toEqual({
-        message: `'category' value is not valid`,
+        message: `category must be equal to one of the allowed values`,
       });
     });
 

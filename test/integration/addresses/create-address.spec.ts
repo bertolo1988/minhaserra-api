@@ -47,7 +47,7 @@ describe('POST api/addresses', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'countryCode' must have two characters and be valid according to ISO 3166-1 alpha-2`,
+        `countryCode must have two characters and be valid according to ISO 3166-1 alpha-2`,
       );
     });
 
@@ -72,7 +72,7 @@ describe('POST api/addresses', () => {
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body.message).toBe(
-        `'postalCode' must be a string with a maximum length of 50 characters`,
+        `postalCode must NOT have more than 50 characters`,
       );
     });
 
