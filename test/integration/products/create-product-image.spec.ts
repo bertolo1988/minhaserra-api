@@ -177,7 +177,7 @@ describe('POST /api/products/:id/images', () => {
     });
 
     test('if image is too big to be accepted', async () => {
-      const fileName = `test/integration/products/8_5_MB.jpeg`;
+      const fileName = `test/integration/products/test-product-images/8_5_MB.jpeg`;
       const data = {
         name: 'image',
         description: 'Image description',
@@ -354,7 +354,7 @@ describe('POST /api/products/:id/images', () => {
     });
 
     test('if everything is correct and image is not over the limit', async () => {
-      const fileName = `test/integration/products/5_6_MB.jpg`;
+      const fileName = `test/integration/products/test-product-images/5_6_MB.jpg`;
       const data: CreateProductImageDto = {
         name: 'myimage_1',
         description: 'Image description',
