@@ -9,11 +9,11 @@ export async function validatePaginationParams(
 ) {
   const { offset, limit } = ctx.request.query;
 
-  if (offset && !isNumericString(offset)) {
+  if (offset != null && !isNumericString(offset)) {
     throw new ValidationError(`Invalid query parameter 'offset'`);
   }
 
-  if (limit && !isNumericString(limit)) {
+  if (limit != null && !isNumericString(limit)) {
     throw new ValidationError(`Invalid query parameter 'limit'`);
   }
 
