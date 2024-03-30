@@ -10,6 +10,29 @@ import {
 } from './products.types';
 
 export class ProductsRepository {
+  static async softDeleteProductByIdAndUserId(
+    userId: string,
+    id: string,
+  ): Promise<{ id: string; is_deleted: boolean }[]> {
+    const knex = await getDatabaseInstance();
+    const updateResult = await knex('products')
+      .where(
+        CaseConverter.objectKeysCamelToSnake({
+          id,
+          userId,
+          isDeleted: false,
+        }),
+      )
+      .update(
+        CaseConverter.objectKeysCamelToSnake({
+          isDeleted: true,
+          updatedAt: new Date(),
+        }),
+        ['id', 'is_deleted'],
+      );
+    return updateResult;
+  }
+
   static async createOne(
     userId: string,
     dto: CreateProductDto,

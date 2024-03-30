@@ -66,6 +66,7 @@ export class ProductImagesController {
     const productId = ctx.params.id;
 
     const product = await ProductsRepository.getProductById(productId);
+
     if (!product) {
       ctx.status = 404;
       ctx.body = { message: 'Product not found' };

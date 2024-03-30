@@ -11,13 +11,13 @@ export function configureProductsRouter(router: Router) {
     validateIdValidUuid,
     ProductsController.getProductById,
   );
-  /*   router.delete(
+  router.delete(
     '/products/:id',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeActiveVerifiedUsers(),
+    AuthenticationUtils.authorizeActiveVerifiedSellers(),
     validateIdValidUuid,
     ProductsController.deleteProductById,
-  ); */
+  );
   router.post(
     '/products',
     AuthenticationUtils.authenticateUserMiddleware,
