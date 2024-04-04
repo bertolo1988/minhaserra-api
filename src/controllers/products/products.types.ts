@@ -102,7 +102,9 @@ export type ProductModel = {
   category: ProductCategory;
   subCategory: ProductSubCategory;
   name: string;
-  description?: string;
+  nameEnglish: string;
+  description: string;
+  descriptionEnglish: string;
   countryCode: string;
   region?: string;
   avaliableQuantity: number;

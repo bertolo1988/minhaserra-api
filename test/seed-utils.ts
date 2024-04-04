@@ -147,8 +147,11 @@ export class SeedUtils {
       userId,
       category: ProductCategory.FOOD,
       subCategory: ProductSubCategory.FOOD_HONEY,
-      name: 'Product 1',
-      description: 'Description 1',
+      name: 'Mel da Serra de Aire e Candeeiros',
+      nameEnglish: `Honey from Serra de Aire e Candeeiros`,
+      description:
+        'Mel biológico, à base de alecrim e alfazema, produzido no alto das Serras do parque natural da Serra de Aire e Candeeiros.',
+      descriptionEnglish: `Organic honey, based on rosemary and lavender, produced in the mountain range of the Serra de Aire e Candeeiros natural park.`,
       countryCode: 'PT',
       region: 'Leiria',
       avaliableQuantity: 5,
