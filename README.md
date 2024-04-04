@@ -24,3 +24,9 @@ JWT_SECRET=
 [migrations cli](https://knexjs.org/guide/migrations.html#migration-cli)
 
 [seed files](https://knexjs.org/guide/migrations.html#seed-files)
+
+// TODO:
+// store original language near product, find an ISO for language
+// translate name and description to english
+// mock the translations in the tests
+// implement the search

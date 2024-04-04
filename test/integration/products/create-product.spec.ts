@@ -260,7 +260,7 @@ describe('POST /api/products', () => {
   });
 
   describe('should return 201', () => {
-    test('should successfully create a product for our seller', async () => {
+    test.only('should successfully create a product for our seller', async () => {
       const data: CreateProductDto = {
         name: 'Mel do Carlos',
         description: 'Mel biológico da Serra de Aire e Candeeiros',

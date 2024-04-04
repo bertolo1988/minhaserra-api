@@ -15,7 +15,9 @@ export class ProductsMapper {
       category: product.category,
       subCategory: product.subCategory,
       name: product.name,
+      nameEnglish: product.nameEnglish,
       description: product.description,
+      descriptionEnglish: product.descriptionEnglish,
       countryCode: product.countryCode,
       region: product.region,
       avaliableQuantity: product.avaliableQuantity,
@@ -37,7 +39,11 @@ export class ProductsMapper {
       category: dto.category,
       subCategory: dto.subCategory,
       name: dto.name,
+      // TODO: change this to the correct value
+      nameEnglish: '',
       description: dto.description,
+      // TODO: change this to the correct value
+      descriptionEnglish: '',
       countryCode: dto.countryCode,
       region: dto.region,
       avaliableQuantity: dto.availableQuantity,

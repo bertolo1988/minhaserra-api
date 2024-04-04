@@ -127,7 +127,7 @@ export type CreateProductDto = {
   category: ProductCategory;
   subCategory: ProductSubCategory;
   name: string;
-  description?: string;
+  description: string;
   countryCode: string;
   region?: string;
   availableQuantity: number;
