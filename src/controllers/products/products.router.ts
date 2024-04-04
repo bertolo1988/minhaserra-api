@@ -4,6 +4,7 @@ import { AuthenticationUtils } from '../../middlewares/authenticate-user.middlew
 import { validateIdValidUuid } from '../../middlewares/param-is-valid-uuid.middleware';
 import { ProductsController } from './products.controller';
 import { ProductsValidator } from './products.validator';
+import { validatePaginationParams } from '../../middlewares/validate-pagination-params.middleware';
 
 export function configureProductsRouter(router: Router) {
   router.get(
@@ -36,6 +37,12 @@ export function configureProductsRouter(router: Router) {
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedSellers(),
     ProductsController.getProductsForUser,
+  );
+
+  router.get(
+    '/public-products',
+    validatePaginationParams,
+    ProductsController.getProducts,
   );
 
   router.put(

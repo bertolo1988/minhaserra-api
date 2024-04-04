@@ -263,3 +263,13 @@ export const UpdateProductDtoSchema = {
   required: [],
   additionalProperties: false,
 };
+
+export type ProductsFilterDto = {
+  textQuery?: string;
+  maxPrice?: number;
+  minPrice?: number;
+  category?: ProductCategory;
+  subCategory?: ProductSubCategory;
+  countryCode?: string;
+  region?: string;
+};

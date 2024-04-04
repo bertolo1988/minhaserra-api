@@ -9,8 +9,21 @@ import {
   UpdateProductDto,
 } from './products.types';
 import { ProductsValidator } from './products.validator';
+import { PaginationParams } from '../../types/pagination-params';
 
 export class ProductsController {
+  static async getProducts(ctx: Koa.Context, _next: Koa.Next) {
+    const paginationParams = new PaginationParams(
+      ctx.request.query.offset as string,
+      ctx.request.query.limit as string,
+    );
+
+    // TODO: implement this
+
+    ctx.status = 200;
+    ctx.body = [];
+  }
+
   static async updateProductById(ctx: Koa.Context, _next: Koa.Next) {
     const userId: string = ctx.state.user.id;
     const productId: string = ctx.params.id;
@@ -72,7 +85,7 @@ export class ProductsController {
       await ProductsRepository.getProductsByUserId(userId);
 
     ctx.status = 200;
-    ctx.body = products.map(ProductsMapper.mapProductModeltoPublicProductModel);
+    ctx.body = products.map(ProductsMapper.mapProductModeltoOwnerProductModel);
   }
 
   static async deleteProductById(ctx: Koa.Context, _next: Koa.Next) {
@@ -128,7 +141,7 @@ export class ProductsController {
     }
 
     ctx.status = 200;
-    ctx.body = ProductsMapper.mapProductModeltoPublicProductModel(product);
+    ctx.body = ProductsMapper.mapProductModeltoOwnerProductModel(product);
   }
 
   static async createProduct(ctx: Koa.Context, _next: Koa.Next) {
