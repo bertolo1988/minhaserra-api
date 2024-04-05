@@ -8,6 +8,7 @@ import {
   ProductSubCategory,
 } from '../src/controllers/products/products.types';
 import { UserModel, UserRole } from '../src/controllers/users/users.types';
+import { Language } from '../src/types';
 
 const now = moment();
 
@@ -141,12 +142,13 @@ export class SeedUtils {
     id: string,
     userId: string,
     softDeleted = false,
-  ): ProductModel {
+  ): Omit<ProductModel, 'searchDocument'> {
     return {
       id,
       userId,
       category: ProductCategory.FOOD,
       subCategory: ProductSubCategory.FOOD_HONEY,
+      language: Language.PORTUGUESE,
       name: 'Mel da Serra de Aire e Candeeiros',
       nameEnglish: `Honey from Serra de Aire e Candeeiros`,
       description:
