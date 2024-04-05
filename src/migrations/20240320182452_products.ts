@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('user_id').notNullable();
     table.specificType('category', 'product_category').notNullable();
     table.specificType('sub_category', 'product_sub_category').notNullable();
+    table.specificType('language', 'language').notNullable();
     table.string('name', 100).notNullable();
     table.string('name_english', 100).notNullable();
     table.text('description').notNullable();
