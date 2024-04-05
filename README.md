@@ -26,10 +26,7 @@ JWT_SECRET=
 [seed files](https://knexjs.org/guide/migrations.html#seed-files)
 
 // TODO:
-
-// add test to see what happens when description is set as null and empty string, verify translations
+// fix update product tests to support translation
+// add test to see what happens when description is updated to null and empty string, verify translations
 // separate product and product image types
-// store original language near product, find an ISO for language
-// translate name and description to english
-// mock the translations in the tests
 // implement the search
