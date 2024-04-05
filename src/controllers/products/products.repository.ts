@@ -14,9 +14,16 @@ export class ProductsRepository {
   static async updateProductByIdAndUserId(
     userId: string,
     id: string,
-    dto: UpdateProductDto,
+    dto: UpdateProductDto & { nameEnglish: string; descriptionEnglish: string },
   ): Promise<{ id: string }[]> {
     const knex = await getDatabaseInstance();
+    const updateData = _.omitBy(
+      {
+        ...dto,
+        updatedAt: new Date(),
+      },
+      _.isNil,
+    );
     const updateResult = await knex('products')
       .where(
         CaseConverter.objectKeysCamelToSnake({
@@ -25,13 +32,10 @@ export class ProductsRepository {
           isDeleted: false,
         }),
       )
-      .update(
-        CaseConverter.objectKeysCamelToSnake({
-          ...dto,
-          updatedAt: new Date(),
-        }),
-        ['id', 'updated_at'],
-      );
+      .update(CaseConverter.objectKeysCamelToSnake(updateData), [
+        'id',
+        'updated_at',
+      ]);
     return updateResult;
   }
 

@@ -28,6 +28,8 @@ export class ProductsController {
   }
 
   static async updateProductById(ctx: Koa.Context, _next: Koa.Next) {
+    let nameEnglish: string = '';
+    let descriptionEnglish: string = '';
     const userId: string = ctx.state.user.id;
     const productId: string = ctx.params.id;
     const dto: UpdateProductDto = ctx.request.body as UpdateProductDto;
@@ -65,10 +67,26 @@ export class ProductsController {
       }
     }
 
+    if (dto.name != null) {
+      nameEnglish = await translationService.translate(
+        dto.name,
+        product.language,
+        Language.ENGLISH,
+      );
+    }
+
+    if (dto.description != null) {
+      descriptionEnglish = await translationService.translate(
+        dto.description,
+        product.language,
+        Language.ENGLISH,
+      );
+    }
+
     const updateResult = await ProductsRepository.updateProductByIdAndUserId(
       userId,
       productId,
-      dto,
+      { ...dto, descriptionEnglish, nameEnglish },
     );
 
     if (isUpdateSuccessfull(updateResult) === false) {
