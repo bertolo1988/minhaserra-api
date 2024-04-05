@@ -27,6 +27,16 @@ export class TranslationService {
     this.client = new TranslateClient(config);
   }
 
+  async translateToEnglish(
+    input: string,
+    sourceLanguageCode: Language,
+  ): Promise<string> {
+    if (sourceLanguageCode === Language.ENGLISH) {
+      return input;
+    }
+    return this.translate(input, sourceLanguageCode, Language.ENGLISH);
+  }
+
   async translate(
     input: string,
     sourceLanguageCode: Language,

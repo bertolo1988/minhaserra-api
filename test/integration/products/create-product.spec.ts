@@ -5,7 +5,7 @@ import {
   ProductCategory,
   ProductSubCategory,
 } from '../../../src/controllers/products/products.types';
-import { Currency } from '../../../src/types';
+import { Currency, Language } from '../../../src/types';
 import {
   inactiveUser,
   softDeletedUser,
@@ -22,6 +22,7 @@ import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 
 const validBodyExample: CreateProductDto = {
+  language: Language.ENGLISH,
   name: 'Product 1',
   description: 'Product 1 description',
   price: 100,
@@ -63,6 +64,7 @@ describe('POST /api/products', () => {
 
     test('when sub category is invalid value', async () => {
       const data: CreateProductDto = {
+        language: Language.PORTUGUESE,
         name: 'Mel do Carlos',
         description: 'Mel biológico da Serra de Aire e Candeeiros',
         price: 1000,
@@ -92,6 +94,7 @@ describe('POST /api/products', () => {
 
     test('when category is invalid value', async () => {
       const data: CreateProductDto = {
+        language: Language.PORTUGUESE,
         name: 'Mel do Carlos',
         description: 'Mel biológico da Serra de Aire e Candeeiros',
         price: 1000,
@@ -121,6 +124,7 @@ describe('POST /api/products', () => {
 
     test('when category does not exist', async () => {
       const data: CreateProductDto = {
+        language: Language.ENGLISH,
         name: 'Product 1',
         description: 'Product 1 description',
         price: 100,
@@ -149,6 +153,7 @@ describe('POST /api/products', () => {
 
     test('when subcategory prefix does not match category', async () => {
       const data: CreateProductDto = {
+        language: Language.ENGLISH,
         name: 'Product 1',
         description: 'Product 1 description',
         price: 100,
@@ -262,6 +267,7 @@ describe('POST /api/products', () => {
   describe('should return 201', () => {
     test.only('should successfully create a product for our seller', async () => {
       const data: CreateProductDto = {
+        language: Language.PORTUGUESE,
         name: 'Mel do Carlos',
         description: 'Mel biológico da Serra de Aire e Candeeiros',
         price: 1000,

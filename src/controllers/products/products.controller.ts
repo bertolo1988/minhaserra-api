@@ -68,18 +68,16 @@ export class ProductsController {
     }
 
     if (dto.name != null) {
-      nameEnglish = await translationService.translate(
+      nameEnglish = await translationService.translateToEnglish(
         dto.name,
         product.language,
-        Language.ENGLISH,
       );
     }
 
     if (dto.description != null) {
-      descriptionEnglish = await translationService.translate(
+      descriptionEnglish = await translationService.translateToEnglish(
         dto.description,
         product.language,
-        Language.ENGLISH,
       );
     }
 
@@ -169,15 +167,13 @@ export class ProductsController {
     const userId = ctx.state.user.id;
     let dto = ctx.request.body as CreateProductDto;
 
-    const nameEnglish = await translationService.translate(
+    const nameEnglish = await translationService.translateToEnglish(
       dto.name,
       dto.language,
-      Language.ENGLISH,
     );
-    const descriptionEnglish = await translationService.translate(
+    const descriptionEnglish = await translationService.translateToEnglish(
       dto.description,
       dto.language,
-      Language.ENGLISH,
     );
 
     const { id: productId } = await ProductsRepository.createOne(userId, {
