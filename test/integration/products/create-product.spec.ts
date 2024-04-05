@@ -20,6 +20,7 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
+import { TranslationService } from '../../../src/services/translation-service';
 
 const validBodyExample: CreateProductDto = {
   language: Language.ENGLISH,
@@ -265,7 +266,19 @@ describe('POST /api/products', () => {
   });
 
   describe('should return 201', () => {
-    test.only('should successfully create a product for our seller', async () => {
+    let translateToEnglishSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      translateToEnglishSpy = jest
+        .spyOn(TranslationService.prototype, 'translateToEnglish')
+        .mockResolvedValue('translated string');
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('should successfully create a product for our seller and translate name and description', async () => {
       const data: CreateProductDto = {
         language: Language.PORTUGUESE,
         name: 'Mel do Carlos',
@@ -293,6 +306,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         id: expect.any(String),
       });
+
+      expect(translateToEnglishSpy).toHaveBeenCalledTimes(2);
+      translateToEnglishSpy.mockClear();
     });
   });
 });
