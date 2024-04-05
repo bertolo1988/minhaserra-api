@@ -27,29 +27,35 @@ export const verifiedBuyer: UserModel = SeedUtils.getVerifiedUser(
   UserRole.BUYER,
 );
 
-export const verifiedSellerProduct1: ProductModel = SeedUtils.getProduct(
-  '537fd072-890b-46e2-88f6-21231acf65e0',
-  verifiedSeller.id,
-);
-
-export const verifiedSellerProduct2: ProductModel = SeedUtils.getProduct(
-  '99065d5f-4e9f-4d14-9462-3eb90ec0f1c7',
-  verifiedSeller.id,
-);
-
-export const verifiedSellerNoProductsProduct1: ProductModel =
+export const verifiedSellerProduct1: Omit<ProductModel, 'searchDocument'> =
   SeedUtils.getProduct(
-    '53bad12c-99fa-4f9f-992d-1c91db0002d8',
-    verifiedSellerNoProducts.id,
-    true,
-  );
-
-export const verifiedSellerSoftDeletedProduct: ProductModel =
-  SeedUtils.getProduct(
-    '7f11e4f9-3f93-48bc-b27f-2e192af7748c',
+    '537fd072-890b-46e2-88f6-21231acf65e0',
     verifiedSeller.id,
-    true,
   );
+
+export const verifiedSellerProduct2: Omit<ProductModel, 'searchDocument'> =
+  SeedUtils.getProduct(
+    '99065d5f-4e9f-4d14-9462-3eb90ec0f1c7',
+    verifiedSeller.id,
+  );
+
+export const verifiedSellerNoProductsProduct1: Omit<
+  ProductModel,
+  'searchDocument'
+> = SeedUtils.getProduct(
+  '53bad12c-99fa-4f9f-992d-1c91db0002d8',
+  verifiedSellerNoProducts.id,
+  true,
+);
+
+export const verifiedSellerSoftDeletedProduct: Omit<
+  ProductModel,
+  'searchDocument'
+> = SeedUtils.getProduct(
+  '7f11e4f9-3f93-48bc-b27f-2e192af7748c',
+  verifiedSeller.id,
+  true,
+);
 
 export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
 export const softDeletedUser: UserModel = SeedUtils.getSoftDeletedUser();
