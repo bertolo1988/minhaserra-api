@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import CONSTANTS from '../../constants';
 import { ValidationError } from '../../types/errors';
-import { ImageUploadService } from './image-upload-service';
+import { ImageUploadService } from '../../services/image-upload-service';
 import { ProductImagesRepository } from './product-images.repository';
 import { ProductsRepository } from './products.repository';
 import {

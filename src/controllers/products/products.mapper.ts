@@ -14,6 +14,7 @@ export class ProductsMapper {
       userId: product.userId,
       category: product.category,
       subCategory: product.subCategory,
+      language: product.language,
       name: product.name,
       nameEnglish: product.nameEnglish,
       description: product.description,
@@ -32,18 +33,17 @@ export class ProductsMapper {
 
   static mapCreateProductDtoToCreateProductModel(
     userId: string,
-    dto: CreateProductDto,
+    dto: CreateProductDto & { nameEnglish: string; descriptionEnglish: string },
   ): CreateProductModel {
     return {
       userId,
       category: dto.category,
       subCategory: dto.subCategory,
+      language: dto.language,
       name: dto.name,
-      // TODO: change this to the correct value
-      nameEnglish: '',
+      nameEnglish: dto.nameEnglish,
       description: dto.description,
-      // TODO: change this to the correct value
-      descriptionEnglish: '',
+      descriptionEnglish: dto.descriptionEnglish,
       countryCode: dto.countryCode,
       region: dto.region,
       avaliableQuantity: dto.availableQuantity,

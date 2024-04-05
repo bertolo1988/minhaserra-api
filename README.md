@@ -26,6 +26,7 @@ JWT_SECRET=
 [seed files](https://knexjs.org/guide/migrations.html#seed-files)
 
 // TODO:
+// separate product and product image types
 // store original language near product, find an ISO for language
 // translate name and description to english
 // mock the translations in the tests

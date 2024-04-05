@@ -81,7 +81,7 @@ export class ProductsRepository {
 
   static async createOne(
     userId: string,
-    dto: CreateProductDto,
+    dto: CreateProductDto & { nameEnglish: string; descriptionEnglish: string },
   ): Promise<{ id: string }> {
     const knex = await getDatabaseInstance();
     const data: CreateProductModel =

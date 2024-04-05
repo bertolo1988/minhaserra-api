@@ -1,6 +1,8 @@
 import Koa from 'koa';
 
 import { isUpdateSuccessfull } from '../../knex-database';
+import { TranslationService } from '../../services/translation-service';
+import { Language, PaginationParams } from '../../types';
 import { ProductsMapper } from './products.mapper';
 import { ProductsRepository } from './products.repository';
 import {
@@ -9,7 +11,8 @@ import {
   UpdateProductDto,
 } from './products.types';
 import { ProductsValidator } from './products.validator';
-import { PaginationParams } from '../../types/pagination-params';
+
+const translationService = new TranslationService();
 
 export class ProductsController {
   static async getProducts(ctx: Koa.Context, _next: Koa.Next) {
@@ -146,9 +149,24 @@ export class ProductsController {
 
   static async createProduct(ctx: Koa.Context, _next: Koa.Next) {
     const userId = ctx.state.user.id;
-    const dto = ctx.request.body as CreateProductDto;
+    let dto = ctx.request.body as CreateProductDto;
 
-    const { id: productId } = await ProductsRepository.createOne(userId, dto);
+    const nameEnglish = await translationService.translate(
+      dto.name,
+      dto.language,
+      Language.ENGLISH,
+    );
+    const descriptionEnglish = await translationService.translate(
+      dto.description,
+      dto.language,
+      Language.ENGLISH,
+    );
+
+    const { id: productId } = await ProductsRepository.createOne(userId, {
+      ...dto,
+      nameEnglish,
+      descriptionEnglish,
+    });
 
     if (!productId) {
       throw new Error('Failed to create product');

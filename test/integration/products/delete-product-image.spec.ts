@@ -1,4 +1,4 @@
-import { ImageUploadService } from '../../../src/controllers/products/image-upload-service';
+import { ImageUploadService } from '../../../src/services/image-upload-service';
 import {
   inactiveUser,
   softDeletedUser,

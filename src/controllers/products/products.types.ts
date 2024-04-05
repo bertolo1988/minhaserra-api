@@ -1,6 +1,6 @@
 import CONSTANTS from '../../constants';
 import { CountryCodeSchema } from '../../schemas/shared-schemas';
-import { Currency } from '../../types';
+import { Currency, Language } from '../../types';
 import { AjvCustomFormats } from '../../utils/ajv';
 import { ImageUtils } from '../../utils/image-utils';
 
@@ -101,6 +101,7 @@ export type ProductModel = {
   userId: string;
   category: ProductCategory;
   subCategory: ProductSubCategory;
+  language: Language;
   name: string;
   nameEnglish: string;
   description: string;
@@ -112,20 +113,27 @@ export type ProductModel = {
   isOnSale: boolean;
   isDeleted: boolean;
   isApproved: boolean;
+  searchDocument: string;
   createdAt: Date;
   updatedAt: Date;
 };
 
-export type OwnerProductModel = ProductModel;
+export type OwnerProductModel = Omit<ProductModel, 'searchDocument'>;
 
 export type CreateProductModel = Omit<
   ProductModel,
-  'id' | 'isDeleted' | 'isApproved' | 'createdAt' | 'updatedAt'
+  | 'id'
+  | 'isDeleted'
+  | 'isApproved'
+  | 'searchDocument'
+  | 'createdAt'
+  | 'updatedAt'
 >;
 
 export type CreateProductDto = {
   category: ProductCategory;
   subCategory: ProductSubCategory;
+  language: Language;
   name: string;
   description: string;
   countryCode: string;
@@ -149,6 +157,11 @@ export const CreateProductDtoSchema = {
       type: 'string',
       enum: Object.values(ProductSubCategory),
     },
+    language: {
+      nullable: false,
+      type: 'string',
+      enum: Object.values(Language),
+    },
     name: {
       type: 'string',
       nullable: false,
@@ -156,7 +169,7 @@ export const CreateProductDtoSchema = {
     },
     description: {
       type: 'string',
-      nullable: true,
+      nullable: false,
       maxLength: CONSTANTS.DESCRIPTION_MAX_STRING_SIZE,
     },
     countryCode: CountryCodeSchema,
@@ -190,7 +203,9 @@ export const CreateProductDtoSchema = {
   required: [
     'category',
     'subCategory',
+    'language',
     'name',
+    'description',
     'countryCode',
     'availableQuantity',
     'price',
