@@ -1,9 +1,5 @@
-export enum Currency {
-  USD = 'USD',
-  EUR = 'EUR',
-  GBP = 'GBP',
-  JPY = 'JPY',
-  CNY = 'CNY',
-  CAD = 'CAD',
-  AUD = 'AUD',
-}
+import { Currency } from './currency';
+import { Language } from './language';
+import { PaginationParams } from './pagination-params';
+
+export { Currency, Language, PaginationParams };
