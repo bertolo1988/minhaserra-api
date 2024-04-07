@@ -106,7 +106,7 @@ describe('GET /api/products', () => {
       expect(body).toHaveLength(0);
     });
 
-    test('and a list of products', async () => {
+    test('and a list of products, sorted by product name', async () => {
       const response = await fetch(getTestServerUrl(`/api/products`).href, {
         method: 'GET',
         headers: getRequestHeaders(verifiedSeller),
@@ -116,26 +116,6 @@ describe('GET /api/products', () => {
       expect(_.isArray(body)).toBe(true);
       expect(body).toHaveLength(2);
       expect(body[0]).toEqual({
-        id: verifiedSellerProduct1.id,
-        userId: verifiedSellerProduct1.userId,
-        category: verifiedSellerProduct1.category,
-        subCategory: verifiedSellerProduct1.subCategory,
-        language: verifiedSellerProduct1.language,
-        name: verifiedSellerProduct1.name,
-        nameEnglish: verifiedSellerProduct1.nameEnglish,
-        description: verifiedSellerProduct1.description,
-        descriptionEnglish: verifiedSellerProduct1.descriptionEnglish,
-        countryCode: verifiedSellerProduct1.countryCode,
-        region: verifiedSellerProduct1.region,
-        avaliableQuantity: verifiedSellerProduct1.avaliableQuantity,
-        price: verifiedSellerProduct1.price,
-        isApproved: verifiedSellerProduct1.isApproved,
-        isDeleted: verifiedSellerProduct1.isDeleted,
-        isOnSale: verifiedSellerProduct1.isOnSale,
-        createdAt: verifiedSellerProduct1.createdAt.toISOString(),
-        updatedAt: verifiedSellerProduct1.updatedAt.toISOString(),
-      });
-      expect(body[1]).toEqual({
         id: verifiedSellerProduct2.id,
         userId: verifiedSellerProduct2.userId,
         category: verifiedSellerProduct2.category,
@@ -154,6 +134,26 @@ describe('GET /api/products', () => {
         isOnSale: verifiedSellerProduct2.isOnSale,
         createdAt: verifiedSellerProduct2.createdAt.toISOString(),
         updatedAt: verifiedSellerProduct2.updatedAt.toISOString(),
+      });
+      expect(body[1]).toEqual({
+        id: verifiedSellerProduct1.id,
+        userId: verifiedSellerProduct1.userId,
+        category: verifiedSellerProduct1.category,
+        subCategory: verifiedSellerProduct1.subCategory,
+        language: verifiedSellerProduct1.language,
+        name: verifiedSellerProduct1.name,
+        nameEnglish: verifiedSellerProduct1.nameEnglish,
+        description: verifiedSellerProduct1.description,
+        descriptionEnglish: verifiedSellerProduct1.descriptionEnglish,
+        countryCode: verifiedSellerProduct1.countryCode,
+        region: verifiedSellerProduct1.region,
+        avaliableQuantity: verifiedSellerProduct1.avaliableQuantity,
+        price: verifiedSellerProduct1.price,
+        isApproved: verifiedSellerProduct1.isApproved,
+        isDeleted: verifiedSellerProduct1.isDeleted,
+        isOnSale: verifiedSellerProduct1.isOnSale,
+        createdAt: verifiedSellerProduct1.createdAt.toISOString(),
+        updatedAt: verifiedSellerProduct1.updatedAt.toISOString(),
       });
     });
   });

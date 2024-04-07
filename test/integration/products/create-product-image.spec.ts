@@ -3,8 +3,8 @@ import tk from 'timekeeper';
 
 import CONFIG from '../../../src/config';
 import CONSTANTS from '../../../src/constants';
-import { ImageUploadService } from '../../../src/controllers/products/image-upload-service';
 import { CreateProductImageDto } from '../../../src/controllers/products/products.types';
+import { ImageUploadService } from '../../../src/services/image-upload-service';
 import { ImageUtils } from '../../../src/utils/image-utils';
 import {
   inactiveUser,

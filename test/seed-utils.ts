@@ -138,18 +138,24 @@ export class SeedUtils {
     };
   }
 
-  static getProduct(
-    id: string,
-    userId: string,
+  static getProduct({
+    id,
+    userId,
+    name = 'Mel da Serra de Aire e Candeeiros',
     softDeleted = false,
-  ): Omit<ProductModel, 'searchDocument'> {
+  }: {
+    id: string;
+    userId: string;
+    name?: string;
+    softDeleted?: boolean;
+  }): Omit<ProductModel, 'searchDocument'> {
     return {
       id,
       userId,
       category: ProductCategory.FOOD,
       subCategory: ProductSubCategory.FOOD_HONEY,
       language: Language.PORTUGUESE,
-      name: 'Mel da Serra de Aire e Candeeiros',
+      name,
       nameEnglish: `Honey from Serra de Aire e Candeeiros`,
       description:
         'Mel biológico, à base de alecrim e alfazema, produzido no alto das Serras do parque natural da Serra de Aire e Candeeiros.',

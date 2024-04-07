@@ -53,7 +53,8 @@ export class ProductsRepository {
       'products',
     )
       .where(CaseConverter.objectKeysCamelToSnake(where))
-      .select();
+      .select()
+      .orderBy('name', 'asc');
 
     return result.map(
       (r) => CaseConverter.objectKeysSnakeToCamel(r) as ProductModel,
