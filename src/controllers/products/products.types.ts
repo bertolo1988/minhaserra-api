@@ -165,11 +165,13 @@ export const CreateProductDtoSchema = {
     name: {
       type: 'string',
       nullable: false,
+      minLength: 2,
       maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
     },
     description: {
       type: 'string',
       nullable: false,
+      minLength: 2,
       maxLength: CONSTANTS.DESCRIPTION_MAX_STRING_SIZE,
     },
     countryCode: CountryCodeSchema,
@@ -242,11 +244,13 @@ export const UpdateProductDtoSchema = {
     name: {
       type: 'string',
       nullable: true,
+      minLength: 2,
       maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
     },
     description: {
       type: 'string',
       nullable: true,
+      minLength: 2,
       maxLength: CONSTANTS.DESCRIPTION_MAX_STRING_SIZE,
     },
     countryCode: CountryCodeSchema,
