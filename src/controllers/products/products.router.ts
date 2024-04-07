@@ -42,6 +42,7 @@ export function configureProductsRouter(router: Router) {
   router.get(
     '/public-products',
     validatePaginationParams,
+    ProductsValidator.validateProductsSearch,
     ProductsController.getProducts,
   );
 

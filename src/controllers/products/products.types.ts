@@ -1,6 +1,7 @@
 import CONSTANTS from '../../constants';
 import { CountryCodeSchema } from '../../schemas/shared-schemas';
 import { Currency, Language } from '../../types';
+import { AjvCustomFormats } from '../../utils/ajv';
 
 export enum ProductCategory {
   OTHER = 'other',
@@ -63,6 +64,11 @@ export type ProductModel = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type PublicProductModel = Omit<
+  ProductModel,
+  'isOnSale' | 'isDeleted' | 'isApproved' | 'searchDocument'
+>;
 
 export type OwnerProductModel = Omit<ProductModel, 'searchDocument'>;
 
@@ -231,12 +237,59 @@ export const UpdateProductDtoSchema = {
   additionalProperties: false,
 };
 
-export type ProductsFilterDto = {
-  textQuery?: string;
-  maxPrice?: number;
-  minPrice?: number;
+export type ProductsSearchDto = {
+  text?: string;
   category?: ProductCategory;
   subCategory?: ProductSubCategory;
+  maxPrice?: number;
+  minPrice?: number;
   countryCode?: string;
   region?: string;
+};
+
+export const ProductsSearchDtoSchema = {
+  type: 'object',
+  properties: {
+    text: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.MAX_PRODUCT_SEARCH_STRING_SIZE,
+    },
+    category: {
+      nullable: true,
+      type: 'string',
+      enum: Object.values(ProductCategory),
+    },
+    subCategory: {
+      nullable: true,
+      type: 'string',
+      enum: Object.values(ProductSubCategory),
+    },
+    minPrice: {
+      nullable: true,
+      type: 'number',
+      minimum: 0,
+      maximum: CONSTANTS.MAX_PRICE_IN_CENTS,
+    },
+    maxPrice: {
+      nullable: true,
+      type: 'number',
+      minimum: 0,
+      maximum: CONSTANTS.MAX_PRICE_IN_CENTS,
+    },
+    countryCode: {
+      type: 'string',
+      format: AjvCustomFormats.COUNTRY_CODE,
+      nullable: true,
+      maxLength: 2,
+      errorMessage: `must have two characters and be valid according to ISO 3166-1 alpha-2`,
+    },
+    region: {
+      type: 'string',
+      nullable: true,
+      maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
+    },
+  },
+  required: [],
+  additionalProperties: false,
 };

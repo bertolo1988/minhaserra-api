@@ -8,6 +8,8 @@ import { ProductsRepository } from './products.repository';
 import {
   CreateProductDto,
   ProductModel,
+  ProductsSearchDto,
+  PublicProductModel,
   UpdateProductDto,
 } from './products.types';
 import { ProductsValidator } from './products.validator';
@@ -21,10 +23,16 @@ export class ProductsController {
       ctx.request.query.limit as string,
     );
 
-    // TODO: implement this
+    const searchParameters = ctx.request.body as ProductsSearchDto;
+
+    const products: PublicProductModel[] =
+      await ProductsRepository.searchProducts(
+        searchParameters,
+        paginationParams,
+      );
 
     ctx.status = 200;
-    ctx.body = [];
+    ctx.body = products;
   }
 
   static async updateProductById(ctx: Koa.Context, _next: Koa.Next) {

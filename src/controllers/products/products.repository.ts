@@ -1,16 +1,33 @@
 import _ from 'lodash';
 
 import { getDatabaseInstance } from '../../knex-database';
+import { PaginationParams } from '../../types';
 import { CaseConverter } from '../../utils/case-converter';
 import { ProductsMapper } from './products.mapper';
 import {
   CreateProductDto,
   CreateProductModel,
   ProductModel,
+  ProductsSearchDto,
   UpdateProductDto,
 } from './products.types';
 
 export class ProductsRepository {
+  static async searchProducts(
+    searchParameters: ProductsSearchDto,
+    paginationParameters: PaginationParams,
+  ): Promise<ProductModel[]> {
+    const knex = await getDatabaseInstance();
+
+    // TODO continue here
+    const results = await knex.raw(
+      `SELECT * FROM products where search_document @@ plainto_tsquery(${searchParameters.text})`,
+    );
+    console.log(111, results);
+
+    return [];
+  }
+
   static async updateProductByIdAndUserId(
     userId: string,
     id: string,

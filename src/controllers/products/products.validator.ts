@@ -8,6 +8,8 @@ import {
   CreateProductDtoSchema,
   ProductCategory,
   ProductSubCategory,
+  ProductsSearchDto,
+  ProductsSearchDtoSchema,
   UpdateProductDto,
   UpdateProductDtoSchema,
 } from './products.types';
@@ -18,7 +20,18 @@ const createProductDtoValidator: ValidateFunction =
 const updateProductDtoValidator: ValidateFunction =
   ajv.compile<UpdateProductDto>(UpdateProductDtoSchema);
 
+const productSearchValidator: ValidateFunction = ajv.compile<ProductsSearchDto>(
+  ProductsSearchDtoSchema,
+);
+
 export class ProductsValidator {
+  static async validateProductsSearch(ctx: Koa.Context, next: Koa.Next) {
+    const isBodyValid = productSearchValidator(ctx.request.body);
+    if (!isBodyValid)
+      throw new ValidationError(productSearchValidator.errors as ErrorObject[]);
+    await next();
+  }
+
   static async validateUpdateProduct(ctx: Koa.Context, next: Koa.Next) {
     const isBodyValid = updateProductDtoValidator(ctx.request.body);
     if (!isBodyValid)
