@@ -2,7 +2,7 @@ import Koa from 'koa';
 
 import { isUpdateSuccessfull } from '../../knex-database';
 import { TranslationService } from '../../services/translation-service';
-import { Language, PaginationParams } from '../../types';
+import { PaginationParams } from '../../types';
 import { ProductsMapper } from './products.mapper';
 import { ProductsRepository } from './products.repository';
 import {
@@ -165,7 +165,7 @@ export class ProductsController {
 
   static async createProduct(ctx: Koa.Context, _next: Koa.Next) {
     const userId = ctx.state.user.id;
-    let dto = ctx.request.body as CreateProductDto;
+    const dto = ctx.request.body as CreateProductDto;
 
     const nameEnglish = await translationService.translateToEnglish(
       dto.name,
