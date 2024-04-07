@@ -21,6 +21,7 @@ import {
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 import { TranslationService } from '../../../src/services/translation-service';
+import { ProductsRepository } from '../../../src/controllers/products/products.repository';
 
 const validBodyExample: CreateProductDto = {
   language: Language.ENGLISH,
@@ -332,6 +333,15 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         id: expect.any(String),
       });
+
+      const product = await ProductsRepository.getProductById(body.id);
+      // product must be waiting admin approval
+      expect(product?.isApproved).toBe(false);
+
+      // expect search support structures to exist
+      expect(product?.searchDocument).toBeDefined();
+      expect(product?.nameEnglish).toBeDefined();
+      expect(product?.descriptionEnglish).toBeDefined();
 
       expect(translateToEnglishSpy).toHaveBeenCalledTimes(2);
       translateToEnglishSpy.mockClear();
