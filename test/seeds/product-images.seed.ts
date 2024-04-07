@@ -23,7 +23,7 @@ export const verifiedSeller2: UserModel = SeedUtils.getVerifiedUser(
 
 export const verifiedSeller1Product1: Omit<ProductModel, 'searchDocument'> =
   SeedUtils.getProduct({
-    id: '537fd072-890b-46e2-88f6-21231acf65e0',
+    id: '69fd8a15-23ff-4485-a979-557b2eddeec1',
     userId: verifiedSeller1.id,
   });
 
