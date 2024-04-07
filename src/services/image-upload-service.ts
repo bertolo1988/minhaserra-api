@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk';
 
 import CONFIG from '../config';
-import { ImageUtils } from '../utils/image-utils';
 import {
   CreateProductImageDto,
   ProductImageModel,
-} from '../controllers/products/products.types';
+} from '../controllers/products/product-images.types';
+import { ImageUtils } from '../utils/image-utils';
 
 export class ImageUploadService {
   s3: AWS.S3;

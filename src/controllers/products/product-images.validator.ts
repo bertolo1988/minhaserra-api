@@ -7,7 +7,7 @@ import { ImageUtils } from '../../utils/image-utils';
 import {
   CreateProductImageDto,
   CreateProductImageDtoSchema,
-} from './products.types';
+} from './product-images.types';
 
 const createProductImageDtoValidator: ValidateFunction =
   ajv.compile<CreateProductImageDto>(CreateProductImageDtoSchema);

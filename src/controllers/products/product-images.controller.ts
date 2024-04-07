@@ -2,15 +2,15 @@ import Koa from 'koa';
 import { v4 as uuidv4 } from 'uuid';
 
 import CONSTANTS from '../../constants';
-import { ValidationError } from '../../types/errors';
 import { ImageUploadService } from '../../services/image-upload-service';
+import { ValidationError } from '../../types/errors';
 import { ProductImagesRepository } from './product-images.repository';
-import { ProductsRepository } from './products.repository';
 import {
   CreateProductImageDto,
   ProductImageModel,
-  ProductModel,
-} from './products.types';
+} from './product-images.types';
+import { ProductsRepository } from './products.repository';
+import { ProductModel } from './products.types';
 
 const imageUploadService = new ImageUploadService();
 

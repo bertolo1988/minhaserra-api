@@ -6,7 +6,7 @@ import {
   CreateProductImageModel,
   ProductImageModel,
   PublicProductImageModel,
-} from './products.types';
+} from './product-images.types';
 
 const TABLE_NAME = 'product_images';
 

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {
   CreateProductImageDto,
   CreateProductImageModel,
-} from './products.types';
+} from './product-images.types';
 
 export class ProductImagesMapper {
   static mapCreateProductImageDtoToProductImageModel(

@@ -1,9 +1,9 @@
 import moment from 'moment';
 
 import { AddressModel } from '../src/controllers/addresses/addresses.types';
+import { ProductImageModel } from '../src/controllers/products/product-images.types';
 import {
   ProductCategory,
-  ProductImageModel,
   ProductModel,
   ProductSubCategory,
 } from '../src/controllers/products/products.types';
