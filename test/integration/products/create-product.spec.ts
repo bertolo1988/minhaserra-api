@@ -75,6 +75,74 @@ describe('POST /api/products', () => {
       translateToEnglishSpy.mockClear();
     });
 
+    test('when name provided is an empty string', async () => {
+      const data: CreateProductDto = {
+        language: Language.PORTUGUESE,
+        name: '',
+        description: 'Mel biológico da Serra de Aire e Candeeiros',
+        price: 1000,
+        availableQuantity: 10,
+        category: ProductCategory.FOOD,
+        subCategory: ProductSubCategory.FOOD_OTHER,
+        countryCode: 'PT',
+        region: 'Leiria',
+        currency: Currency.EUR,
+        isOnSale: true,
+      };
+
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedSeller),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `name must NOT have fewer than 2 characters`,
+      });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
+    });
+
+    test('when description provided is an empty string', async () => {
+      const data: CreateProductDto = {
+        language: Language.PORTUGUESE,
+        name: 'AP',
+        description: '',
+        price: 1000,
+        availableQuantity: 10,
+        category: ProductCategory.FOOD,
+        subCategory: ProductSubCategory.FOOD_OTHER,
+        countryCode: 'PT',
+        region: 'Leiria',
+        currency: Currency.EUR,
+        isOnSale: true,
+      };
+
+      const response = await fetch(getTestServerUrl(`/api/products`).href, {
+        method: 'POST',
+        headers: {
+          Authorization: getAuthorizationHeader(verifiedSeller),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `description must NOT have fewer than 2 characters`,
+      });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
+    });
+
     test('when sub category is invalid value', async () => {
       const data: CreateProductDto = {
         language: Language.PORTUGUESE,
