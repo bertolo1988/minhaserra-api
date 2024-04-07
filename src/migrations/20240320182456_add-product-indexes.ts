@@ -11,5 +11,5 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   await knex.raw('drop index if exists search_document_idx;');
-  await knex.raw(`CREATE INDEX name_idx on products using btree(name);`);
+  await knex.raw(`drop index if exists name_idx;`);
 }
