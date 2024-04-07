@@ -24,7 +24,3 @@ JWT_SECRET=
 [migrations cli](https://knexjs.org/guide/migrations.html#migration-cli)
 
 [seed files](https://knexjs.org/guide/migrations.html#seed-files)
-
-// TODO:
-// separate product and product image types
-// implement the search
