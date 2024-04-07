@@ -36,9 +36,17 @@ const validBodyExample: CreateProductDto = {
 };
 
 describe('POST /api/products', () => {
+  let translateToEnglishSpy: jest.SpyInstance;
+
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
+  });
+
+  beforeEach(async () => {
+    translateToEnglishSpy = jest
+      .spyOn(TranslationService.prototype, 'translateToEnglish')
+      .mockResolvedValue('translated string');
   });
 
   afterEach(() => {
@@ -61,6 +69,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: "must have required property 'category'",
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when sub category is invalid value', async () => {
@@ -91,6 +102,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `subCategory must be equal to one of the allowed values`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when category is invalid value', async () => {
@@ -121,6 +135,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `category must be equal to one of the allowed values`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when category does not exist', async () => {
@@ -150,6 +167,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: "must have required property 'category'",
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when subcategory prefix does not match category', async () => {
@@ -179,6 +199,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `'${data.subCategory}' is not a valid sub category of category '${data.category}'`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
   });
 
@@ -196,6 +219,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `Unauthorized`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when user is soft deleted', async () => {
@@ -212,6 +238,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `Unauthorized`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
   });
 
@@ -230,6 +259,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `Forbidden`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when the user is inactive', async () => {
@@ -246,6 +278,9 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `Forbidden`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
 
     test('when the user is not verified', async () => {
@@ -262,22 +297,13 @@ describe('POST /api/products', () => {
       expect(body).toEqual({
         message: `Forbidden`,
       });
+
+      expect(translateToEnglishSpy).not.toHaveBeenCalled();
+      translateToEnglishSpy.mockClear();
     });
   });
 
   describe('should return 201', () => {
-    let translateToEnglishSpy: jest.SpyInstance;
-
-    beforeEach(async () => {
-      translateToEnglishSpy = jest
-        .spyOn(TranslationService.prototype, 'translateToEnglish')
-        .mockResolvedValue('translated string');
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
     test('should successfully create a product for our seller and translate name and description', async () => {
       const data: CreateProductDto = {
         language: Language.PORTUGUESE,
