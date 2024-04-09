@@ -13,6 +13,7 @@ import {
   UpdateProductDto,
   UpdateProductDtoSchema,
 } from './products.types';
+import _ from 'lodash';
 
 const createProductDtoValidator: ValidateFunction =
   ajv.compile<CreateProductDto>(CreateProductDtoSchema);
@@ -26,8 +27,8 @@ const productSearchValidator: ValidateFunction = ajv.compile<ProductsSearchDto>(
 
 export class ProductsValidator {
   static async validateProductsSearch(ctx: Koa.Context, next: Koa.Next) {
-    const isBodyValid = productSearchValidator(ctx.request.body);
-    if (!isBodyValid)
+    const isQueryStringValid = productSearchValidator(ctx.request.query);
+    if (!isQueryStringValid)
       throw new ValidationError(productSearchValidator.errors as ErrorObject[]);
     await next();
   }

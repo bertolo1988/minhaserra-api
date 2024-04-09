@@ -15,17 +15,50 @@ import {
 export class ProductsRepository {
   static async searchProducts(
     searchParameters: ProductsSearchDto,
-    paginationParameters: PaginationParams,
+    paginationParams: PaginationParams,
   ): Promise<ProductModel[]> {
     const knex = await getDatabaseInstance();
 
-    // TODO continue here
-    const results = await knex.raw(
-      `SELECT * FROM products where search_document @@ plainto_tsquery(${searchParameters.text})`,
+    // TODO continue here - impleement search params conditionally like this:
+
+    /*     const getFilteredItems = (searchCriteria) => knex('items')
+    .where((qb) => {
+      if (searchCriteria.searchTerm) {
+        qb.where('items.itemName', 'like', `%${searchCriteria.searchTerm}%`);
+      }
+  
+      if (searchCriteria.itemType) {
+        qb.orWhere('items.itemType', '=', searchCriteria.itemType);
+      }
+  
+      if (searchCriteria.category) {
+        qb.orWhere('items.category', '=', searchCriteria.category);
+      }
+    }); */
+
+    const query = `SELECT * FROM products where search_document @@ plainto_tsquery(:text) AND country_code = :countryCode limit :limit offset :offset`;
+    console.log(1111, query);
+
+    const queryParams = _.omitBy(
+      {
+        text: searchParameters.text,
+        countryCode: searchParameters.countryCode,
+        offset: paginationParams.offset,
+        limit: paginationParams.limit,
+      },
+      _.isNil,
     );
+
+    const results = await knex.raw(query, queryParams);
     console.log(111, results);
 
-    return [];
+    if (results != null && results.rows != null) {
+      return results.rows;
+    } else {
+      throw new Error(
+        `Error while searching products with searchParams: ${JSON.stringify(searchParameters)} paginationParams: ${JSON.stringify(paginationParams)}`,
+      );
+    }
   }
 
   static async updateProductByIdAndUserId(

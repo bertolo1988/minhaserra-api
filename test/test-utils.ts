@@ -38,6 +38,7 @@ export enum DatabaseSeedNames {
   UPDATE_PASSWORD_UNAUTHENTICATED = 'update-password-unauthenticated.seed.ts',
   PRODUCTS_IMAGES = 'product-images.seed.ts',
   PRODUCTS = 'products.seed.ts',
+  MANY_PRODUCTS = 'many-products.seed.ts',
 }
 
 export async function runSeedByName(

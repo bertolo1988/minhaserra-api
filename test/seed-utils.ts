@@ -141,25 +141,34 @@ export class SeedUtils {
   static getProduct({
     id,
     userId,
+    category = ProductCategory.FOOD,
+    subCategory = ProductSubCategory.FOOD_HONEY,
     name = 'Mel da Serra de Aire e Candeeiros',
+    nameEnglish = 'Honey from Serra de Aire e Candeeiros',
+    description = 'Mel biológico, à base de alecrim e alfazema, produzido no alto das Serras do parque natural da Serra de Aire e Candeeiros.',
+    descriptionEnglish = 'Organic honey, based on rosemary and lavender, produced in the mountain range of the Serra de Aire e Candeeiros natural park.',
     softDeleted = false,
   }: {
     id: string;
     userId: string;
+    category?: ProductCategory;
+    subCategory?: ProductSubCategory;
     name?: string;
+    nameEnglish?: string;
+    description?: string;
+    descriptionEnglish?: string;
     softDeleted?: boolean;
   }): Omit<ProductModel, 'searchDocument'> {
     return {
       id,
       userId,
-      category: ProductCategory.FOOD,
-      subCategory: ProductSubCategory.FOOD_HONEY,
+      category,
+      subCategory,
       language: Language.PORTUGUESE,
       name,
-      nameEnglish: `Honey from Serra de Aire e Candeeiros`,
-      description:
-        'Mel biológico, à base de alecrim e alfazema, produzido no alto das Serras do parque natural da Serra de Aire e Candeeiros.',
-      descriptionEnglish: `Organic honey, based on rosemary and lavender, produced in the mountain range of the Serra de Aire e Candeeiros natural park.`,
+      nameEnglish,
+      description,
+      descriptionEnglish,
       countryCode: 'PT',
       region: 'Leiria',
       avaliableQuantity: 5,

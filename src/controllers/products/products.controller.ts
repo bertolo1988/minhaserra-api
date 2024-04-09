@@ -1,5 +1,6 @@
 import Koa from 'koa';
 
+import _ from 'lodash';
 import { isUpdateSuccessfull } from '../../knex-database';
 import { TranslationService } from '../../services/translation-service';
 import { PaginationParams } from '../../types';
@@ -18,12 +19,14 @@ const translationService = new TranslationService();
 
 export class ProductsController {
   static async getProducts(ctx: Koa.Context, _next: Koa.Next) {
+    const searchParameters = _.omit(ctx.request.query, [
+      'offset',
+      'limit',
+    ]) as ProductsSearchDto;
     const paginationParams = new PaginationParams(
       ctx.request.query.offset as string,
       ctx.request.query.limit as string,
     );
-
-    const searchParameters = ctx.request.body as ProductsSearchDto;
 
     const products: PublicProductModel[] =
       await ProductsRepository.searchProducts(

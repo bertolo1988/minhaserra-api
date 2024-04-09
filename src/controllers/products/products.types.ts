@@ -289,6 +289,14 @@ export const ProductsSearchDtoSchema = {
       nullable: true,
       maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
     },
+    offset: {
+      type: 'string',
+      nullable: true,
+    },
+    limit: {
+      type: 'string',
+      nullable: true,
+    },
   },
   required: [],
   additionalProperties: false,
