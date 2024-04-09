@@ -20,6 +20,7 @@ export class ProductsRepository {
     const knex = await getDatabaseInstance();
 
     // TODO continue here - impleement search params conditionally like this:
+    // have to select default sorting order, don't know what it should be
 
     /*     const getFilteredItems = (searchCriteria) => knex('items')
     .where((qb) => {
