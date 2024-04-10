@@ -9,6 +9,7 @@ import {
   CreateProductModel,
   ProductModel,
   ProductsSearchDto,
+  PublicProductModel,
   UpdateProductDto,
 } from './products.types';
 
@@ -19,7 +20,7 @@ export class ProductsRepository {
   static async searchProducts(
     searchParameters: ProductsSearchDto,
     paginationParams: PaginationParams,
-  ): Promise<ProductModel[]> {
+  ): Promise<PublicProductModel[]> {
     const knex = await getDatabaseInstance();
 
     const orderBy =
@@ -32,7 +33,24 @@ export class ProductsRepository {
         ? searchParameters.orderDirection
         : DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION;
 
-    const results = await knex<ProductModel>('products')
+    const results = await knex<PublicProductModel>('products')
+      .select({
+        id: 'id',
+        userId: 'user_id',
+        category: 'category',
+        subCategory: 'sub_category',
+        language: 'language',
+        name: 'name',
+        nameEnglish: 'name_english',
+        description: 'description',
+        descriptionEnglish: 'description_english',
+        countryCode: 'country_code',
+        region: 'region',
+        avaliableQuantity: 'avaliable_quantity',
+        price: 'price',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+      })
       .where((qb) => {
         if (searchParameters.text) {
           qb.whereRaw(`search_document @@ plainto_tsquery(:text)`, {
@@ -67,6 +85,8 @@ export class ProductsRepository {
       .offset(paginationParams.offset)
       .limit(paginationParams.limit)
       .orderBy(orderBy, orderDirection);
+
+    // TODO: left join product images
 
     return results;
   }
