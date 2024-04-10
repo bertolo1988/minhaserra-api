@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { getDatabaseInstance } from '../../knex-database';
-import { PaginationParams } from '../../types';
+import { PaginationParams, SortDirection } from '../../types';
 import { CaseConverter } from '../../utils/case-converter';
 import { ProductsMapper } from './products.mapper';
 import {
@@ -12,6 +12,9 @@ import {
   UpdateProductDto,
 } from './products.types';
 
+const DEFAULT_PRODUCT_SEARCH_ORDER_BY_FIELD = 'price';
+const DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION = SortDirection.DESC;
+
 export class ProductsRepository {
   static async searchProducts(
     searchParameters: ProductsSearchDto,
@@ -19,47 +22,53 @@ export class ProductsRepository {
   ): Promise<ProductModel[]> {
     const knex = await getDatabaseInstance();
 
-    // TODO continue here - impleement search params conditionally like this:
-    // have to select default sorting order, don't know what it should be
+    const orderBy =
+      searchParameters.orderBy != null
+        ? searchParameters.orderBy
+        : DEFAULT_PRODUCT_SEARCH_ORDER_BY_FIELD;
 
-    /*     const getFilteredItems = (searchCriteria) => knex('items')
-    .where((qb) => {
-      if (searchCriteria.searchTerm) {
-        qb.where('items.itemName', 'like', `%${searchCriteria.searchTerm}%`);
-      }
-  
-      if (searchCriteria.itemType) {
-        qb.orWhere('items.itemType', '=', searchCriteria.itemType);
-      }
-  
-      if (searchCriteria.category) {
-        qb.orWhere('items.category', '=', searchCriteria.category);
-      }
-    }); */
+    const orderDirection =
+      searchParameters.orderDirection != null
+        ? searchParameters.orderDirection
+        : DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION;
 
-    const query = `SELECT * FROM products where search_document @@ plainto_tsquery(:text) AND country_code = :countryCode limit :limit offset :offset`;
-    console.log(1111, query);
+    const results = await knex<ProductModel>('products')
+      .where((qb) => {
+        if (searchParameters.text) {
+          qb.whereRaw(`search_document @@ plainto_tsquery(:text)`, {
+            text: searchParameters.text,
+          });
+        }
 
-    const queryParams = _.omitBy(
-      {
-        text: searchParameters.text,
-        countryCode: searchParameters.countryCode,
-        offset: paginationParams.offset,
-        limit: paginationParams.limit,
-      },
-      _.isNil,
-    );
+        if (searchParameters.category) {
+          qb.andWhere('category', searchParameters.category);
+        }
 
-    const results = await knex.raw(query, queryParams);
-    console.log(111, results);
+        if (searchParameters.subCategory) {
+          qb.andWhere('sub_category', searchParameters.subCategory);
+        }
 
-    if (results != null && results.rows != null) {
-      return results.rows;
-    } else {
-      throw new Error(
-        `Error while searching products with searchParams: ${JSON.stringify(searchParameters)} paginationParams: ${JSON.stringify(paginationParams)}`,
-      );
-    }
+        if (searchParameters.countryCode) {
+          qb.andWhere('country_code', searchParameters.countryCode);
+        }
+
+        if (searchParameters.region) {
+          qb.andWhere('region', searchParameters.region);
+        }
+
+        if (searchParameters.minPrice) {
+          qb.andWhere('price', '>=', parseInt(searchParameters.minPrice));
+        }
+
+        if (searchParameters.maxPrice) {
+          qb.andWhere('price', '<=', parseInt(searchParameters.maxPrice));
+        }
+      })
+      .offset(paginationParams.offset)
+      .limit(paginationParams.limit)
+      .orderBy(orderBy, orderDirection);
+
+    return results;
   }
 
   static async updateProductByIdAndUserId(

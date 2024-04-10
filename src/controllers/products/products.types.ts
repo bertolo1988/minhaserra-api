@@ -1,6 +1,6 @@
 import CONSTANTS from '../../constants';
 import { CountryCodeSchema } from '../../schemas/shared-schemas';
-import { Currency, Language } from '../../types';
+import { Currency, Language, SortDirection } from '../../types';
 import { AjvCustomFormats } from '../../utils/ajv';
 
 export enum ProductCategory {
@@ -237,14 +237,21 @@ export const UpdateProductDtoSchema = {
   additionalProperties: false,
 };
 
+export enum ProductSeachOrderByFields {
+  NAME = 'name',
+  PRICE = 'price',
+}
+
 export type ProductsSearchDto = {
   text?: string;
   category?: ProductCategory;
   subCategory?: ProductSubCategory;
-  maxPrice?: number;
-  minPrice?: number;
+  maxPrice?: string;
+  minPrice?: string;
   countryCode?: string;
   region?: string;
+  orderBy?: ProductSeachOrderByFields;
+  orderDirection?: SortDirection;
 };
 
 export const ProductsSearchDtoSchema = {
@@ -266,16 +273,14 @@ export const ProductsSearchDtoSchema = {
       enum: Object.values(ProductSubCategory),
     },
     minPrice: {
+      type: 'string',
       nullable: true,
-      type: 'number',
-      minimum: 0,
-      maximum: CONSTANTS.MAX_PRICE_IN_CENTS,
+      format: AjvCustomFormats.NATURAL_NUMBERS_EXCLUDING_ZERO,
     },
     maxPrice: {
+      type: 'string',
       nullable: true,
-      type: 'number',
-      minimum: 0,
-      maximum: CONSTANTS.MAX_PRICE_IN_CENTS,
+      format: AjvCustomFormats.NATURAL_NUMBERS_EXCLUDING_ZERO,
     },
     countryCode: {
       type: 'string',
@@ -296,6 +301,16 @@ export const ProductsSearchDtoSchema = {
     limit: {
       type: 'string',
       nullable: true,
+    },
+    orderBy: {
+      nullable: true,
+      type: 'string',
+      enum: Object.values(ProductSeachOrderByFields),
+    },
+    orderDirection: {
+      nullable: true,
+      type: 'string',
+      enum: Object.values(SortDirection),
     },
   },
   required: [],

@@ -13,6 +13,8 @@ enum AjvCustomFormats {
   COUNTRY_CODE = 'country-code',
   ONLY_LETTERS = 'only-letters',
   NUMBERS_LETTERS_UNDERSCORE_DASH = 'numbers-letters-underscore-dash',
+  NATURAL_NUMBERS_INCLUDING_ZERO = 'natural-numbers-including-zero',
+  NATURAL_NUMBERS_EXCLUDING_ZERO = 'natural-numbers-excluding-zero',
 }
 
 /*
@@ -41,5 +43,12 @@ ajv.addFormat(
 );
 
 ajv.addFormat(AjvCustomFormats.ONLY_LETTERS, /^[A-Za-z]+$/);
+
+ajv.addFormat(
+  AjvCustomFormats.NATURAL_NUMBERS_INCLUDING_ZERO,
+  /^(?:0|[1-9][0-9]*)$/,
+);
+
+ajv.addFormat(AjvCustomFormats.NATURAL_NUMBERS_EXCLUDING_ZERO, /^[1-9][0-9]*$/);
 
 export { ajv, AjvCustomFormats };
