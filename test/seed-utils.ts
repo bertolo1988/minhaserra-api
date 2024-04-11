@@ -173,7 +173,7 @@ export class SeedUtils {
       descriptionEnglish,
       countryCode: 'PT',
       region: 'Leiria',
-      avaliableQuantity: 5,
+      availableQuantity: 5,
       price,
       isOnSale: false,
       isDeleted: softDeleted,

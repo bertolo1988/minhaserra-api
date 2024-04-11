@@ -47,7 +47,7 @@ export class ProductsRepository {
         descriptionEnglish: 'p.description_english',
         countryCode: 'p.country_code',
         region: 'p.region',
-        avaliableQuantity: 'p.avaliable_quantity',
+        availableQuantity: 'p.available_quantity',
         price: 'p.price',
         createdAt: 'p.created_at',
         updatedAt: 'p.updated_at',

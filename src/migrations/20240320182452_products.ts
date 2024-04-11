@@ -13,7 +13,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text('description_english').notNullable();
     table.string('country_code', 2).notNullable();
     table.string('region', 100).nullable();
-    table.integer('avaliable_quantity').notNullable().defaultTo(0);
+    table.integer('available_quantity').notNullable().defaultTo(0);
     table.bigInteger('price').notNullable();
     table.specificType('currency', 'currency').notNullable().defaultTo('EUR');
     table.specificType('search_document', 'tsvector').nullable();

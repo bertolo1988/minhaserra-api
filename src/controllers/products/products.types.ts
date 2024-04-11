@@ -55,7 +55,7 @@ export type ProductModel = {
   descriptionEnglish: string;
   countryCode: string;
   region?: string;
-  avaliableQuantity: number;
+  availableQuantity: number;
   price: number;
   isOnSale: boolean;
   isDeleted: boolean;
@@ -176,7 +176,7 @@ export type UpdateProductDto = {
   description?: string;
   countryCode?: string;
   region?: string;
-  avaliableQuantity?: number;
+  availableQuantity?: number;
   price?: number;
 };
 

@@ -21,7 +21,7 @@ export class ProductsMapper {
       descriptionEnglish: product.descriptionEnglish,
       countryCode: product.countryCode,
       region: product.region,
-      avaliableQuantity: product.avaliableQuantity,
+      availableQuantity: product.availableQuantity,
       price: parseInt(product.price.toString()),
       isApproved: product.isApproved,
       isDeleted: product.isDeleted,
@@ -46,7 +46,7 @@ export class ProductsMapper {
       descriptionEnglish: dto.descriptionEnglish,
       countryCode: dto.countryCode,
       region: dto.region,
-      avaliableQuantity: dto.availableQuantity,
+      availableQuantity: dto.availableQuantity,
       price: dto.price,
       isOnSale: dto.isOnSale,
     };
