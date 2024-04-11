@@ -2,9 +2,94 @@ import Koa from 'koa';
 
 import { validatePaginationParams } from '../../../src/middlewares/validate-pagination-params.middleware';
 import { ValidationError } from '../../../src/types/errors';
+import CONSTANTS from '../../../src/constants';
 
 describe('validatePaginationParams', () => {
   describe('should throw validation error', () => {
+    test('if limit is not a multiple of 10', async () => {
+      const ctx: Koa.Context = {
+        request: {
+          query: {
+            limit: '9',
+          },
+        },
+      } as unknown as Koa.Context;
+      const next = jest.fn();
+
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "'limit' must be multiple of 10",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
+
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    test('if offset is not a multiple of 10', async () => {
+      const ctx: Koa.Context = {
+        request: {
+          query: {
+            offset: '9',
+          },
+        },
+      } as unknown as Koa.Context;
+      const next = jest.fn();
+
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "'offset' must be multiple of 10",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
+
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    test('if limit is above maximum limit', async () => {
+      const ctx: Koa.Context = {
+        request: {
+          query: {
+            limit: `${CONSTANTS.MAX_PAGINATION_LIMIT + 1}`,
+          },
+        },
+      } as unknown as Koa.Context;
+      const next = jest.fn();
+
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          `'limit' must be less than 30`,
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
+
+      expect(next).not.toHaveBeenCalled();
+    });
+
     test('if limit is an array of numeric strings', async () => {
       const ctx: Koa.Context = {
         request: {
@@ -15,14 +100,25 @@ describe('validatePaginationParams', () => {
       } as unknown as Koa.Context;
       const next = jest.fn();
 
-      await expect(validatePaginationParams(ctx, next)).rejects.toThrow(
-        ValidationError,
-      );
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "Invalid query parameter 'limit'",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
 
       expect(next).not.toHaveBeenCalled();
     });
 
-    test('if limit is a boolean, true', async () => {
+    test('if offset is a boolean, true', async () => {
       const ctx: Koa.Context = {
         request: {
           query: {
@@ -32,9 +128,20 @@ describe('validatePaginationParams', () => {
       } as unknown as Koa.Context;
       const next = jest.fn();
 
-      await expect(validatePaginationParams(ctx, next)).rejects.toThrow(
-        ValidationError,
-      );
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "Invalid query parameter 'offset'",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
 
       expect(next).not.toHaveBeenCalled();
     });
@@ -49,9 +156,20 @@ describe('validatePaginationParams', () => {
       } as unknown as Koa.Context;
       const next = jest.fn();
 
-      await expect(validatePaginationParams(ctx, next)).rejects.toThrow(
-        ValidationError,
-      );
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "Invalid query parameter 'offset'",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
 
       expect(next).not.toHaveBeenCalled();
     });
@@ -66,9 +184,20 @@ describe('validatePaginationParams', () => {
       } as unknown as Koa.Context;
       const next = jest.fn();
 
-      await expect(validatePaginationParams(ctx, next)).rejects.toThrow(
-        ValidationError,
-      );
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "Invalid query parameter 'offset'",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
 
       expect(next).not.toHaveBeenCalled();
     });
@@ -83,20 +212,31 @@ describe('validatePaginationParams', () => {
       } as unknown as Koa.Context;
       const next = jest.fn();
 
-      await expect(validatePaginationParams(ctx, next)).rejects.toThrow(
-        ValidationError,
-      );
+      try {
+        await validatePaginationParams(ctx, next);
+        expect(true).toBe(false);
+      } catch (err: unknown) {
+        expect(err).toBeInstanceOf(ValidationError);
+        expect(err).toHaveProperty(
+          'validationErrors',
+          "Invalid query parameter 'limit'",
+        );
+        expect(err).toHaveProperty('statusCode', 400);
+        expect(err).toHaveProperty('name', 'ValidationError');
+        expect(err).toHaveProperty('message', 'Validation error');
+        expect((err as any).stack).toBeDefined();
+      }
 
       expect(next).not.toHaveBeenCalled();
     });
   });
 
   describe('should call next', () => {
-    test('if offset is a number and limit undefined', async () => {
+    test('if offset is a number multiple of 10 and limit undefined', async () => {
       const ctx: Koa.Context = {
         request: {
           query: {
-            offset: '1',
+            offset: '100',
           },
         },
       } as unknown as Koa.Context;
@@ -107,7 +247,7 @@ describe('validatePaginationParams', () => {
       expect(next).toHaveBeenCalled();
     });
 
-    test('if offset is undefined and limit a number', async () => {
+    test('if offset is undefined and limit a number multiple of 10', async () => {
       const ctx: Koa.Context = {
         request: {
           query: {
@@ -122,11 +262,11 @@ describe('validatePaginationParams', () => {
       expect(next).toHaveBeenCalled();
     });
 
-    test('if offset and limit are numbers', async () => {
+    test('if offset and limit are both numbers multiples of 10', async () => {
       const ctx: Koa.Context = {
         request: {
           query: {
-            offset: '1',
+            offset: '0',
             limit: '10',
           },
         },
