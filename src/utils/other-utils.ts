@@ -17,3 +17,11 @@ export function isValidIso3166Alpha2Code(input: unknown): boolean {
     return false;
   }
 }
+
+export function isArraySortedDescending(array: number[]): boolean {
+  return _.isEqual(array, _.orderBy(array, [], ['desc']));
+}
+
+export function isArraySortedAscending(array: number[]): boolean {
+  return _.isEqual(array, _.orderBy(array, [], ['asc']));
+}
