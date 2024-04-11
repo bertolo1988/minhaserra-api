@@ -13,8 +13,9 @@ import {
   UpdateProductDto,
 } from './products.types';
 
+// cheaper first
 const DEFAULT_PRODUCT_SEARCH_ORDER_BY_FIELD = 'price';
-const DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION = SortDirection.DESC;
+const DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION = SortDirection.ASC;
 
 export class ProductsRepository {
   static async searchProducts(
@@ -33,60 +34,61 @@ export class ProductsRepository {
         ? searchParameters.orderDirection
         : DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION;
 
-    const results = await knex<PublicProductModel>('products')
+    const results = await knex<PublicProductModel>({ p: 'products' })
       .select({
-        id: 'id',
-        userId: 'user_id',
-        category: 'category',
-        subCategory: 'sub_category',
-        language: 'language',
-        name: 'name',
-        nameEnglish: 'name_english',
-        description: 'description',
-        descriptionEnglish: 'description_english',
-        countryCode: 'country_code',
-        region: 'region',
-        avaliableQuantity: 'avaliable_quantity',
-        price: 'price',
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
+        id: 'p.id',
+        userId: 'p.user_id',
+        category: 'p.category',
+        subCategory: 'p.sub_category',
+        language: 'p.language',
+        name: 'p.name',
+        nameEnglish: 'p.name_english',
+        description: 'p.description',
+        descriptionEnglish: 'p.description_english',
+        countryCode: 'p.country_code',
+        region: 'p.region',
+        avaliableQuantity: 'p.avaliable_quantity',
+        price: 'p.price',
+        createdAt: 'p.created_at',
+        updatedAt: 'p.updated_at',
+        images: knex.raw(
+          'array(select url from product_images pi2 where pi2.product_id = p.id order by created_at desc)',
+        ),
       })
       .where((qb) => {
         if (searchParameters.text) {
-          qb.whereRaw(`search_document @@ plainto_tsquery(:text)`, {
+          qb.whereRaw(`p.search_document @@ plainto_tsquery(:text)`, {
             text: searchParameters.text,
           });
         }
 
         if (searchParameters.category) {
-          qb.andWhere('category', searchParameters.category);
+          qb.andWhere('p.category', searchParameters.category);
         }
 
         if (searchParameters.subCategory) {
-          qb.andWhere('sub_category', searchParameters.subCategory);
+          qb.andWhere('p.sub_category', searchParameters.subCategory);
         }
 
         if (searchParameters.countryCode) {
-          qb.andWhere('country_code', searchParameters.countryCode);
+          qb.andWhere('p.country_code', searchParameters.countryCode);
         }
 
         if (searchParameters.region) {
-          qb.andWhere('region', searchParameters.region);
+          qb.andWhere('p.region', searchParameters.region);
         }
 
         if (searchParameters.minPrice) {
-          qb.andWhere('price', '>=', parseInt(searchParameters.minPrice));
+          qb.andWhere('p.price', '>=', parseInt(searchParameters.minPrice));
         }
 
         if (searchParameters.maxPrice) {
-          qb.andWhere('price', '<=', parseInt(searchParameters.maxPrice));
+          qb.andWhere('p.price', '<=', parseInt(searchParameters.maxPrice));
         }
       })
       .offset(paginationParams.offset)
       .limit(paginationParams.limit)
       .orderBy(orderBy, orderDirection);
-
-    // TODO: left join product images
 
     return results;
   }

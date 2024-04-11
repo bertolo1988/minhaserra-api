@@ -68,7 +68,7 @@ export type ProductModel = {
 export type PublicProductModel = Omit<
   ProductModel,
   'isOnSale' | 'isDeleted' | 'isApproved' | 'searchDocument'
->;
+> & { images: string[] };
 
 export type OwnerProductModel = Omit<ProductModel, 'searchDocument'>;
 

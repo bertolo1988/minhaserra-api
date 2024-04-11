@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { Knex } from 'knex';
 dotenv.config();
 
+import { ProductImageModel } from '../../src/controllers/products/product-images.types';
 import {
   ProductCategory,
   ProductModel,
@@ -16,6 +17,8 @@ if (isProduction()) {
   throw new Error('Cannot truncate tables in production environment!');
 }
 
+// Sellers
+
 export const verifiedSeller1: UserModel = SeedUtils.getVerifiedUser(
   '760f0154-cbd1-447c-a875-9b58cda6bc72',
   UserRole.SELLER,
@@ -28,6 +31,8 @@ export const verifiedSeller3: UserModel = SeedUtils.getVerifiedUser(
   'a9ef0273-3a5d-40a0-ae63-0c075a18c10c',
   UserRole.SELLER,
 );
+
+// Products
 
 const verifiedSeller1Product1: Omit<ProductModel, 'searchDocument'> =
   SeedUtils.getProduct({
@@ -67,7 +72,7 @@ const verifiedSeller1Product3: Omit<ProductModel, 'searchDocument'> =
       'Vinho com 20% de alcool proveninente do Douro. Envelhecido em barris de carvalho.',
     descriptionEnglish:
       'Wine with 20% alcohol from Douro. Aged in oak barrels.',
-    price: 1200,
+    price: 400,
   });
 
 const verifiedSeller1Product4: Omit<ProductModel, 'searchDocument'> =
@@ -188,9 +193,36 @@ const verifiedSeller3Product3: Omit<ProductModel, 'searchDocument'> =
     price: 8500,
   });
 
+// Product images
+
+const verifiedSeller1Product3Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '7f48b1fb-f09d-4e49-ae82-c5fac4adc2b8',
+    verifiedSeller1Product3.id,
+  );
+
+const verifiedSeller1Product3Image2: ProductImageModel =
+  SeedUtils.getProductImage(
+    '7dd7ff8c-ba8b-4ed4-81fd-03039c861d3d',
+    verifiedSeller1Product3.id,
+  );
+
+const verifiedSeller1Product3Image3: ProductImageModel =
+  SeedUtils.getProductImage(
+    '46a4708e-63a0-418d-be36-c6cda4953c2e',
+    verifiedSeller1Product3.id,
+  );
+
+const verifiedSeller1Product4Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '9ef3daaa-f83f-4165-a3aa-e9b52f01ac21',
+    verifiedSeller1Product4.id,
+  );
+
 export async function seed(knex: Knex): Promise<void> {
   await knex('users').del();
   await knex('products').del();
+  await knex('product_images').del();
 
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1),
@@ -209,5 +241,11 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product2),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3),
+  ]);
+  await knex('product_images').insert([
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product3Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product3Image2),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product3Image3),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product4Image1),
   ]);
 }
