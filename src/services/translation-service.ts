@@ -27,6 +27,12 @@ export class TranslationService {
     this.client = new TranslateClient(config);
   }
 
+  /**
+   * Translates input text to English
+   * @param input text to translate
+   * @param sourceLanguageCode source language code
+   * @returns translated text in English
+   */
   async translateToEnglish(
     input: string,
     sourceLanguageCode: Language,
@@ -37,9 +43,16 @@ export class TranslationService {
     return this.translate(input, sourceLanguageCode, Language.ENGLISH);
   }
 
+  /**
+   * Translate the input text from source language to target language
+   * @param input text to translate
+   * @param sourceLanguageCode source language code
+   * @param targetLanguageCode target language code
+   * @returns translated text in target language
+   */
   async translate(
     input: string,
-    sourceLanguageCode: Language,
+    sourceLanguageCode: Language | 'auto',
     targetLanguageCode: Language,
   ): Promise<string> {
     const commandConfig: TranslateTextCommandInput = {
@@ -54,5 +67,14 @@ export class TranslationService {
       throw new Error('Translation service failed!');
     }
     return response.TranslatedText;
+  }
+
+  /**
+   * Detects the language of the input text and translates it to English
+   * @param input text to translate in any language
+   * @returns translated text in english
+   */
+  async translateToEnglishAuto(input: string): Promise<string> {
+    return this.translate(input, 'auto', Language.ENGLISH);
   }
 }

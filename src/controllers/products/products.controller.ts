@@ -22,7 +22,15 @@ export class ProductsController {
     const searchParameters = _.omit(ctx.request.query, [
       'offset',
       'limit',
+      'text',
     ]) as ProductsSearchDto;
+
+    if (ctx.request.query.text != null) {
+      searchParameters.text = await translationService.translateToEnglishAuto(
+        ctx.request.query.text as string,
+      );
+    }
+
     const paginationParams = new PaginationParams(
       ctx.request.query.offset as string,
       ctx.request.query.limit as string,
