@@ -218,7 +218,7 @@ describe('POST /api/products', () => {
         // category: ProductCategory.FOOD,
         subCategory: ProductSubCategory.FOOD_HONEY,
         countryCode: 'PT',
-        avaliableQuantity: 2,
+        availableQuantity: 2,
         currency: Currency.EUR,
         isOnSale: false,
       } as unknown as CreateProductDto;

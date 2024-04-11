@@ -200,7 +200,7 @@ describe('GET /api/products/:id', () => {
         descriptionEnglish: verifiedSellerProduct1.descriptionEnglish,
         countryCode: verifiedSellerProduct1.countryCode,
         region: verifiedSellerProduct1.region,
-        avaliableQuantity: verifiedSellerProduct1.avaliableQuantity,
+        availableQuantity: verifiedSellerProduct1.availableQuantity,
         price: verifiedSellerProduct1.price,
         isOnSale: verifiedSellerProduct1.isOnSale,
         isApproved: verifiedSellerProduct1.isApproved,
