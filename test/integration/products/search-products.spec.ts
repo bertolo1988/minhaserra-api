@@ -69,16 +69,96 @@ describe('GET /api/public-products', () => {
       translateToEnglishAutoSpy.mockClear();
     });
 
-    test.skip('limit of 31', async () => {});
+    test('limit of 31', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        limit: 31,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({ message: "'limit' must be less than 30" });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('limit 6', async () => {});
+    test('limit 6', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        limit: '6',
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({ message: "'limit' must be multiple of 10" });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('limit offset of 3', async () => {});
+    test('offset of 3', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        offset: 3,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({ message: "'offset' must be multiple of 10" });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('negative minPrice', async () => {});
+    test('negative minPrice', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        minPrice: -1,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `minPrice must be a natural number bigger than 0`,
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('minPrice 0', async () => {});
+    test('minPrice 0', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        minPrice: 0,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `minPrice must be a natural number bigger than 0`,
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
+    // TODO: continue implementing theses tests
     test.skip('maxPrice smaller than minPrice', async () => {});
 
     test.skip('minPrice with letters', async () => {});
@@ -86,6 +166,8 @@ describe('GET /api/public-products', () => {
     test.skip('minPrice negative', async () => {});
 
     test.skip('maxPrice that is way too big of a number', async () => {});
+
+    test.skip('region empty string', async () => {});
   });
 
   describe('should return 200', () => {
@@ -118,6 +200,7 @@ describe('GET /api/public-products', () => {
       expect(response.status).toBe(200);
       const body = await response.json();
       expect(translateToEnglishAutoSpy).toHaveBeenCalledTimes(1);
+      expect(_.isArray(body)).toBe(true);
       expect(body.length).toBe(0);
     });
 

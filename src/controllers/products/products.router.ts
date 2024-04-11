@@ -46,6 +46,13 @@ export function configureProductsRouter(router: Router) {
     ProductsController.getProducts,
   );
 
+  // TODO: implement this endpoint
+  /*   router.get(
+    '/public-products/:id',
+    validateIdValidUuid,
+    ProductsController.getProductById,
+  ); */
+
   router.put(
     '/products/:id',
     AuthenticationUtils.authenticateUserMiddleware,

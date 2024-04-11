@@ -275,11 +275,13 @@ export const ProductsSearchDtoSchema = {
     minPrice: {
       type: 'string',
       nullable: true,
+      errorMessage: 'must be a natural number bigger than 0',
       format: AjvCustomFormats.NATURAL_NUMBERS_EXCLUDING_ZERO,
     },
     maxPrice: {
       type: 'string',
       nullable: true,
+      errorMessage: 'must be a natural number bigger than 0',
       format: AjvCustomFormats.NATURAL_NUMBERS_EXCLUDING_ZERO,
     },
     countryCode: {
