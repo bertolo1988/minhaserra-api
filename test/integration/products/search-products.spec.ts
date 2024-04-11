@@ -157,7 +157,7 @@ describe('GET /api/public-products', () => {
     test('expect all results to be valid public products', async () => {
       const queryStringParams: Record<string, string | number> = {
         offset: 0,
-        limit: 5,
+        limit: 10,
         text: 'honey',
       };
 
