@@ -157,9 +157,9 @@ const verifiedSeller3Product1: Omit<ProductModel, 'searchDocument'> =
     name: 'Dona Maria Tinto 2016',
     nameEnglish: 'Dona Maria Red 2016',
     description:
-      'Bagas vermelhas complexas, torradas, com sugestões de ameixas maduras. Sabor rico a baga vermelha com grande persistência, equilibrado, arredondado e com uma boa estrutura que permitirá envelhecer bem.',
+      'Vinho de bagas vermelhas complexas, torradas, com sugestões de ameixas maduras. Sabor rico a baga vermelha com grande persistência, equilibrado, arredondado e com uma boa estrutura que permitirá envelhecer bem.',
     descriptionEnglish:
-      'Complex red berries, toasted, with suggestions of ripe plums. Rich red berry flavor with great persistence, balanced, rounded and with a good structure that will allow it to age well.',
+      'Wine of complex red berries, toasted, with suggestions of ripe plums. Rich flavor of red berry with great persistence, balanced, rounded and with a good structure that will allow it to age well.',
     price: 750,
   });
 

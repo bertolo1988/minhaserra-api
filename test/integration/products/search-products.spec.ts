@@ -1,16 +1,13 @@
-import _ from 'lodash';
 import tk from 'timekeeper';
+import iso3311a2 from 'iso-3166-1-alpha-2';
 
 import {
-  inactiveUser,
-  softDeletedUser,
-  unverifiedUser,
-  verifiedBuyer,
-  verifiedSeller,
-  verifiedSellerNoProducts,
-  verifiedSellerProduct1,
-  verifiedSellerProduct2,
-} from '../../seeds/products.seed';
+  ProductCategory,
+  ProductSubCategory,
+} from '../../../src/controllers/products/products.types';
+import { TranslationService } from '../../../src/services/translation-service';
+import { isArraySortedAscending } from '../../../src/utils/other-utils';
+import { verifiedSellerNoProducts } from '../../seeds/products.seed';
 import {
   DatabaseSeedNames,
   getRequestHeaders,
@@ -18,11 +15,34 @@ import {
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-import { PaginationParams, SortDirection } from '../../../src/types';
-import {
-  ProductCategory,
-  ProductSeachOrderByFields,
-} from '../../../src/controllers/products/products.types';
+import { Language } from '../../../src/types';
+import _ from 'lodash';
+
+function testValidPublicProductModel(input: unknown) {
+  expect(input).toEqual(
+    expect.objectContaining({
+      id: expect.any(String),
+      userId: expect.any(String),
+      category: expect.stringMatching(Object.values(ProductCategory).join('|')),
+      subCategory: expect.stringMatching(
+        Object.values(ProductSubCategory).join('|'),
+      ),
+      language: expect.stringMatching(Object.values(Language).join('|')),
+      name: expect.any(String),
+      nameEnglish: expect.any(String),
+      description: expect.any(String),
+      descriptionEnglish: expect.any(String),
+      countryCode: expect.stringMatching(iso3311a2.getCodes().join('|')),
+      region: expect.any(String),
+      availableQuantity: expect.any(Number),
+      price: expect.any(String),
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      images: expect.arrayContaining([]),
+    }),
+  );
+  expect(_.isArray((input as any).images)).toBe(true);
+}
 
 describe('GET /api/public-products', () => {
   beforeAll(async () => {
@@ -36,6 +56,19 @@ describe('GET /api/public-products', () => {
   });
 
   describe('should return 400', () => {
+    let translateToEnglishAutoSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      translateToEnglishAutoSpy = jest.spyOn(
+        TranslationService.prototype,
+        'translateToEnglishAuto',
+      );
+    });
+
+    afterEach(() => {
+      translateToEnglishAutoSpy.mockClear();
+    });
+
     test.skip('limit of 31', async () => {});
 
     test.skip('limit 6', async () => {});
@@ -56,9 +89,25 @@ describe('GET /api/public-products', () => {
   });
 
   describe('should return 200', () => {
-    test.skip('empty query should return 10 first results', async () => {
-      // TODO: implement this test
-      const queryStringParams: Record<string, string | number> = {};
+    let translateToEnglishAutoSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      translateToEnglishAutoSpy = jest
+        .spyOn(TranslationService.prototype, 'translateToEnglishAuto')
+        .mockImplementation(async (input: string) => {
+          return input;
+        });
+    });
+
+    afterEach(() => {
+      translateToEnglishAutoSpy.mockClear();
+    });
+
+    test('and empty array', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        text: 'ajnsdasjbdakjdbakjbd',
+      };
+
       const response = await fetch(
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
@@ -68,10 +117,11 @@ describe('GET /api/public-products', () => {
       );
       expect(response.status).toBe(200);
       const body = await response.json();
-      console.log(body);
+      expect(translateToEnglishAutoSpy).toHaveBeenCalledTimes(1);
+      expect(body.length).toBe(0);
     });
 
-    test.only('and an empty list of products', async () => {
+    test('expect 4 wines of price below the target sorted by cheapest first (default sort)', async () => {
       const queryStringParams: Record<string, string | number> = {
         offset: 0,
         limit: 10,
@@ -89,7 +139,43 @@ describe('GET /api/public-products', () => {
       );
       expect(response.status).toBe(200);
       const body = await response.json();
-      console.log(body);
+
+      expect(translateToEnglishAutoSpy).toHaveBeenCalledTimes(1);
+      expect(translateToEnglishAutoSpy).toHaveBeenCalledWith('wine');
+
+      expect(body.length).toBe(4);
+
+      expect(
+        isArraySortedAscending(body.map((p: any) => parseInt(p.price))),
+      ).toBe(true);
+
+      for (let product of body) {
+        testValidPublicProductModel(product);
+      }
+    });
+
+    test('expect all results to be valid public products', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        offset: 0,
+        limit: 5,
+        text: 'honey',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+
+      expect(translateToEnglishAutoSpy).toHaveBeenCalledTimes(1);
+
+      for (let product of body) {
+        testValidPublicProductModel(product);
+      }
     });
   });
 });
