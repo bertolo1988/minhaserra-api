@@ -14,6 +14,7 @@ import {
   UpdateProductDtoSchema,
 } from './products.types';
 import _ from 'lodash';
+import CONSTANTS from '../../constants';
 
 const createProductDtoValidator: ValidateFunction =
   ajv.compile<CreateProductDto>(CreateProductDtoSchema);
@@ -30,6 +31,36 @@ export class ProductsValidator {
     const isQueryStringValid = productSearchValidator(ctx.request.query);
     if (!isQueryStringValid)
       throw new ValidationError(productSearchValidator.errors as ErrorObject[]);
+
+    if (
+      ctx.request.query.minPrice != null &&
+      ctx.request.query.maxPrice != null &&
+      parseInt(ctx.request.query.minPrice as string) >=
+        parseInt(ctx.request.query.maxPrice as string)
+    ) {
+      throw new ValidationError('maxPrice must be greater than minPrice');
+    }
+
+    if (
+      ctx.request.query.minPrice != null &&
+      parseInt(ctx.request.query.minPrice as string) >=
+        CONSTANTS.MAX_PRICE_IN_CENTS
+    ) {
+      throw new ValidationError(
+        `minPrice must be smaller than ${CONSTANTS.MAX_PRICE_IN_CENTS}`,
+      );
+    }
+
+    if (
+      ctx.request.query.maxPrice != null &&
+      parseInt(ctx.request.query.maxPrice as string) >=
+        CONSTANTS.MAX_PRICE_IN_CENTS
+    ) {
+      throw new ValidationError(
+        `maxPrice must be smaller than ${CONSTANTS.MAX_PRICE_IN_CENTS}`,
+      );
+    }
+
     await next();
   }
 

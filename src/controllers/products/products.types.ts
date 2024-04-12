@@ -260,6 +260,7 @@ export const ProductsSearchDtoSchema = {
     text: {
       type: 'string',
       nullable: true,
+      minLength: 1,
       maxLength: CONSTANTS.MAX_PRODUCT_SEARCH_STRING_SIZE,
     },
     category: {
@@ -288,12 +289,14 @@ export const ProductsSearchDtoSchema = {
       type: 'string',
       format: AjvCustomFormats.COUNTRY_CODE,
       nullable: true,
+      minLength: 2,
       maxLength: 2,
       errorMessage: `must have two characters and be valid according to ISO 3166-1 alpha-2`,
     },
     region: {
       type: 'string',
       nullable: true,
+      minLength: 1,
       maxLength: CONSTANTS.DEFAULT_MAX_STRING_SIZE,
     },
     offset: {

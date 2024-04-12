@@ -17,6 +17,7 @@ import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
 import { Language } from '../../../src/types';
 import _ from 'lodash';
+import CONSTANTS from '../../../src/constants';
 
 function testValidPublicProductModel(input: unknown) {
   expect(input).toEqual(
@@ -158,16 +159,185 @@ describe('GET /api/public-products', () => {
       expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
     });
 
-    // TODO: continue implementing theses tests
-    test.skip('maxPrice smaller than minPrice', async () => {});
+    test('maxPrice smaller than minPrice', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        minPrice: 1000,
+        maxPrice: 500,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'maxPrice must be greater than minPrice',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('minPrice with letters', async () => {});
+    test('minPrice with letters', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        minPrice: 'aa',
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'minPrice must be a natural number bigger than 0',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('minPrice negative', async () => {});
+    test('minPrice negative', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        minPrice: -1,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'minPrice must be a natural number bigger than 0',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
 
-    test.skip('maxPrice that is way too big of a number', async () => {});
+    test('minPrice that is way too big of a number', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        minPrice: CONSTANTS.MAX_PRICE_IN_CENTS,
+      };
 
-    test.skip('region empty string', async () => {});
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `minPrice must be smaller than ${CONSTANTS.MAX_PRICE_IN_CENTS}`,
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
+
+    test('maxPrice that is way too big of a number', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        maxPrice: CONSTANTS.MAX_PRICE_IN_CENTS,
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `maxPrice must be smaller than ${CONSTANTS.MAX_PRICE_IN_CENTS}`,
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
+
+    test('region empty string', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        region: '',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'region must NOT have fewer than 1 characters',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
+
+    test('country code with 1 letter', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        countryCode: 'A',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message:
+          'countryCode must have two characters and be valid according to ISO 3166-1 alpha-2',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
+
+    test('country code with 3 letter', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        countryCode: 'ABB',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message:
+          'countryCode must have two characters and be valid according to ISO 3166-1 alpha-2',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
+
+    test('text with empty string', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        text: '',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'text must NOT have fewer than 1 characters',
+      });
+      expect(translateToEnglishAutoSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe('should return 200', () => {
@@ -259,6 +429,25 @@ describe('GET /api/public-products', () => {
       for (let product of body) {
         testValidPublicProductModel(product);
       }
+    });
+
+    test('expect empty array if country code is set to Russia', async () => {
+      const queryStringParams: Record<string, string | number> = {
+        countryCode: 'RU',
+      };
+
+      const response = await fetch(
+        getTestServerUrl(`/api/public-products`, queryStringParams).href,
+        {
+          method: 'GET',
+          headers: getRequestHeaders(verifiedSellerNoProducts),
+        },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+
+      expect(translateToEnglishAutoSpy).toHaveBeenCalledTimes(0);
+      expect(body).toHaveLength(0);
     });
   });
 });
