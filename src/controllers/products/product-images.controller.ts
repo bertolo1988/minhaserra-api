@@ -19,7 +19,7 @@ export class ProductImagesController {
     const userId = ctx.state.user.id;
     const { id: productId, imageId } = ctx.params;
 
-    const product: ProductModel | null =
+    const product: ProductModel | null | undefined =
       await ProductsRepository.getProductById(productId);
     if (!product) {
       ctx.status = 404;

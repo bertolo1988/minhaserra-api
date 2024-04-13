@@ -49,7 +49,7 @@ export function configureProductsRouter(router: Router) {
   router.get(
     '/public-products/:id',
     validateIdValidUuid,
-    ProductsController.getProductById,
+    ProductsController.getPublicProductById,
   );
 
   router.put(

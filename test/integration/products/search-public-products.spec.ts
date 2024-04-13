@@ -5,7 +5,6 @@ import CONSTANTS from '../../../src/constants';
 import { ProductCategory } from '../../../src/controllers/products/products.types';
 import { TranslationService } from '../../../src/services/translation-service';
 import { isArraySortedAscending } from '../../../src/utils/other-utils';
-import { verifiedSellerNoProducts } from '../../seeds/products.seed';
 import { testValidPublicProductModel } from '../../test-type-utils';
 import {
   DatabaseSeedNames,

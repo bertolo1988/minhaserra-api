@@ -66,6 +66,12 @@ export function getAuthorizationHeader(user: UserModel): string {
   })}`;
 }
 
+export function getRequestHeadersWithotAuthorization(): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+  };
+}
+
 export function getRequestHeaders(user: UserModel): Record<string, string> {
   return {
     Authorization: getAuthorizationHeader(user),

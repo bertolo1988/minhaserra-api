@@ -149,6 +149,8 @@ export class SeedUtils {
     descriptionEnglish = 'Organic honey, based on rosemary and lavender, produced in the mountain range of the Serra de Aire e Candeeiros natural park.',
     price = 1000,
     softDeleted = false,
+    isOnSale = true,
+    isApproved = true,
   }: {
     id: string;
     userId: string;
@@ -160,6 +162,8 @@ export class SeedUtils {
     descriptionEnglish?: string;
     price?: number;
     softDeleted?: boolean;
+    isOnSale?: boolean;
+    isApproved?: boolean;
   }): Omit<ProductModel, 'searchDocument'> {
     return {
       id,
@@ -175,9 +179,9 @@ export class SeedUtils {
       region: 'Leiria',
       availableQuantity: 5,
       price,
-      isOnSale: false,
+      isOnSale,
       isDeleted: softDeleted,
-      isApproved: true,
+      isApproved,
       createdAt: now.toDate(),
       updatedAt: now.toDate(),
     };

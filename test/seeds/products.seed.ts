@@ -17,6 +17,11 @@ export const verifiedSeller: UserModel = SeedUtils.getVerifiedUser(
   UserRole.SELLER,
 );
 
+export const verifiedSeller2: UserModel = SeedUtils.getVerifiedUser(
+  '5dff35b7-bba1-4c15-b4b4-f511c1a4b028',
+  UserRole.SELLER,
+);
+
 export const verifiedSellerNoProducts: UserModel = SeedUtils.getVerifiedUser(
   '2e3cdbcb-5231-441c-9a6b-760eb504f500',
   UserRole.SELLER,
@@ -50,13 +55,22 @@ export const verifiedSellerNoProductsProduct1: Omit<
   softDeleted: true,
 });
 
-export const verifiedSellerSoftDeletedProduct: Omit<
+export const verifiedSeller2NotForSaleProduct: Omit<
   ProductModel,
   'searchDocument'
 > = SeedUtils.getProduct({
-  id: '7f11e4f9-3f93-48bc-b27f-2e192af7748c',
-  userId: verifiedSeller.id,
-  softDeleted: true,
+  id: '7359c573-4cd0-405d-909c-6c2e1d587b07',
+  userId: verifiedSeller2.id,
+  isOnSale: false,
+});
+
+export const verifiedSeller2NonApprovedProduct: Omit<
+  ProductModel,
+  'searchDocument'
+> = SeedUtils.getProduct({
+  id: '60b31145-ef7e-4f15-9a32-17460e4c8662',
+  userId: verifiedSeller2.id,
+  isOnSale: false,
 });
 
 export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
@@ -69,6 +83,7 @@ export async function seed(knex: Knex): Promise<void> {
 
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2),
     CaseConverter.objectKeysCamelToSnake(verifiedBuyer),
     CaseConverter.objectKeysCamelToSnake(inactiveUser),
     CaseConverter.objectKeysCamelToSnake(softDeletedUser),
@@ -77,8 +92,9 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
   await knex('products').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct1),
-    CaseConverter.objectKeysCamelToSnake(verifiedSellerSoftDeletedProduct),
     CaseConverter.objectKeysCamelToSnake(verifiedSellerProduct2),
     CaseConverter.objectKeysCamelToSnake(verifiedSellerNoProductsProduct1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2NotForSaleProduct),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2NonApprovedProduct),
   ]);
 }

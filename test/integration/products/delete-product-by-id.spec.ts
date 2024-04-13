@@ -10,7 +10,7 @@ import {
   verifiedSeller,
   verifiedSellerNoProducts,
   verifiedSellerProduct1,
-  verifiedSellerSoftDeletedProduct,
+  verifiedSellerNoProductsProduct1,
 } from '../../seeds/products.seed';
 import {
   DatabaseSeedNames,
@@ -50,11 +50,11 @@ describe('DELETE /api/products/:id', () => {
 
     test('if product is already soft deleted', async () => {
       const response = await fetch(
-        getTestServerUrl(`/api/products/${verifiedSellerSoftDeletedProduct.id}`)
+        getTestServerUrl(`/api/products/${verifiedSellerNoProductsProduct1.id}`)
           .href,
         {
           method: 'DELETE',
-          headers: getRequestHeaders(verifiedSeller),
+          headers: getRequestHeaders(verifiedSellerNoProducts),
         },
       );
       expect(response.status).toBe(404);
