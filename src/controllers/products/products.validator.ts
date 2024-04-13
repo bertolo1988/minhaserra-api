@@ -1,6 +1,7 @@
 import { ErrorObject, ValidateFunction } from 'ajv';
 import Koa from 'koa';
 
+import CONSTANTS from '../../constants';
 import { ValidationError } from '../../types/errors';
 import { ajv } from '../../utils/ajv';
 import {
@@ -13,8 +14,6 @@ import {
   UpdateProductDto,
   UpdateProductDtoSchema,
 } from './products.types';
-import _ from 'lodash';
-import CONSTANTS from '../../constants';
 
 const createProductDtoValidator: ValidateFunction =
   ajv.compile<CreateProductDto>(CreateProductDtoSchema);

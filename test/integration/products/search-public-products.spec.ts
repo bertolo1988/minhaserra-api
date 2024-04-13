@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import tk from 'timekeeper';
 
-import _ from 'lodash';
 import CONSTANTS from '../../../src/constants';
 import { ProductCategory } from '../../../src/controllers/products/products.types';
 import { TranslationService } from '../../../src/services/translation-service';
@@ -371,7 +371,7 @@ describe('GET /api/public-products', () => {
         isArraySortedAscending(body.map((p: any) => parseInt(p.price))),
       ).toBe(true);
 
-      for (let product of body) {
+      for (const product of body) {
         testValidPublicProductModel(product);
       }
     });
@@ -395,7 +395,7 @@ describe('GET /api/public-products', () => {
 
       expect(translateToEnglishAutoSpy).toHaveBeenCalledTimes(1);
 
-      for (let product of body) {
+      for (const product of body) {
         testValidPublicProductModel(product);
       }
     });
