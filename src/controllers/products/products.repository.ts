@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { Knex } from 'knex';
 
 import { getDatabaseInstance } from '../../knex-database';
 import { PaginationParams, SortDirection } from '../../types';
@@ -17,7 +18,44 @@ import {
 const DEFAULT_PRODUCT_SEARCH_ORDER_BY_FIELD = 'price';
 const DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION = SortDirection.ASC;
 
+function getPublicProductSelectFields(knex: Knex) {
+  return {
+    id: 'p.id',
+    userId: 'p.user_id',
+    category: 'p.category',
+    subCategory: 'p.sub_category',
+    language: 'p.language',
+    name: 'p.name',
+    nameEnglish: 'p.name_english',
+    description: 'p.description',
+    descriptionEnglish: 'p.description_english',
+    countryCode: 'p.country_code',
+    region: 'p.region',
+    availableQuantity: 'p.available_quantity',
+    price: 'p.price',
+    createdAt: 'p.created_at',
+    updatedAt: 'p.updated_at',
+    images: knex.raw(
+      'array(select url from product_images pi2 where pi2.product_id = p.id order by created_at desc)',
+    ),
+  };
+}
+
 export class ProductsRepository {
+  static async getPublicProductById(
+    id: string,
+  ): Promise<PublicProductModel | undefined | null> {
+    const knex = await getDatabaseInstance();
+    const product = await knex<PublicProductModel>({ p: 'products' })
+      .select(getPublicProductSelectFields(knex))
+      .where('id', id)
+      .andWhere('is_deleted', false)
+      .andWhere('is_approved', true)
+      .andWhere('is_on_sale', true)
+      .first();
+    return product;
+  }
+
   static async searchProducts(
     searchParameters: ProductsSearchDto,
     paginationParams: PaginationParams,
@@ -35,26 +73,7 @@ export class ProductsRepository {
         : DEFAULT_PRODUCT_SEARCH_ORDER_DIRECTION;
 
     const results = await knex<PublicProductModel>({ p: 'products' })
-      .select({
-        id: 'p.id',
-        userId: 'p.user_id',
-        category: 'p.category',
-        subCategory: 'p.sub_category',
-        language: 'p.language',
-        name: 'p.name',
-        nameEnglish: 'p.name_english',
-        description: 'p.description',
-        descriptionEnglish: 'p.description_english',
-        countryCode: 'p.country_code',
-        region: 'p.region',
-        availableQuantity: 'p.available_quantity',
-        price: 'p.price',
-        createdAt: 'p.created_at',
-        updatedAt: 'p.updated_at',
-        images: knex.raw(
-          'array(select url from product_images pi2 where pi2.product_id = p.id order by created_at desc)',
-        ),
-      })
+      .select(getPublicProductSelectFields(knex))
       .where((qb) => {
         if (searchParameters.text) {
           qb.whereRaw(`p.search_document @@ plainto_tsquery(:text)`, {
@@ -187,7 +206,7 @@ export class ProductsRepository {
   static async getProductById(
     id: string,
     isDeleted = false,
-  ): Promise<ProductModel | null> {
+  ): Promise<ProductModel | undefined | null> {
     const knex = await getDatabaseInstance();
     const where = {
       id,
@@ -205,7 +224,7 @@ export class ProductsRepository {
     id: string,
     userId: string,
     isDeleted = false,
-  ): Promise<ProductModel | null> {
+  ): Promise<ProductModel | undefined | null> {
     const knex = await getDatabaseInstance();
     const where = _.omitBy(
       {

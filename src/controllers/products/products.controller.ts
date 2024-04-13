@@ -160,6 +160,21 @@ export class ProductsController {
     }
   }
 
+  static async getPublicProductById(ctx: Koa.Context, _next: Koa.Next) {
+    const productId: string = ctx.params.id;
+
+    const product = await ProductsRepository.getPublicProductById(productId);
+
+    if (!product) {
+      ctx.status = 404;
+      ctx.body = { message: 'Product not found' };
+      return;
+    }
+
+    ctx.status = 200;
+    ctx.body = product;
+  }
+
   static async getProductById(ctx: Koa.Context, _next: Koa.Next) {
     const productId: string = ctx.params.id;
     const userId: string = ctx.state.user.id;
