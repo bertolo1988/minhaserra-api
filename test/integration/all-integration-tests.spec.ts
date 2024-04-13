@@ -36,5 +36,6 @@ describe('Integration tests', () => {
   require('./products/delete-product-by-id.spec');
   require('./products/get-products.spec');
   require('./products/update-product-by-id.spec');
-  require('./products/search-products.spec');
+  require('./products/search-public-products.spec');
+  require('./products/get-public-product.spec');
 });
