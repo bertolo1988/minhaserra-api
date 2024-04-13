@@ -1,49 +1,19 @@
 import tk from 'timekeeper';
-import iso3311a2 from 'iso-3166-1-alpha-2';
 
-import {
-  ProductCategory,
-  ProductSubCategory,
-} from '../../../src/controllers/products/products.types';
+import _ from 'lodash';
+import CONSTANTS from '../../../src/constants';
+import { ProductCategory } from '../../../src/controllers/products/products.types';
 import { TranslationService } from '../../../src/services/translation-service';
 import { isArraySortedAscending } from '../../../src/utils/other-utils';
 import { verifiedSellerNoProducts } from '../../seeds/products.seed';
+import { testValidPublicProductModel } from '../../test-type-utils';
 import {
   DatabaseSeedNames,
-  getRequestHeaders,
+  getRequestHeadersWithotAuthorization,
   runSeedByName,
 } from '../../test-utils';
 import { getTestServerUrl } from '../integration-test-utils';
 import TestServerSingleton from '../test-server-instance';
-import { Language } from '../../../src/types';
-import _ from 'lodash';
-import CONSTANTS from '../../../src/constants';
-
-function testValidPublicProductModel(input: unknown) {
-  expect(input).toEqual(
-    expect.objectContaining({
-      id: expect.any(String),
-      userId: expect.any(String),
-      category: expect.stringMatching(Object.values(ProductCategory).join('|')),
-      subCategory: expect.stringMatching(
-        Object.values(ProductSubCategory).join('|'),
-      ),
-      language: expect.stringMatching(Object.values(Language).join('|')),
-      name: expect.any(String),
-      nameEnglish: expect.any(String),
-      description: expect.any(String),
-      descriptionEnglish: expect.any(String),
-      countryCode: expect.stringMatching(iso3311a2.getCodes().join('|')),
-      region: expect.any(String),
-      availableQuantity: expect.any(Number),
-      price: expect.any(String),
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
-      images: expect.arrayContaining([]),
-    }),
-  );
-  expect(_.isArray((input as any).images)).toBe(true);
-}
 
 describe('GET /api/public-products', () => {
   beforeAll(async () => {
@@ -78,7 +48,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -95,7 +65,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -112,7 +82,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -129,7 +99,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -148,7 +118,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -168,7 +138,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -187,7 +157,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -206,7 +176,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -226,7 +196,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -246,7 +216,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -266,7 +236,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -286,7 +256,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -307,7 +277,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -328,7 +298,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(400);
@@ -364,7 +334,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(200);
@@ -387,7 +357,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(200);
@@ -418,7 +388,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(200);
@@ -440,7 +410,7 @@ describe('GET /api/public-products', () => {
         getTestServerUrl(`/api/public-products`, queryStringParams).href,
         {
           method: 'GET',
-          headers: getRequestHeaders(verifiedSellerNoProducts),
+          headers: getRequestHeadersWithotAuthorization(),
         },
       );
       expect(response.status).toBe(200);
