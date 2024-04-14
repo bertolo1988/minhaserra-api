@@ -6,6 +6,7 @@ import { configureHealthRouter } from './controllers/health/health.router';
 import { configurePasswordResetsRouter } from './controllers/password-resets/password-resets.router';
 import { configureProductsImagesRouter } from './controllers/products/product-images.router';
 import { configureProductsRouter } from './controllers/products/products.router';
+import { configureShoppingCartItemsRouter } from './controllers/shopping-cart-items/shopping-cart-items.router';
 import { configureUsersRouter } from './controllers/users/users.router';
 
 export function configureKoaRouter(): Router {
@@ -20,6 +21,7 @@ export function configureKoaRouter(): Router {
   configureAddressesRouter(router);
   configureProductsImagesRouter(router);
   configureProductsRouter(router);
+  configureShoppingCartItemsRouter(router);
 
   return router;
 }
