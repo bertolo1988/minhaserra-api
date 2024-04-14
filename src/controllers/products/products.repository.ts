@@ -138,6 +138,7 @@ export class ProductsRepository {
       {
         ...dto,
         updatedAt: new Date(),
+        isApproved: false,
       },
       _.isNil,
     );
@@ -151,6 +152,7 @@ export class ProductsRepository {
       )
       .update(CaseConverter.objectKeysCamelToSnake(updateData), [
         'id',
+        'is_approved',
         'updated_at',
       ]);
     return updateResult;

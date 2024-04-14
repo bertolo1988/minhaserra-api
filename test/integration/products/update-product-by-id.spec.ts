@@ -45,7 +45,7 @@ describe('PUT /api/products/:id', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
     tk.reset();
   });
 
@@ -67,7 +67,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user attempts to update userId', async () => {
@@ -89,7 +89,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user attempts to update updateAt', async () => {
@@ -111,7 +111,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user attempts to update product name with an empty string', async () => {
@@ -134,7 +134,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user attempts to update product description with an empty string', async () => {
@@ -157,7 +157,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if both category and sub category get replaced by an invalid pair', async () => {
@@ -180,7 +180,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if sub category is updated to a value that is invalid with already existing category', async () => {
@@ -202,7 +202,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if category is updated to a value that is invalid with already existing subCategory', async () => {
@@ -224,7 +224,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if category is not valid', async () => {
@@ -245,7 +245,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if sub category is not valid', async () => {
@@ -266,7 +266,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if max price is exceeded', async () => {
@@ -287,7 +287,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if isOnSale is a string', async () => {
@@ -308,7 +308,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
   });
 
@@ -328,7 +328,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user is soft deleted', async () => {
@@ -346,7 +346,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
   });
 
@@ -381,7 +381,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user is not verified', async () => {
@@ -399,7 +399,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if user tries to update product that he doesnt own', async () => {
@@ -421,7 +421,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
   });
 
@@ -446,7 +446,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('if product does not exist', async () => {
@@ -469,7 +469,7 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
   });
 
@@ -513,7 +513,7 @@ describe('PUT /api/products/:id', () => {
       updateRepositorySpy.mockRestore();
 
       expect(translateToEnglishSpy).not.toHaveBeenCalled();
-      translateToEnglishSpy.mockClear();
+      translateToEnglishSpy.mockRestore();
     });
 
     test('and successfully update product name and description while also storing the translations in english', async () => {
@@ -543,18 +543,18 @@ describe('PUT /api/products/:id', () => {
       });
 
       expect(updateRepositorySpy).toHaveBeenCalledTimes(1);
+
       const updateResult = await updateRepositorySpy.mock.results[0].value;
       expect(updateResult).toHaveLength(1);
       expect(updateResult[0].id).toBe(verifiedSellerProduct2.id);
       expect(updateResult[0].updated_at).toBeDefined();
+      // requires new approval after being changed
+      expect(updateResult[0].is_approved).toBe(false);
+
       updateRepositorySpy.mockRestore();
 
       expect(translateToEnglishSpy).toHaveBeenCalledTimes(2);
-      translateToEnglishSpy.mockClear();
-    });
-
-    test.skip('should remove product admin approval after it is being updated', async () => {
-      // TODO: implement test
+      translateToEnglishSpy.mockRestore();
     });
   });
 });
