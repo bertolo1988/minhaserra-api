@@ -13,6 +13,17 @@ import {
 const TABLE_NAME = 'shopping_cart_items';
 
 export class ShoppingCartItemsRepository {
+  static async deleteOne(
+    userId: string,
+    id: string,
+  ): Promise<{ id: string }[]> {
+    const knex = await getDatabaseInstance();
+    const result = (await knex(TABLE_NAME)
+      .where(CaseConverter.objectKeysCamelToSnake({ id, userId }))
+      .del(['id'])) as { id: string }[];
+    return result;
+  }
+
   static async getShoppingCartItemsByUserId(userId: string) {
     const knex = await getDatabaseInstance();
 

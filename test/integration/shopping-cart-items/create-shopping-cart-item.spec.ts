@@ -33,7 +33,7 @@ describe('POST /api/shopping-cart-items', () => {
 
   describe('should return 400', () => {
     test.skip('if limit of products in shopping cart is reached', async () => {
-      // TODO: Implement this test
+      // TODO: Implement this test. Not urgent since it is limited by number of products in the db.
     });
 
     test('when product id is invalid', async () => {
