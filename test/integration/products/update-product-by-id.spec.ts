@@ -41,11 +41,11 @@ describe('PUT /api/products/:id', () => {
       .mockResolvedValue('translated string');
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     translateToEnglishSpy.mockClear();
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     jest.restoreAllMocks();
   });
 

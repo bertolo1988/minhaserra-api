@@ -20,7 +20,7 @@ describe('GET /api/public-products', () => {
     await runSeedByName(DatabaseSeedNames.MANY_PRODUCTS);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.restoreAllMocks();
     tk.reset();
   });

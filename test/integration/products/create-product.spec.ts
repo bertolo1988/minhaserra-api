@@ -44,14 +44,18 @@ describe('POST /api/products', () => {
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
   });
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     translateToEnglishSpy = jest
       .spyOn(TranslationService.prototype, 'translateToEnglish')
       .mockResolvedValue('translated string');
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterEach(async () => {
+    translateToEnglishSpy.mockClear();
+  });
+
+  afterAll(async () => {
+    jest.resetAllMocks();
     tk.reset();
   });
 

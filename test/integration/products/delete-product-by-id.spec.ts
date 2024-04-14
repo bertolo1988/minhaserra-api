@@ -1,5 +1,4 @@
 import moment from 'moment';
-import tk from 'timekeeper';
 
 import { ProductsRepository } from '../../../src/controllers/products/products.repository';
 import {
@@ -9,8 +8,8 @@ import {
   verifiedBuyer,
   verifiedSeller,
   verifiedSellerNoProducts,
-  verifiedSellerProduct1,
   verifiedSellerNoProductsProduct1,
+  verifiedSellerProduct1,
 } from '../../seeds/products.seed';
 import {
   DatabaseSeedNames,
@@ -24,11 +23,6 @@ describe('DELETE /api/products/:id', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    tk.reset();
   });
 
   describe('should return 404', () => {

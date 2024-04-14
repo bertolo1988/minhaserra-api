@@ -1,5 +1,3 @@
-import tk from 'timekeeper';
-
 import {
   verifiedSeller2NonApprovedProduct,
   verifiedSeller2NotForSaleProduct,
@@ -19,11 +17,6 @@ describe('GET /api/public-products/:id', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    tk.reset();
   });
 
   describe('should return 400', () => {

@@ -16,10 +16,6 @@ describe('GET /products/:id/images', () => {
     await runSeedByName(DatabaseSeedNames.PRODUCTS_IMAGES);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('should return 404', () => {
     test('if product id does not exist', async () => {
       const nonExistingProductId = '13fdc915-c0ed-4bc2-908b-ccbabe54f75a';

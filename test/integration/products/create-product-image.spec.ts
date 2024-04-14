@@ -32,8 +32,8 @@ describe('POST /api/products/:id/images', () => {
     await runSeedByName(DatabaseSeedNames.PRODUCTS_IMAGES);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterAll(async () => {
+    jest.resetAllMocks();
     tk.reset();
   });
 
@@ -349,9 +349,14 @@ describe('POST /api/products/:id/images', () => {
         });
     });
 
-    afterAll(() => {
-      tk.reset();
+    afterEach(async () => {
       putObjectSpy.mockClear();
+      tk.reset();
+    });
+
+    afterAll(async () => {
+      putObjectSpy.mockReset();
+      tk.reset();
     });
 
     test('if everything is correct and image is not over the limit', async () => {

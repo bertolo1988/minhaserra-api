@@ -25,8 +25,8 @@ describe('GET /api/products', () => {
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterEach(async () => {
+    jest.resetAllMocks();
     tk.reset();
   });
 

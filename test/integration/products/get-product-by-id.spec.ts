@@ -1,5 +1,3 @@
-import tk from 'timekeeper';
-
 import {
   inactiveUser,
   softDeletedUser,
@@ -7,8 +5,8 @@ import {
   verifiedBuyer,
   verifiedSeller,
   verifiedSellerNoProducts,
-  verifiedSellerProduct1,
   verifiedSellerNoProductsProduct1,
+  verifiedSellerProduct1,
 } from '../../seeds/products.seed';
 import {
   DatabaseSeedNames,
@@ -22,11 +20,6 @@ describe('GET /api/products/:id', () => {
   beforeAll(async () => {
     await TestServerSingleton.getInstance();
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-    tk.reset();
   });
 
   describe('should return 400', () => {

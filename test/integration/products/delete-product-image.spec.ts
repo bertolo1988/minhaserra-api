@@ -26,7 +26,7 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   describe('should return 401', () => {
@@ -223,8 +223,12 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
         .mockResolvedValue(true);
     });
 
-    afterAll(() => {
+    afterEach(async () => {
       deleteProductImageSpy.mockClear();
+    });
+
+    afterAll(async () => {
+      deleteProductImageSpy.mockReset();
     });
 
     test('when everything is correct', async () => {
