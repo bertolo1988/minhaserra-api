@@ -40,4 +40,5 @@ describe('Integration tests', () => {
   require('./products/get-public-product.spec');
 
   require('./shopping-cart-items/create-shopping-cart-item.spec');
+  require('./shopping-cart-items/get-shopping-cart-items.spec');
 });

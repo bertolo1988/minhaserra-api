@@ -7,12 +7,34 @@ import {
   ProductModel,
   ProductSubCategory,
 } from '../src/controllers/products/products.types';
+import { ShoppingCartItemModel } from '../src/controllers/shopping-cart-items/shopping-cart-items.types';
 import { UserModel, UserRole } from '../src/controllers/users/users.types';
 import { Language } from '../src/types';
 
 const now = moment();
 
 export class SeedUtils {
+  static getShoppingCartItem({
+    id,
+    productId,
+    userId,
+    quantity = 1,
+  }: {
+    id: string;
+    productId: string;
+    userId: string;
+    quantity?: number;
+  }): ShoppingCartItemModel {
+    return {
+      id,
+      productId,
+      userId,
+      quantity,
+      createdAt: now.toDate(),
+      updatedAt: now.toDate(),
+    };
+  }
+
   static getVerifiedUserPassword(): string {
     return '9awj26AyDB%';
   }

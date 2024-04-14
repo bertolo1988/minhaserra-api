@@ -6,6 +6,16 @@ import { ShoppingCartItemsRepository } from './shopping-cart-items.repository';
 import { CreateShoppingCartItemDto } from './shopping-cart-items.types';
 
 export class ShoppingCartItemsController {
+  static async getShoppingCartItemsForUser(ctx: Koa.Context, _next: Koa.Next) {
+    const userId = ctx.state.user.id;
+
+    const shoppingCartItems =
+      await ShoppingCartItemsRepository.getShoppingCartItemsByUserId(userId);
+
+    ctx.status = 200;
+    ctx.body = shoppingCartItems;
+  }
+
   static async createShoppingCartItem(ctx: Koa.Context, _next: Koa.Next) {
     const userId = ctx.state.user.id;
     const dto = ctx.request.body as CreateShoppingCartItemDto;

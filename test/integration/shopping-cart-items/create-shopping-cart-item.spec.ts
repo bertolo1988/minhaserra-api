@@ -25,12 +25,14 @@ describe('POST /api/shopping-cart-items', () => {
     await runSeedByName(DatabaseSeedNames.PRODUCTS);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterEach(async () => {
+    jest.restoreAllMocks();
     tk.reset();
   });
 
   describe('should return 400', () => {
+    test.skip('if limit of products in shopping cart is reached', async () => {});
+
     test('when product id is invalid', async () => {
       const data = {
         productId: 'invalid-uuid',

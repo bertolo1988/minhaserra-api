@@ -39,6 +39,7 @@ export enum DatabaseSeedNames {
   PRODUCTS_IMAGES = 'product-images.seed.ts',
   PRODUCTS = 'products.seed.ts',
   MANY_PRODUCTS = 'many-products.seed.ts',
+  SHOPPING_CART = 'shopping-cart.seed.ts',
 }
 
 export async function runSeedByName(

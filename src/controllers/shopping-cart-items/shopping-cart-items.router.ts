@@ -13,18 +13,19 @@ export function configureShoppingCartItemsRouter(router: Router) {
     ShoppingCartItemsController.createShoppingCartItem,
   );
 
-  // TODO: Implement the following routes
-  /*   router.get(
+  router.get(
     '/shopping-cart-items',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeActiveVerifiedSellers(),
+    AuthenticationUtils.authorizeActiveVerifiedBuyers(),
     ShoppingCartItemsController.getShoppingCartItemsForUser,
   );
 
+  // TODO: Implement the following routes
+  /*
   router.delete(
     '/shopping-cart-items/:id',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeActiveVerifiedSellers(),
+    AuthenticationUtils.authorizeActiveVerifiedBuyers(),
     validateIdValidUuid,
     ShoppingCartItemsController.deleteShoppingCartItemById,
   );
@@ -32,7 +33,7 @@ export function configureShoppingCartItemsRouter(router: Router) {
   router.put(
     '/shopping-cart-items/:id',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeActiveVerifiedSellers(),
+    AuthenticationUtils.authorizeActiveVerifiedBuyers(),
     validateIdValidUuid,
     ShoppingCartItemsValidator.validateUpdateShoppingCartItem,
     ShoppingCartItemsController.updateShoppingCartItemById,
