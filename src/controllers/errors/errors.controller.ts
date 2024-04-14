@@ -8,8 +8,16 @@ import {
 } from '../../types/errors';
 
 function safeSerialize(input: unknown | Error): string {
+  const computedMessage =
+    input != null && (input as Error).message != null
+      ? (input as Error).message
+      : '-';
+  const computedStack =
+    input != null && (input as Error).stack != null
+      ? (input as Error).stack
+      : '-';
   try {
-    return JSON.stringify(input, null, 2);
+    return `message:"${computedMessage}" stack:"${computedStack}" serialization:"${JSON.stringify(input, null, 2)}"`;
   } catch (err: unknown) {
     return `Failed error serialization! message:"${(err as Error).message}" stack:"${(err as Error).stack}"`;
   }
