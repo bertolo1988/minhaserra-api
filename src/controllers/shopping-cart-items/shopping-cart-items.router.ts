@@ -4,13 +4,13 @@ import { AuthenticationUtils } from '../../middlewares/authenticate-user.middlew
 import { ShoppingCartItemsValidator } from './shopping-cart-items.validator';
 import { ShoppingCartItemsController } from './shopping-cart-items.controller';
 
-export function configureProductsRouter(router: Router) {
+export function configureShoppingCartItemsRouter(router: Router) {
   router.post(
     '/shopping-cart-items',
     AuthenticationUtils.authenticateUserMiddleware,
-    AuthenticationUtils.authorizeActiveVerifiedSellers(),
+    AuthenticationUtils.authorizeActiveVerifiedBuyers(),
     ShoppingCartItemsValidator.validateCreateShoppingCartItem,
-    ShoppingCartItemsValidator.validateProductIsForSale,
+    ShoppingCartItemsValidator.validateProductCanBeBought,
     ShoppingCartItemsController.createShoppingCartItem,
   );
 
