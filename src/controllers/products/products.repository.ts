@@ -42,6 +42,22 @@ function getPublicProductSelectFields(knex: Knex) {
 }
 
 export class ProductsRepository {
+  static async getBuyableProductById(id: string): Promise<ProductModel> {
+    const knex = await getDatabaseInstance();
+    const where = {
+      id,
+      isDeleted: false,
+      isApproved: true,
+      isOnSale: true,
+    };
+    const result = await knex<ProductModel>('products')
+      .where(CaseConverter.objectKeysCamelToSnake(where))
+      .first();
+    return CaseConverter.objectKeysSnakeToCamel(
+      result as Record<string, unknown>,
+    ) as ProductModel;
+  }
+
   static async getPublicProductById(
     id: string,
   ): Promise<PublicProductModel | undefined | null> {
