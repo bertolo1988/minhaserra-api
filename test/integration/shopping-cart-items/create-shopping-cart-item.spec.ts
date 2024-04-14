@@ -239,6 +239,24 @@ describe('POST /api/shopping-cart-items', () => {
   });
 
   describe('should return 201', () => {
-    test('when product successfully added to cart', async () => {});
+    test('when product successfully added to cart', async () => {
+      const data: CreateShoppingCartItemDto = {
+        productId: verifiedSellerProduct2.id,
+        quantity: verifiedSellerProduct2.availableQuantity - 1,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/shopping-cart-items`).href,
+        {
+          method: 'POST',
+          headers: getRequestHeaders(verifiedBuyer),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(201);
+      const body = await response.json();
+      expect(body).toEqual({
+        id: expect.any(String),
+      });
+    });
   });
 });

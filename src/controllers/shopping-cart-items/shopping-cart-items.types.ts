@@ -1,5 +1,10 @@
 import CONSTANTS from '../../constants';
 
+export type CreateShoppingCartItemModel = Omit<
+  ShoppingCartItemModel,
+  'id' | 'createdAt' | 'updatedAt'
+>;
+
 export type ShoppingCartItemModel = {
   id: string;
   userId: string;
