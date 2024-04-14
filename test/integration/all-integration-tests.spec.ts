@@ -38,4 +38,6 @@ describe('Integration tests', () => {
   require('./products/update-product-by-id.spec');
   require('./products/search-public-products.spec');
   require('./products/get-public-product.spec');
+
+  require('./shopping-cart-items/create-shopping-cart-item.spec');
 });
