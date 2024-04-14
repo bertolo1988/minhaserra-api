@@ -11,6 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign('user_id').references('users.id').onDelete('CASCADE');
     table.foreign('product_id').references('products.id').onDelete('CASCADE');
     table.timestamps(true, true);
+    table.unique(['user_id', 'product_id']);
   });
 }
 

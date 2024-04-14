@@ -8,6 +8,7 @@ import {
   verifiedSeller2NonApprovedProduct,
   verifiedSeller2NotForSaleProduct,
   verifiedSellerNoProductsProduct1,
+  verifiedSellerProduct1,
   verifiedSellerProduct2,
 } from '../../seeds/products.seed';
 import {
@@ -31,7 +32,9 @@ describe('POST /api/shopping-cart-items', () => {
   });
 
   describe('should return 400', () => {
-    test.skip('if limit of products in shopping cart is reached', async () => {});
+    test.skip('if limit of products in shopping cart is reached', async () => {
+      // TODO: Implement this test
+    });
 
     test('when product id is invalid', async () => {
       const data = {
@@ -241,7 +244,25 @@ describe('POST /api/shopping-cart-items', () => {
   });
 
   describe('should return 409', () => {
-    test.skip('if item already exists in shopping cart', () => {});
+    test('if item already exists in shopping cart', async () => {
+      const data: CreateShoppingCartItemDto = {
+        productId: verifiedSellerProduct1.id,
+        quantity: verifiedSellerProduct1.availableQuantity - 1,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/shopping-cart-items`).href,
+        {
+          method: 'POST',
+          headers: getRequestHeaders(verifiedBuyer),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(409);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: `Product with id ${verifiedSellerProduct1.id} already exists in the shopping cart`,
+      });
+    });
   });
 
   describe('should return 201', () => {

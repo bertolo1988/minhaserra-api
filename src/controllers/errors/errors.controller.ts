@@ -1,6 +1,7 @@
 import Koa from 'koa';
 
 import {
+  ConflictError,
   ForbiddenError,
   NotFoundError,
   UnauthorizedError,
@@ -33,6 +34,15 @@ export class ErrorsController {
       ctx.status = 500;
       ctx.body = { message: 'Server error' };
 
+      if (ValidationError.isValidationError(err)) {
+        const validationError: ValidationError = err as ValidationError;
+        ctx.status = validationError.statusCode;
+        ctx.body = {
+          message: validationError.getFirstErrorMessage(),
+        };
+        return;
+      }
+
       if (ForbiddenError.isForbiddenError(err)) {
         const forbiddenError: ForbiddenError = err as ForbiddenError;
         ctx.status = forbiddenError.statusCode;
@@ -60,11 +70,11 @@ export class ErrorsController {
         return;
       }
 
-      if (ValidationError.isValidationError(err)) {
-        const validationError: ValidationError = err as ValidationError;
-        ctx.status = validationError.statusCode;
+      if (ConflictError.isConflictError(err)) {
+        const conflictError: ConflictError = err as ConflictError;
+        ctx.status = conflictError.statusCode;
         ctx.body = {
-          message: validationError.getFirstErrorMessage(),
+          message: conflictError.message,
         };
         return;
       }

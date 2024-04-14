@@ -77,9 +77,16 @@ export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
 export const softDeletedUser: UserModel = SeedUtils.getSoftDeletedUser();
 export const unverifiedUser: UserModel = SeedUtils.getNonVerifiedUser();
 
+const verifiedSellerProduct1ShoppingCartItem1 = SeedUtils.getShoppingCartItem({
+  id: 'e276ab7d-2104-4976-9f7b-df81c5b510f5',
+  productId: verifiedSellerProduct1.id,
+  userId: verifiedBuyer.id,
+});
+
 export async function seed(knex: Knex): Promise<void> {
   await knex('users').del();
   await knex('products').del();
+  await knex('shopping_cart_items').del();
 
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller),
@@ -96,5 +103,10 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSellerNoProductsProduct1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller2NotForSaleProduct),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller2NonApprovedProduct),
+  ]);
+  await knex('shopping_cart_items').insert([
+    CaseConverter.objectKeysCamelToSnake(
+      verifiedSellerProduct1ShoppingCartItem1,
+    ),
   ]);
 }
