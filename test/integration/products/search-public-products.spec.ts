@@ -21,22 +21,26 @@ describe('GET /api/public-products', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
     tk.reset();
   });
 
   describe('should return 400', () => {
     let translateToEnglishAutoSpy: jest.SpyInstance;
 
-    beforeEach(() => {
+    beforeAll(() => {
       translateToEnglishAutoSpy = jest.spyOn(
         TranslationService.prototype,
         'translateToEnglishAuto',
       );
     });
 
-    afterEach(() => {
+    afterEach(async () => {
       translateToEnglishAutoSpy.mockClear();
+    });
+
+    afterAll(async () => {
+      translateToEnglishAutoSpy.mockRestore();
     });
 
     test('limit of 31', async () => {
@@ -312,7 +316,7 @@ describe('GET /api/public-products', () => {
   describe('should return 200', () => {
     let translateToEnglishAutoSpy: jest.SpyInstance;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       translateToEnglishAutoSpy = jest
         .spyOn(TranslationService.prototype, 'translateToEnglishAuto')
         .mockImplementation(async (input: string) => {
@@ -320,8 +324,12 @@ describe('GET /api/public-products', () => {
         });
     });
 
-    afterEach(() => {
+    afterEach(async () => {
       translateToEnglishAutoSpy.mockClear();
+    });
+
+    afterAll(async () => {
+      translateToEnglishAutoSpy.mockRestore();
     });
 
     test('and empty array', async () => {
