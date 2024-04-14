@@ -240,6 +240,10 @@ describe('POST /api/shopping-cart-items', () => {
     });
   });
 
+  describe('should return 409', () => {
+    test.skip('if item already exists in shopping cart', () => {});
+  });
+
   describe('should return 201', () => {
     test('when product successfully added to cart', async () => {
       const data: CreateShoppingCartItemDto = {
