@@ -26,7 +26,7 @@ describe('DELETE /api/products/:id/images/:imageId', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
   describe('should return 401', () => {

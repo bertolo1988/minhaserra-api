@@ -3,8 +3,7 @@ import Koa from 'koa';
 import { ErrorObject, ValidateFunction } from 'ajv';
 import { ajv } from '../../utils/ajv';
 
-import { NotFoundError, ValidationError } from '../../types/errors';
-import { ProductsRepository } from '../products/products.repository';
+import { ValidationError } from '../../types/errors';
 import {
   CreateShoppingCartItemDto,
   CreateShoppingCartItemDtoSchema,

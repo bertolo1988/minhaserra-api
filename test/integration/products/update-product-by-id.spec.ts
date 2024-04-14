@@ -1,5 +1,4 @@
 import moment from 'moment';
-import tk from 'timekeeper';
 
 import CONSTANTS from '../../../src/constants';
 import { ProductsRepository } from '../../../src/controllers/products/products.repository';

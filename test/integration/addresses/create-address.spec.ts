@@ -21,8 +21,8 @@ describe('POST api/addresses', () => {
     await runSeedByName(DatabaseSeedNames.MULTIPLE_USERS);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterAll(async () => {
+    jest.restoreAllMocks();
   });
 
   describe('should return 400', () => {
@@ -105,7 +105,7 @@ describe('POST api/addresses', () => {
         `User has reached the maximum amount of addresses`,
       );
       expect(countAddressesMock).toHaveBeenCalledWith(verifiedUserAdmin.id);
-      countAddressesMock.mockClear();
+      countAddressesMock.mockRestore();
     });
   });
 

@@ -33,7 +33,7 @@ describe('POST /api/products/:id/images', () => {
   });
 
   afterAll(async () => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
     tk.reset();
   });
 

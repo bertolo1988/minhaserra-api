@@ -16,12 +16,12 @@ describe('POST /api/password-resets', () => {
       .mockResolvedValue({} as any);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     sendEmailSpy.mockClear();
   });
 
-  afterAll(() => {
-    sendEmailSpy.mockReset();
+  afterAll(async () => {
+    sendEmailSpy.mockRestore();
   });
 
   describe('returns status 400', () => {

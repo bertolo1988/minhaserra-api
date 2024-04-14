@@ -55,7 +55,7 @@ describe('POST /api/products', () => {
   });
 
   afterAll(async () => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
     tk.reset();
   });
 

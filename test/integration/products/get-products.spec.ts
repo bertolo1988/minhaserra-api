@@ -26,7 +26,7 @@ describe('GET /api/products', () => {
   });
 
   afterEach(async () => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
     tk.reset();
   });
 

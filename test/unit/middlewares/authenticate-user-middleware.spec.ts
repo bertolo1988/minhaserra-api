@@ -19,8 +19,8 @@ import {
 import { getAuthorizationHeader } from '../../test-utils';
 
 describe('AuthenticationUtils', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterEach(async () => {
+    jest.resetAllMocks();
     tk.reset();
   });
 
