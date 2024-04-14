@@ -1,6 +1,6 @@
 import Koa from 'koa';
-
 import { ErrorObject, ValidateFunction } from 'ajv';
+
 import { ValidationError } from '../../types/errors';
 import { ajv } from '../../utils/ajv';
 import {
