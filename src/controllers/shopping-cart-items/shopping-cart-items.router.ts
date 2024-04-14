@@ -10,7 +10,6 @@ export function configureShoppingCartItemsRouter(router: Router) {
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedBuyers(),
     ShoppingCartItemsValidator.validateCreateShoppingCartItem,
-    ShoppingCartItemsValidator.validateProductCanBeBought,
     ShoppingCartItemsController.createShoppingCartItem,
   );
 

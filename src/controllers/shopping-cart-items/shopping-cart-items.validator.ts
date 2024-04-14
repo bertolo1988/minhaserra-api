@@ -27,20 +27,4 @@ export class ShoppingCartItemsValidator {
       );
     await next();
   }
-
-  static async validateProductCanBeBought(ctx: Koa.Context, next: Koa.Next) {
-    const { productId } = ctx.request.body as CreateShoppingCartItemDto;
-
-    const product = await ProductsRepository.getBuyableProductById(productId);
-
-    if (!product) {
-      throw new NotFoundError('Product not found');
-    }
-
-    if (product.availableQuantity < ctx.request.body.quantity) {
-      throw new NotFoundError('Product is out of stock');
-    }
-
-    await next();
-  }
 }

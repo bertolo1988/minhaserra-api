@@ -148,6 +148,7 @@ export class SeedUtils {
     description = 'Mel biológico, à base de alecrim e alfazema, produzido no alto das Serras do parque natural da Serra de Aire e Candeeiros.',
     descriptionEnglish = 'Organic honey, based on rosemary and lavender, produced in the mountain range of the Serra de Aire e Candeeiros natural park.',
     price = 1000,
+    availableQuantity = 5,
     softDeleted = false,
     isOnSale = true,
     isApproved = true,
@@ -161,6 +162,7 @@ export class SeedUtils {
     description?: string;
     descriptionEnglish?: string;
     price?: number;
+    availableQuantity?: number;
     softDeleted?: boolean;
     isOnSale?: boolean;
     isApproved?: boolean;
@@ -177,7 +179,7 @@ export class SeedUtils {
       descriptionEnglish,
       countryCode: 'PT',
       region: 'Leiria',
-      availableQuantity: 5,
+      availableQuantity,
       price,
       isOnSale,
       isDeleted: softDeleted,

@@ -552,5 +552,9 @@ describe('PUT /api/products/:id', () => {
       expect(translateToEnglishSpy).toHaveBeenCalledTimes(2);
       translateToEnglishSpy.mockClear();
     });
+
+    test.skip('should remove product admin approval after it is being updated', async () => {
+      // TODO: implement test
+    });
   });
 });

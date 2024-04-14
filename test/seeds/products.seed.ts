@@ -70,7 +70,7 @@ export const verifiedSeller2NonApprovedProduct: Omit<
 > = SeedUtils.getProduct({
   id: '60b31145-ef7e-4f15-9a32-17460e4c8662',
   userId: verifiedSeller2.id,
-  isOnSale: false,
+  isApproved: false,
 });
 
 export const inactiveUser: UserModel = SeedUtils.getInactiveUser();
