@@ -41,4 +41,6 @@ describe('Integration tests', () => {
 
   require('./shopping-cart-items/create-shopping-cart-item.spec');
   require('./shopping-cart-items/get-shopping-cart-items.spec');
+  require('./shopping-cart-items/delete-shopping-cart-item.spec');
+  require('./shopping-cart-items/patch-shopping-cart-item-quantity.spec');
 });
