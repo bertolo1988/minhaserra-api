@@ -23,6 +23,11 @@ export const verifiedBuyer1: UserModel = SeedUtils.getVerifiedUser(
   UserRole.BUYER,
 );
 
+export const verifiedBuyer2: UserModel = SeedUtils.getVerifiedUser(
+  '7f0f72ac-dbd5-428d-afad-8f73ceb5a7e1',
+  UserRole.BUYER,
+);
+
 export const verifiedBuyerEmptyCart: UserModel = SeedUtils.getVerifiedUser(
   'eb8e71e1-1069-4d71-9b03-4c6fecbb993c',
   UserRole.BUYER,
@@ -50,6 +55,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('users').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1),
     CaseConverter.objectKeysCamelToSnake(verifiedBuyer1),
+    CaseConverter.objectKeysCamelToSnake(verifiedBuyer2),
     CaseConverter.objectKeysCamelToSnake(verifiedBuyerEmptyCart),
   ]);
   await knex('products').insert([
