@@ -13,6 +13,24 @@ import {
 const TABLE_NAME = 'shopping_cart_items';
 
 export class ShoppingCartItemsRepository {
+  static async updateQuantity(
+    userId: string,
+    itemId: string,
+    quantity: number,
+  ): Promise<{ id: string; quantity: number; updated_at: Date }[]> {
+    const knex = await getDatabaseInstance();
+    const result = await knex(TABLE_NAME)
+      .where(CaseConverter.objectKeysCamelToSnake({ userId, id: itemId }))
+      .update(
+        CaseConverter.objectKeysCamelToSnake({
+          quantity,
+          updatedAt: new Date(),
+        }),
+        ['id', 'quantity', 'updated_at'],
+      );
+    return result;
+  }
+
   static async deleteOne(
     userId: string,
     id: string,

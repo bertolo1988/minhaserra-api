@@ -1,12 +1,35 @@
 import Koa from 'koa';
 
-import { isDeleteSuccessfull } from '../../knex-database';
+import { isDeleteSuccessfull, isUpdateSuccessfull } from '../../knex-database';
 import { NotFoundError } from '../../types/errors';
 import { ProductsRepository } from '../products/products.repository';
 import { ShoppingCartItemsRepository } from './shopping-cart-items.repository';
 import { CreateShoppingCartItemDto } from './shopping-cart-items.types';
 
 export class ShoppingCartItemsController {
+  static async patchShoppingCartItemQuantityById(
+    ctx: Koa.Context,
+    _next: Koa.Next,
+  ) {
+    const userId = ctx.state.user.id;
+    const { id } = ctx.params;
+    const { quantity } = ctx.request.body;
+
+    const updateResult = await ShoppingCartItemsRepository.updateQuantity(
+      userId,
+      id,
+      quantity,
+    );
+
+    if (isUpdateSuccessfull(updateResult)) {
+      ctx.status = 200;
+      ctx.body = { message: 'Shopping cart item updated successfully' };
+    } else {
+      ctx.status = 404;
+      ctx.body = { message: 'Shopping cart item not found' };
+    }
+  }
+
   static async deleteShoppingCartItemById(ctx: Koa.Context, _next: Koa.Next) {
     const userId = ctx.state.user.id;
     const shoppingCartItemId = ctx.params.id;

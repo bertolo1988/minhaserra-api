@@ -29,14 +29,12 @@ export function configureShoppingCartItemsRouter(router: Router) {
     ShoppingCartItemsController.deleteShoppingCartItemById,
   );
 
-  /*
-  // TODO: Implement the following routes
-  router.put(
-    '/shopping-cart-items/:id',
+  router.patch(
+    '/shopping-cart-items/:id/quantity',
     AuthenticationUtils.authenticateUserMiddleware,
     AuthenticationUtils.authorizeActiveVerifiedBuyers(),
     validateIdValidUuid,
-    ShoppingCartItemsValidator.validateUpdateShoppingCartItem,
-    ShoppingCartItemsController.updateShoppingCartItemById,
-  ); */
+    ShoppingCartItemsValidator.validatePatchShoppingCartItemQuantity,
+    ShoppingCartItemsController.patchShoppingCartItemQuantityById,
+  );
 }

@@ -37,3 +37,21 @@ export const CreateShoppingCartItemDtoSchema = {
   required: ['quantity', 'productId'],
   additionalProperties: false,
 };
+
+export type PatchShoppingCartItemQuantityDto = {
+  quantity: number;
+};
+
+export const PatchShoppingCartItemQuantitySchema = {
+  type: 'object',
+  properties: {
+    quantity: {
+      nullable: false,
+      type: 'number',
+      minimum: 1,
+      maximum: CONSTANTS.MAX_AVAILABLE_QUANTITY,
+    },
+  },
+  required: ['quantity'],
+  additionalProperties: false,
+};
