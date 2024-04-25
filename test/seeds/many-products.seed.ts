@@ -195,28 +195,95 @@ const verifiedSeller3Product3: Omit<ProductModel, 'searchDocument'> =
 
 // Product images
 
+const verifiedSeller1Product1Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '297aade8-69c4-4bcf-80e9-b143aeec128f',
+    verifiedSeller1Product1.id,
+    'https://www.quintasdeseia.pt/wp-content/uploads/2021/03/MIG00020.jpg',
+  );
+
+const verifiedSeller1Product2Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    'ddee098a-f934-417c-b504-2b00e7a16ab5',
+    verifiedSeller1Product2.id,
+    'https://cdn.shopk.it/usercontent/apisfilanis/media/images/aad7564-_mg_8566-1.jpg',
+  );
+
 const verifiedSeller1Product3Image1: ProductImageModel =
   SeedUtils.getProductImage(
     '7f48b1fb-f09d-4e49-ae82-c5fac4adc2b8',
     verifiedSeller1Product3.id,
+    'https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwd435d4bc/images/col/205/2050281-frente.jpg?sw=2000&sh=2000',
   );
 
 const verifiedSeller1Product3Image2: ProductImageModel =
   SeedUtils.getProductImage(
     '7dd7ff8c-ba8b-4ed4-81fd-03039c861d3d',
     verifiedSeller1Product3.id,
+    'https://www.vinha.pt/wp-content/uploads/2015/05/100476.jpg',
   );
 
 const verifiedSeller1Product3Image3: ProductImageModel =
   SeedUtils.getProductImage(
     '46a4708e-63a0-418d-be36-c6cda4953c2e',
     verifiedSeller1Product3.id,
+    'https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwd586e784/images/col/364/3640159-frente.jpg?sw=2000&sh=2000',
   );
 
 const verifiedSeller1Product4Image1: ProductImageModel =
   SeedUtils.getProductImage(
     '9ef3daaa-f83f-4165-a3aa-e9b52f01ac21',
     verifiedSeller1Product4.id,
+    'https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw2467df6d/images/col/205/2050003-frente.jpg?sw=2000&sh=2000',
+  );
+
+const verifiedSeller2Product1Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '0bbf035d-f8cd-4438-95d8-eba001f939f6',
+    verifiedSeller2Product1.id,
+    'https://mygleba.com/images/products/hs08mk-cesta%20grande.png',
+  );
+
+const verifiedSeller2Product2Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '28c55621-f17d-4049-bec7-9624d90c760b',
+    verifiedSeller2Product2.id,
+    'https://7maravilhas.pt/wp-content/uploads/2020/05/462_275_patrimonio-1.jpg',
+  );
+
+const verifiedSeller2Product3Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '4a7c5a20-a6b8-46fd-b80e-dc19045b3fe3',
+    verifiedSeller2Product3.id,
+    'https://1362643621.rsc.cdn77.org/temp/1674007805_7e93acdab394ce5ce737ade08fc4676b.jpg',
+  );
+
+const verifiedSeller2Product4Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    'c6a2693a-96c4-41a1-8a1a-11f9b37cc4b9',
+    verifiedSeller2Product4.id,
+    'https://www.adegamayor.pt/resources/medias/shop/products/thumbnails/Shop_image_product_detail_11/9c44b80f6d40a1fb2270a8eca715fb1e-3.jpg',
+  );
+
+const verifiedSeller3Product1Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    'b2ed65c8-8d98-4f79-b71b-81e6f6c0fa29',
+    verifiedSeller3Product1.id,
+    'https://www.garrafeirasoares.pt/temp/JPG_98c9af32f02b349130c79d15eb4e550c.png',
+  );
+
+const verifiedSeller3Product2Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    'c404eefc-f925-49c3-a81c-9e6f9bae4b49',
+    verifiedSeller3Product2.id,
+    'https://wineexpert.pt/1218-home_default/82-310-010-00141-quinta-do-mouro-vinha-do-malho-tinto-2017-1-5l.jpg',
+  );
+
+const verifiedSeller3Product3Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '0adc678b-e047-41e8-8917-e101bdae17c2',
+    verifiedSeller3Product3.id,
+    'https://wineexpert.pt/1121-large_default/82-310-010-00124-julian-reynolds-reserva-tinto-2017-0-75l.jpg',
   );
 
 export async function seed(knex: Knex): Promise<void> {
@@ -243,9 +310,18 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3),
   ]);
   await knex('product_images').insert([
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product1Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product2Image1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product3Image1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product3Image2),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product3Image3),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product4Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2Product1Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2Product2Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2Product3Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller2Product4Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product1Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product2Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3Image1),
   ]);
 }

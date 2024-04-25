@@ -211,11 +211,15 @@ export class SeedUtils {
     };
   }
 
-  static getProductImage(id: string, productId: string): ProductImageModel {
+  static getProductImage(
+    id: string,
+    productId: string,
+    url?: string,
+  ): ProductImageModel {
     return {
       id,
       productId,
-      url: `https://example.com/${id}.webp`,
+      url: url || `https://via.placeholder.com/${id}`,
       name: 'image_1',
       description: 'Some description',
       createdAt: now.toDate(),

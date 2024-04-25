@@ -1,5 +1,6 @@
 import http from 'http';
 
+import cors from '@koa/cors';
 import gracefulShutdown from 'http-graceful-shutdown';
 import { Knex } from 'knex';
 import Koa from 'koa';
@@ -8,11 +9,11 @@ import KoaLogger from 'koa-logger';
 
 import * as databaseConfig from '../knexfile';
 import CONFIG from './config';
+import CONSTANTS from './constants';
 import { ErrorsController } from './controllers/errors';
 import { disconnectFromDatabase, getDatabaseInstance } from './knex-database';
 import { configureKoaRouter } from './router';
 import { sleep } from './utils/other-utils';
-import CONSTANTS from './constants';
 
 export type ApiServerOptions = {
   port: number;
@@ -34,6 +35,7 @@ export class ApiServer {
     this.options = options;
     this.app = new Koa();
 
+    this.app.use(cors());
     this.app.use(ErrorsController.handleError);
     this.app.use(KoaLogger());
     this.app.use(
