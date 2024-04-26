@@ -193,6 +193,36 @@ const verifiedSeller3Product3: Omit<ProductModel, 'searchDocument'> =
     price: 8500,
   });
 
+const verifiedSeller3Product4: Omit<ProductModel, 'searchDocument'> =
+  SeedUtils.getProduct({
+    id: 'b276fe13-d827-4e9f-9490-6ab9b4d2bcbe',
+    userId: verifiedSeller3.id,
+    category: ProductCategory.HOME,
+    subCategory: ProductSubCategory.HOME_FURNITURE,
+    name: 'Berço de madeira de pinho',
+    nameEnglish: 'Pine wood crib',
+    description:
+      'Berço de madeira de pinho, feito à mão por artesãos locais. Pintado à mão com tintas ecológicas.',
+    descriptionEnglish:
+      'Pine wood crib, handmade by local craftsmen. Hand painted with ecological paints.',
+    price: 7500,
+  });
+
+const verifiedSeller3Product5: Omit<ProductModel, 'searchDocument'> =
+  SeedUtils.getProduct({
+    id: '954317c7-9c7b-430a-aee2-9a0a72a0c6a0',
+    userId: verifiedSeller3.id,
+    category: ProductCategory.CLOTHING,
+    subCategory: ProductSubCategory.CLOTHING_ACCESSORIES,
+    name: 'Cache-col de lã de ovelha',
+    nameEnglish: 'Sheep wool neck warmer',
+    description:
+      'Cache-col feito à mão com lã de ovelha portuguesa. Disponível em várias cores.',
+    descriptionEnglish:
+      'Handmade neck warmer with Portuguese sheep wool. Available in several colors.',
+    price: 2500,
+  });
+
 // Product images
 
 const verifiedSeller1Product1Image1: ProductImageModel =
@@ -286,6 +316,20 @@ const verifiedSeller3Product3Image1: ProductImageModel =
     'https://wineexpert.pt/1121-large_default/82-310-010-00124-julian-reynolds-reserva-tinto-2017-0-75l.jpg',
   );
 
+const verifiedSeller3Product4Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    'b4f09af4-a7fd-432b-b498-41c2e56defd1',
+    verifiedSeller3Product5.id,
+    'https://www.nautilus.pt/wp-content/uploads/2020/07/Be-01.jpg',
+  );
+
+const verifiedSeller3Product5Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '83cd82db-2087-4a2a-9ae0-28b916dee2f6',
+    verifiedSeller3Product5.id,
+    'https://www.quintasdeseia.pt/wp-content/uploads/2020/12/IMG_20201208_113639-559x800-1.jpg',
+  );
+
 export async function seed(knex: Knex): Promise<void> {
   await knex('users').del();
   await knex('products').del();
@@ -308,6 +352,8 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product2),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product4),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product5),
   ]);
   await knex('product_images').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product1Image1),
@@ -323,5 +369,7 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product1Image1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product2Image1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product4Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product5Image1),
   ]);
 }
