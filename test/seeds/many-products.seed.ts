@@ -227,6 +227,36 @@ const verifiedSeller3Product5: Omit<ProductModel, 'searchDocument'> =
     price: 2500,
   });
 
+const verifiedSeller3Product6: Omit<ProductModel, 'searchDocument'> =
+  SeedUtils.getProduct({
+    id: 'fa368ea0-0216-474c-a7d1-64443d10f1dc',
+    userId: verifiedSeller3.id,
+    category: ProductCategory.TOYS,
+    subCategory: ProductSubCategory.TOYS_OTHER,
+    name: 'Bicleta antiga restaurada',
+    nameEnglish: 'Restored old bicycle',
+    description:
+      'Bicicleta antiga restaurada, com pintura original e peças originais. Perfeita para colecionadores.',
+    descriptionEnglish:
+      'Restored old bicycle, with original paint and original parts. Perfect for collectors.',
+    price: 2500,
+  });
+
+const verifiedSeller3Product7: Omit<ProductModel, 'searchDocument'> =
+  SeedUtils.getProduct({
+    id: '392d796d-09b2-4348-b902-8877f01dc714',
+    userId: verifiedSeller3.id,
+    category: ProductCategory.CLOTHING,
+    subCategory: ProductSubCategory.CLOTHING_ACCESSORIES,
+    name: 'Anel de ouro com diamante',
+    nameEnglish: 'Gold ring with diamond',
+    description:
+      'Anel de ouro com diamante de 0.5 quilates. Disponível em vários tamanhos.',
+    descriptionEnglish:
+      'Gold ring with 0.5 carat diamond. Available in several sizes.',
+    price: 2500,
+  });
+
 // Product images
 
 const verifiedSeller1Product1Image1: ProductImageModel =
@@ -323,7 +353,7 @@ const verifiedSeller3Product3Image1: ProductImageModel =
 const verifiedSeller3Product4Image1: ProductImageModel =
   SeedUtils.getProductImage(
     'b4f09af4-a7fd-432b-b498-41c2e56defd1',
-    verifiedSeller3Product5.id,
+    verifiedSeller3Product4.id,
     'https://www.nautilus.pt/wp-content/uploads/2020/07/Be-01.jpg',
   );
 
@@ -332,6 +362,20 @@ const verifiedSeller3Product5Image1: ProductImageModel =
     '83cd82db-2087-4a2a-9ae0-28b916dee2f6',
     verifiedSeller3Product5.id,
     'https://www.quintasdeseia.pt/wp-content/uploads/2020/12/IMG_20201208_113639-559x800-1.jpg',
+  );
+
+const verifiedSeller3Product6Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '10f44249-d5f5-4546-b866-0fb3ae6b325b',
+    verifiedSeller3Product6.id,
+    'https://ireland.apollo.olxcdn.com/v1/files/z9copmx4w2dc2-PT/image;s=2000x1333g',
+  );
+
+const verifiedSeller3Product7Image1: ProductImageModel =
+  SeedUtils.getProductImage(
+    '400a61db-805e-4c22-891f-d41600522053',
+    verifiedSeller3Product7.id,
+    'https://www.orovivo.com/210973-superlarge_default/sortija-de-oro-18k-rodio-con-aro-de-circonitas-cruzado.jpg',
   );
 
 export async function seed(knex: Knex): Promise<void> {
@@ -358,6 +402,8 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product4),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product5),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product6),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product7),
   ]);
   await knex('product_images').insert([
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1Product1Image1),
@@ -375,5 +421,7 @@ export async function seed(knex: Knex): Promise<void> {
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product3Image1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product4Image1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product5Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product6Image1),
+    CaseConverter.objectKeysCamelToSnake(verifiedSeller3Product7Image1),
   ]);
 }
