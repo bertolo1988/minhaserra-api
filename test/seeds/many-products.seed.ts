@@ -32,7 +32,7 @@ export const verifiedSeller3: UserModel = SeedUtils.getVerifiedUser(
   UserRole.SELLER,
 );
 
-// Products
+// Seller 1 products
 
 const verifiedSeller1Product1: Omit<ProductModel, 'searchDocument'> =
   SeedUtils.getProduct({
@@ -89,6 +89,8 @@ const verifiedSeller1Product4: Omit<ProductModel, 'searchDocument'> =
       'A classic Port Wine, of Excellence and with the genuine flavor of the best wine production in the Douro Region.',
     price: 990,
   });
+
+// Seller 2 products
 
 const verifiedSeller2Product1: Omit<ProductModel, 'searchDocument'> =
   SeedUtils.getProduct({
@@ -147,6 +149,8 @@ const verifiedSeller2Product4: Omit<ProductModel, 'searchDocument'> =
       'Ruby-colored wine, concentrated. On the nose it is intense and expressive, suggesting red berries, ripe black plum and a slight floral violet, based on notes of spice, pencil and toasted wood. The structured mouth confirms and deepens the aromatic profile, expresses assertive and integrated tannins and culminates in a long and persistent finish.',
     price: 1111,
   });
+
+// Seller 3 products
 
 const verifiedSeller3Product1: Omit<ProductModel, 'searchDocument'> =
   SeedUtils.getProduct({
