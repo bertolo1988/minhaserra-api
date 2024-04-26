@@ -368,7 +368,7 @@ const verifiedSeller3Product6Image1: ProductImageModel =
   SeedUtils.getProductImage(
     '10f44249-d5f5-4546-b866-0fb3ae6b325b',
     verifiedSeller3Product6.id,
-    'https://ireland.apollo.olxcdn.com/v1/files/z9copmx4w2dc2-PT/image;s=2000x1333g',
+    'https://img.freepik.com/fotos-premium/bicicleta-antiga-primeira-bicicleta_568470-220.jpg',
   );
 
 const verifiedSeller3Product7Image1: ProductImageModel =
