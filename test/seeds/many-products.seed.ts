@@ -17,6 +17,12 @@ if (isProduction()) {
   throw new Error('Cannot truncate tables in production environment!');
 }
 
+// Buyers
+export const verifiedBuyer1: UserModel = SeedUtils.getVerifiedUser(
+  '507b656f-ba2a-4bc3-aff8-7adb6f9c9e4a',
+  UserRole.BUYER,
+);
+
 // Sellers
 
 export const verifiedSeller1: UserModel = SeedUtils.getVerifiedUser(
@@ -384,6 +390,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('product_images').del();
 
   await knex('users').insert([
+    CaseConverter.objectKeysCamelToSnake(verifiedBuyer1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller1),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller2),
     CaseConverter.objectKeysCamelToSnake(verifiedSeller3),
