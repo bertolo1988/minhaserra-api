@@ -6,6 +6,7 @@ import {
   verifiedBuyer1ShoppingCartItem1,
   verifiedBuyerEmptyCart,
   verifiedSeller1,
+  verifiedSeller1Product1,
 } from '../../seeds/shopping-cart.seed';
 import {
   DatabaseSeedNames,
@@ -88,6 +89,7 @@ describe('GET /api/shopping-cart-items', () => {
         expect.objectContaining({
           id: verifiedBuyer1ShoppingCartItem1.id,
           userId: verifiedBuyer1ShoppingCartItem1.userId,
+          productName: verifiedSeller1Product1.nameEnglish,
           productId: verifiedBuyer1ShoppingCartItem1.productId,
           quantity: verifiedBuyer1ShoppingCartItem1.quantity,
           createdAt: expect.any(String),

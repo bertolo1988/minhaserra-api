@@ -1,3 +1,4 @@
+import { Knex } from 'knex';
 import { PG_ERROR } from 'pg-error-codes-ts/lib';
 
 import { getDatabaseInstance } from '../../knex-database';
@@ -7,10 +8,25 @@ import { ShoppingCartItemsMapper } from './shopping-cart-items.mapper';
 import {
   CreateShoppingCartItemDto,
   CreateShoppingCartItemModel,
+  PublicShoppingCartItem,
   ShoppingCartItemModel,
 } from './shopping-cart-items.types';
 
 const TABLE_NAME = 'shopping_cart_items';
+
+function getShoppingCartItemSelectFields(knex: Knex) {
+  return {
+    id: 's.id',
+    userId: 's.user_id',
+    productId: 's.product_id',
+    productName: knex.raw(
+      '(select name_english from products p where p.id = s.product_id)',
+    ),
+    quantity: 's.quantity',
+    createdAt: 's.created_at',
+    updatedAt: 's.updated_at',
+  };
+}
 
 export class ShoppingCartItemsRepository {
   static async updateQuantity(
@@ -42,7 +58,9 @@ export class ShoppingCartItemsRepository {
     return result;
   }
 
-  static async getShoppingCartItemsByUserId(userId: string) {
+  static async getShoppingCartItemsByUserId(
+    userId: string,
+  ): Promise<PublicShoppingCartItem[]> {
     const knex = await getDatabaseInstance();
 
     const where = {
@@ -50,15 +68,13 @@ export class ShoppingCartItemsRepository {
     };
 
     const result: Record<string, unknown>[] = await knex<ShoppingCartItemModel>(
-      TABLE_NAME,
+      { s: TABLE_NAME },
     )
+      .select(getShoppingCartItemSelectFields(knex))
       .where(CaseConverter.objectKeysCamelToSnake(where))
-      .select()
       .orderBy('updated_at', 'desc');
 
-    return result.map(
-      (r) => CaseConverter.objectKeysSnakeToCamel(r) as ShoppingCartItemModel,
-    );
+    return result as PublicShoppingCartItem[];
   }
 
   static async createOne(

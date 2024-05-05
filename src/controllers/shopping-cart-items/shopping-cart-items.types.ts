@@ -5,6 +5,10 @@ export type CreateShoppingCartItemModel = Omit<
   'id' | 'createdAt' | 'updatedAt'
 >;
 
+export type PublicShoppingCartItem = ShoppingCartItemModel & {
+  productName: string;
+};
+
 export type ShoppingCartItemModel = {
   id: string;
   userId: string;
