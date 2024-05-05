@@ -31,6 +31,13 @@ export class ProductsController {
       );
     }
 
+    console.log(
+      'text',
+      ctx.request.query.text,
+      'translation',
+      searchParameters.text,
+    );
+
     const paginationParams = new PaginationParams(
       ctx.request.query.offset as string,
       ctx.request.query.limit as string,

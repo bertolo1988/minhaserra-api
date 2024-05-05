@@ -13,6 +13,8 @@ import { Language } from '../types';
  * Translation service
  * https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-translate/
  */
+// TODO replace this service, can't translate "mel" from portuguese to english
+// create a cache with some queries that we are sure of the translation
 export class TranslationService {
   client: TranslateClient;
 
@@ -76,5 +78,9 @@ export class TranslationService {
    */
   async translateToEnglishAuto(input: string): Promise<string> {
     return this.translate(input, 'auto', Language.ENGLISH);
+  }
+
+  async translatePortugueseToEnglish(input: string): Promise<string> {
+    return this.translate(input, Language.PORTUGUESE, Language.ENGLISH);
   }
 }
