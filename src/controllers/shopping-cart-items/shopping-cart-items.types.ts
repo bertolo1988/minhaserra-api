@@ -7,6 +7,7 @@ export type CreateShoppingCartItemModel = Omit<
 
 export type PublicShoppingCartItem = ShoppingCartItemModel & {
   productName: string;
+  productPrice: number;
 };
 
 export type ShoppingCartItemModel = {

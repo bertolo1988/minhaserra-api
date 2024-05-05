@@ -91,6 +91,7 @@ describe('GET /api/shopping-cart-items', () => {
           userId: verifiedBuyer1ShoppingCartItem1.userId,
           productName: verifiedSeller1Product1.nameEnglish,
           productId: verifiedBuyer1ShoppingCartItem1.productId,
+          productPrice: `${verifiedSeller1Product1.price}`,
           quantity: verifiedBuyer1ShoppingCartItem1.quantity,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),

@@ -22,6 +22,9 @@ function getShoppingCartItemSelectFields(knex: Knex) {
     productName: knex.raw(
       '(select name_english from products p where p.id = s.product_id)',
     ),
+    productPrice: knex.raw(
+      '(select price from products p where p.id = s.product_id)',
+    ),
     quantity: 's.quantity',
     createdAt: 's.created_at',
     updatedAt: 's.updated_at',
