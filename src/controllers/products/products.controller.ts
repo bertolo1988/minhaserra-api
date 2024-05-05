@@ -32,10 +32,7 @@ export class ProductsController {
     }
 
     console.log(
-      'text',
-      ctx.request.query.text,
-      'translation',
-      searchParameters.text,
+      `Translation request - text:${ctx.request.query.text} translated:${searchParameters.text}`,
     );
 
     const paginationParams = new PaginationParams(
