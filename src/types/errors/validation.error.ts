@@ -1,6 +1,7 @@
 import { ErrorObject } from 'ajv';
 import _ from 'lodash';
 
+import { isNonEmptyString } from '../../utils/other-utils';
 import { HttpError } from './http-error.error';
 
 export class ValidationError extends HttpError {
@@ -16,10 +17,7 @@ export class ValidationError extends HttpError {
 
   buildComplexErrorMessage(errorObject: ErrorObject) {
     const { instancePath } = errorObject;
-    const hasPath =
-      instancePath != null &&
-      _.isString(instancePath) &&
-      instancePath.length > 0;
+    const hasPath = isNonEmptyString(instancePath);
     return `${hasPath ? `${errorObject.instancePath.replace('/', '')} ` : ''}${errorObject.message}`;
   }
 

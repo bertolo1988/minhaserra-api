@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { isUpdateSuccessfull } from '../../knex-database';
 import { TranslationService } from '../../services/translation-service';
 import { PaginationParams } from '../../types';
+import { isNonEmptyString } from '../../utils/other-utils';
 import { ProductsMapper } from './products.mapper';
 import { ProductsRepository } from './products.repository';
 import {
@@ -25,15 +26,14 @@ export class ProductsController {
       'text',
     ]) as ProductsSearchDto;
 
-    if (ctx.request.query.text != null) {
+    if (isNonEmptyString(ctx.request.query.text)) {
       searchParameters.text = await translationService.translateToEnglishAuto(
         ctx.request.query.text as string,
       );
+      console.log(
+        `Translation request - text:${ctx.request.query.text} translated:${searchParameters.text}`,
+      );
     }
-
-    console.log(
-      `Translation request - text:${ctx.request.query.text} translated:${searchParameters.text}`,
-    );
 
     const paginationParams = new PaginationParams(
       ctx.request.query.offset as string,

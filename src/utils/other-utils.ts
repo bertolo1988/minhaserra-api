@@ -12,7 +12,7 @@ export function sleep(ms = 1500) {
 export function isValidIso3166Alpha2Code(input: unknown): boolean {
   try {
     const country = iso3311a2.getCountry(input as string);
-    return country != null && _.isString(country) && country.length > 0;
+    return isNonEmptyString(country);
   } catch (err) {
     return false;
   }
@@ -24,4 +24,8 @@ export function isArraySortedDescending(array: number[]): boolean {
 
 export function isArraySortedAscending(array: number[]): boolean {
   return _.isEqual(array, _.orderBy(array, [], ['asc']));
+}
+
+export function isNonEmptyString(input: unknown): boolean {
+  return input != null && _.isString(input) && input.length > 0;
 }
