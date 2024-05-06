@@ -66,14 +66,14 @@ describe('PATCH /api/shopping-cart-items/:id/quantity', () => {
           method: 'PATCH',
           headers: getRequestHeaders(verifiedBuyer1),
           body: JSON.stringify({
-            quantity: CONSTANTS.MAX_AVAILABLE_QUANTITY + 1,
+            quantity: CONSTANTS.MAX_CART_ITEMS_PER_PRODUCTS + 1,
           }),
         },
       );
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body).toEqual({
-        message: 'quantity must be <= 2147483647',
+        message: `quantity must be <= ${CONSTANTS.MAX_CART_ITEMS_PER_PRODUCTS}`,
       });
     });
   });

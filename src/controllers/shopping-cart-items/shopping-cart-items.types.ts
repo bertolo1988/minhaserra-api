@@ -54,7 +54,7 @@ export const PatchShoppingCartItemQuantitySchema = {
       nullable: false,
       type: 'number',
       minimum: 1,
-      maximum: CONSTANTS.MAX_AVAILABLE_QUANTITY,
+      maximum: CONSTANTS.MAX_CART_ITEMS_PER_PRODUCTS,
     },
   },
   required: ['quantity'],

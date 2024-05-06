@@ -1,12 +1,11 @@
 import Koa from 'koa';
 
-import constants from '../../constants';
+import CONSTANTS from '../../constants';
 import { isDeleteSuccessfull, isUpdateSuccessfull } from '../../knex-database';
 import { NotFoundError } from '../../types/errors';
 import { ProductsRepository } from '../products/products.repository';
 import { ShoppingCartItemsRepository } from './shopping-cart-items.repository';
 import { CreateShoppingCartItemDto } from './shopping-cart-items.types';
-import { _ } from 'ajv';
 
 export class ShoppingCartItemsController {
   static async patchShoppingCartItemQuantityById(
@@ -79,7 +78,7 @@ export class ShoppingCartItemsController {
     const cartItemsCount =
       await ShoppingCartItemsRepository.countItemsByUserId(userId);
 
-    if (cartItemsCount > constants.MAX_CART_PRODUCTS) {
+    if (cartItemsCount > CONSTANTS.MAX_CART_PRODUCTS) {
       ctx.status = 400;
       ctx.body = { message: 'Max amount of cart products reached' };
       return;
