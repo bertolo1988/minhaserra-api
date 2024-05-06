@@ -32,6 +32,15 @@ function getShoppingCartItemSelectFields(knex: Knex) {
 }
 
 export class ShoppingCartItemsRepository {
+  static async countItemsByUserId(userId: string): Promise<number> {
+    const knex = await getDatabaseInstance();
+    const result = (await knex(TABLE_NAME)
+      .count('id')
+      .where(CaseConverter.objectKeysCamelToSnake({ userId }))
+      .first()) as { count: string };
+    return parseInt(result.count);
+  }
+
   static async updateQuantity(
     userId: string,
     itemId: string,

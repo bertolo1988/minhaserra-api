@@ -1,6 +1,7 @@
 import tk from 'timekeeper';
 
 import CONSTANTS from '../../../src/constants';
+import { ShoppingCartItemsRepository } from '../../../src/controllers/shopping-cart-items/shopping-cart-items.repository';
 import { CreateShoppingCartItemDto } from '../../../src/controllers/shopping-cart-items/shopping-cart-items.types';
 import {
   verifiedBuyer,
@@ -32,8 +33,30 @@ describe('POST /api/shopping-cart-items', () => {
   });
 
   describe('should return 400', () => {
-    test.skip('if limit of products in shopping cart is reached', async () => {
-      // TODO: Implement this test. Not urgent since it is limited by number of products in the db.
+    test('if limit of products in shopping cart is reached', async () => {
+      const countNumberOfItemsInCart: jest.SpyInstance = jest
+        .spyOn(ShoppingCartItemsRepository, 'countItemsByUserId')
+        .mockImplementationOnce(async () => CONSTANTS.MAX_CART_PRODUCTS + 1);
+
+      const data: CreateShoppingCartItemDto = {
+        productId: verifiedSellerProduct2.id,
+        quantity: 1,
+      };
+      const response = await fetch(
+        getTestServerUrl(`/api/shopping-cart-items`).href,
+        {
+          method: 'POST',
+          headers: getRequestHeaders(verifiedBuyer),
+          body: JSON.stringify(data),
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body).toEqual({
+        message: 'Max amount of cart products reached',
+      });
+      expect(countNumberOfItemsInCart).toHaveBeenCalledTimes(1);
+      countNumberOfItemsInCart.mockRestore();
     });
 
     test('when product id is invalid', async () => {
