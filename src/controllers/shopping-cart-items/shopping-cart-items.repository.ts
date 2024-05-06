@@ -75,7 +75,7 @@ export class ShoppingCartItemsRepository {
     )
       .select(getShoppingCartItemSelectFields(knex))
       .where(CaseConverter.objectKeysCamelToSnake(where))
-      .orderBy('updated_at', 'desc');
+      .orderBy('productName', 'asc');
 
     return result as PublicShoppingCartItem[];
   }
