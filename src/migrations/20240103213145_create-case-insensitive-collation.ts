@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.raw(
-    `CREATE COLLATION case_insensitive (provider = icu, locale = 'und-u-ks-level2',deterministic = false);`,
+    `CREATE COLLATION IF NOT EXISTS case_insensitive (provider = icu, locale = 'und-u-ks-level2',deterministic = false);`,
   );
 }
 
